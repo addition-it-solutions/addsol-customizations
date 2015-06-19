@@ -55,7 +55,7 @@ Few security rules for an employee:
 """,
     'images': [],
     'depends': ['hr_holidays', 'hr_timesheet_sheet', 'l10n_in_hr_payroll', 
-                'base_import_module', 'hr_expense', 'document_ftp'],
+                'base_import_module', 'hr_expense'],
     'data': [
         'security/ir.model.access.csv',
         'security/ir_rule.xml',

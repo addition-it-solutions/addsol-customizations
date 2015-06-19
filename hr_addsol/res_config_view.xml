@@ -11,6 +11,10 @@
                         <label for="allocation_range"/>
                         <field name="allocation_range" class="oe_inline"/>
                     </div>
+                    <div>
+                        <field name="module_addsol_backup" class="oe_inline"/>
+                        <label for="module_addsol_backup"/>
+                    </div>
                 </xpath>
                 <xpath expr="//div[@name='hr_payroll']" position="after">
                     <div>

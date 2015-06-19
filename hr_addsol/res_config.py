@@ -29,6 +29,8 @@ class addsol_hr_attendance_payroll_config_settings(osv.osv_memory):
         'allocation_range': fields.selection([('month','Month'),('year','Year')],
             'Allocate automatic leaves every', required=True,
             help="Periodicity on which you want automatic allocation of leaves to eligible employees."),
+        'module_addsol_backup': fields.boolean('Auto Backup Databases',
+            help="This installs the module addsol_backup."),
     }
     
     def get_default_allocation(self, cr, uid, fields, context=None):

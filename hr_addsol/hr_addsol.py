@@ -360,16 +360,10 @@ class res_company(osv.osv):
         'allocation_range': fields.selection([('month','Month'),('year','Year')],
             'Allocation Range', required=True,
             help="Periodicity on which you want automatic allocation of leaves to eligible employees."),
-        'document_ftp_url': fields.char('Browse Documents', size=128),
-        'document_ftp_user': fields.char('FTP Username', required=True),
-        'document_ftp_passwd': fields.char('FTP Password', required=True),
     }
     
     _defaults = {
         'allocation_range': 'month',
-        'document_ftp_url': 'localhost:8021',
-        'document_ftp_user': 'admin',
-        'document_ftp_passwd': 'admin'
     }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
