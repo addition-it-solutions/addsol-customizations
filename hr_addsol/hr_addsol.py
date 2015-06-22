@@ -109,24 +109,31 @@ class addsol_hr_employee(osv.osv):
         return res
 
     def _eligible_for_pl(self, cr, uid, ids, field_name, arg, context=None):
-        """ If employee finishes the trail period mentioned in his contract
+        """ If employee finishes the trial period mentioned in his contract
         then this flag is marked True. And employee can start availing the
         paid leaves.
         """
-        obj_contract = self.pool.get('hr.contract')
-        res = {}
-        for contract in obj_contract.browse(cr, uid, ids, context=context):
-#             res[contract.employee_id.id] = False
-            if contract.trial_date_start and contract.trial_date_end:
-                if contract.date_start <= time.strftime('%Y-%m-%d'):
-                    res[contract.employee_id.id] = True
+        res = dict.fromkeys(ids, False)
+        for employee in self.browse(cr, uid, ids, context=context):
+            res[employee.id] = True
         return res
+    
+    def _get_contract_date(self, cr, uid, ids, name, context=None):
+        """ 
+        Returns the list of employees to which belong the contract `ids´
+        """
+        result = set()
+        for contract in self.browse(cr, uid, ids, context=context):
+            if contract.employee_id:
+                if contract.date_start <= time.strftime('%Y-%m-%d'):
+                    result.add(contract.employee_id.id)
+        return list(result)
 
     _columns = {
         'no_of_years': fields.function(_calc_no_of_years, type='float', digits=(16,2), string='Years of Service'),
         'total_days': fields.function(_count_total_days, type='integer', string="Total Present Days"),
         'eligible': fields.function(_eligible_for_pl, type='boolean', string='Eligible for PL?', 
-                                    store={'hr.contract': (lambda self, cr, uid, ids, c={}: ids, ['date_start'], 10)}),
+                                    store={'hr.contract': (_get_contract_date, ['date_start'], 10)}),
     }
 
     def create(self, cr, uid, vals, context=None):
@@ -197,6 +204,7 @@ class addsol_hr_holidays_status(osv.osv):
     }
 
     _defaults = {
+        'type': 'unpaid',
         'company_id': lambda s, cr, uid, c: s.pool.get('res.company')._company_default_get(cr, uid, 'hr.holidays.status', context=c),
     }
     
