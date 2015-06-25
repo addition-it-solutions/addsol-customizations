@@ -23,7 +23,7 @@
     'name': 'Assets - Addsol',
     'version': '1.0',
     'author': 'Addition IT Solutions Pvt. Ltd.',
-    'category': 'Accounting',
+    'category': 'Accounting & Finance',
     'summary': 'Assets Customization',
     'website': 'https://www.aitspl.com',
     'description': """

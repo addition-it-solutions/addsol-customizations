@@ -89,7 +89,7 @@ class addsol_account_asset(osv.osv):
                         new_residual_amount = amount - new_amount
                         dep_value = (asset.purchase_value - asset.salvage_value) - (new_residual_amount + amount)
                         vals.update({'remaining_value': new_residual_amount, 'depreciated_value': dep_value, 'amount': amount})
-                        depreciation_date = depreciation_date + relativedelta(months=+asset.method_period)
+                        depn_end_date = depreciation_date + relativedelta(months=+asset.method_period)
                         new_vals.update({
                                     'amount': amount - new_amount,
                                      'asset_id': asset.id,
@@ -97,7 +97,7 @@ class addsol_account_asset(osv.osv):
                                      'name': str(asset.id) +'/' + str(i + 1),
                                      'remaining_value': residual_amount,
                                      'depreciated_value': dep_value + amount,
-                                     'depreciation_date': depreciation_date.strftime('%Y-%m-%d'),
+                                     'depreciation_date': depn_end_date.strftime('%Y-%m-%d'),
                         })
                 depreciation_lin_obj.create(cr, uid, vals, context=context)
                 if new_vals:
