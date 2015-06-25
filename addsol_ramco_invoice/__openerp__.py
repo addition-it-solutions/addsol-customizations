@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2015-2016 Addition IT Solutions Pvt. Ltd. (<http://www.aitspl.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,17 +19,22 @@
 #
 ##############################################################################
 {
-    'name' : 'Addsol Invoice',
-    'version' : '1.1',
+    'name' : 'Invoice - Addsol',
+    'version' : '1.0',
     'author' : 'Addition IT Solutions Pvt. Ltd.',
     'category' : 'Accounting & Finance',
     'description' : """
-Module for Invoice Customization for Ramco
-====================================
+Invoice Customization for Ramco by Addition IT Solutions
+========================================================
     Contact:
     * website: www.aitspl.com
     * email: info@aitspl.com    
     
+    Features:
+---------------
+    * Generate Invoice Number on draft state
+    * Re-initializes number when draft invoice deleted
+     
 """,
     'depends' : ['account'],
     'data': [

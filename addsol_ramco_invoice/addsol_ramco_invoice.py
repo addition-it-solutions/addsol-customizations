@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2015-2016 Addition IT Solutions Pvt. Ltd. (<http://www.aitspl.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -33,11 +33,10 @@ class addsol_ramco_invoice(models.Model):
         sequence_obj = self.env['ir.sequence'].browse(self.journal_id.sequence_id.id)
         if previous_id:
             new_number = previous_id.journal_id.sequence_id.number_next
-            new_inv_number = sequence_obj.next_by_id(self.journal_id.sequence_id.id)
         else:
             new_number = self.journal_id.sequence_id.number_next
-            new_inv_number = sequence_obj.next_by_id(self.journal_id.sequence_id.id)
             
+        new_inv_number = sequence_obj.next_by_id(self.journal_id.sequence_id.id)
         self.write({'number': new_inv_number,'nxt_number':new_number})
         #self.write({'number': new_inv_number,'internal_number':new_inv_number})
         return True
