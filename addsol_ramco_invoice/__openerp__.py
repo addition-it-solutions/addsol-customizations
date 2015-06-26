@@ -23,6 +23,7 @@
     'version' : '1.0',
     'author' : 'Addition IT Solutions Pvt. Ltd.',
     'category' : 'Accounting & Finance',
+    'summary': 'Invoice Customization for Ramco',
     'description' : """
 Invoice Customization for Ramco by Addition IT Solutions
 ========================================================

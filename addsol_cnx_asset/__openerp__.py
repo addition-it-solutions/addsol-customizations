@@ -24,7 +24,7 @@
     'version': '1.0',
     'author': 'Addition IT Solutions Pvt. Ltd.',
     'category': 'Accounting & Finance',
-    'summary': 'Assets Customization',
+    'summary': 'Assets Customization for CNX',
     'website': 'https://www.aitspl.com',
     'description': """
 Account Assets by Addition IT Solutions
@@ -40,7 +40,7 @@ Features:
 """,
     'images': [],
     'depends': ['account_asset'],
-    'data': [],
+    'data': ['addsol_cnx_asset_data.xml'],
     'demo': [],
     'test': [],
     'installable': True,
