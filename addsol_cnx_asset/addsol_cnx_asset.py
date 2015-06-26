@@ -62,7 +62,7 @@ class addsol_account_asset(osv.osv):
             total_days = (year % 4) and 365 or 366
 
             undone_dotation_number = self._compute_board_undone_dotation_nb(cr, uid, asset, depreciation_date, total_days, context=context)
-            if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d') and asset.method_period > 1:
+            if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d'):
                 diff_month = (12 * depn_start_date.year + depn_start_date.month) - (12 * fis_date.year + fis_date.month)
             for x in range(len(posted_depreciation_line_ids), undone_dotation_number):
                 new_vals = {}
@@ -78,14 +78,14 @@ class addsol_account_asset(osv.osv):
                      'depreciated_value': (asset.purchase_value - asset.salvage_value) - (residual_amount + amount),
                      'depreciation_date': depreciation_date.strftime('%Y-%m-%d'),
                 }
-                if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d') and asset.method_period > 1:
+                if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d'):
                     if i == 1:
                         new_amount = ((asset.method_period - diff_month) * amount)/asset.method_period
                         new_dep_value = (asset.purchase_value - asset.salvage_value) - (residual_amount + new_amount)
                         residual_amount = residual_amount + new_dep_value
                         vals.update({'amount': new_amount, 'depreciation_date': depn_start_date.strftime('%Y-%m-%d'),
                                      'remaining_value': residual_amount})
-                    if i == undone_dotation_number:
+                    if undone_dotation_number > 1 and i == undone_dotation_number:
                         amount = amount_to_depr / (undone_dotation_number - len(posted_depreciation_line_ids))
                         new_residual_amount = amount - new_amount
                         dep_value = (asset.purchase_value - asset.salvage_value) - (new_residual_amount + amount)
@@ -98,6 +98,18 @@ class addsol_account_asset(osv.osv):
                                      'name': str(asset.id) +'/' + str(i + 1),
                                      'remaining_value': residual_amount,
                                      'depreciated_value': dep_value + amount,
+                                     'depreciation_date': depn_end_date.strftime('%Y-%m-%d'),
+                        })
+                    if undone_dotation_number == 1:
+                        dep_value = (asset.purchase_value - asset.salvage_value) - (residual_amount)
+                        depn_end_date = depreciation_date + relativedelta(months=+asset.method_period)
+                        new_vals.update({
+                                    'amount': amount - new_amount,
+                                     'asset_id': asset.id,
+                                     'sequence': i + 1,
+                                     'name': str(asset.id) +'/' + str(i + 1),
+                                     'remaining_value': 0.0,
+                                     'depreciated_value': dep_value,
                                      'depreciation_date': depn_end_date.strftime('%Y-%m-%d'),
                         })
                 depreciation_lin_obj.create(cr, uid, vals, context=context)
