@@ -31,14 +31,15 @@ Invoice Customization for Ramco by Addition IT Solutions
     * website: www.aitspl.com
     * email: info@aitspl.com    
     
-    Features:
----------------
+Features:
+---------
     * Generate Invoice Number on draft state
     * Re-initializes number when draft invoice deleted
      
 """,
     'depends' : ['account'],
     'data': [
+        'addsol_ramco_invoice_view.xml',
         'addsol_ramco_invoice_workflow.xml',
     ],
     'demo': [],
