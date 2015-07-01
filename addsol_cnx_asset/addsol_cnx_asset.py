@@ -130,6 +130,7 @@ class addsol_account_asset(osv.osv):
     def automatic_journal_entries(self, cr, uid, context=None):
         fisyr_obj = self.pool.get('account.fiscalyear')
         depn_line_obj = self.pool.get('account.asset.depreciation.line')
+        move_obj = self.pool.get('account.move')
         current_date = time.strftime('%Y-%m-%d')
         asset_ids = self.search(cr, uid, [('state','=','open'), ('purchase_date','<=',current_date)], context=context)
         for asset in self.browse(cr, uid, asset_ids, context=context):
@@ -140,7 +141,8 @@ class addsol_account_asset(osv.osv):
                     continue
                 if depn.depreciation_date <= current_date:
                     if flag:
-                        depn_line_obj.create_move(cr, uid, [depn.id], context=context)
+                        move_ids = depn_line_obj.create_move(cr, uid, [depn.id], context=context)
+                        move_obj.write(cr, uid, move_ids, {'ref': asset.category_id.name}, context=context)
                     else:
                         fiscal_date = fisyr_obj.search_read(cr, uid, [('date_start', '<=', depn.depreciation_date), 
                                                                       ('date_stop', '>=', depn.depreciation_date)], 
@@ -176,7 +178,7 @@ class addsol_account_asset(osv.osv):
         sign = (asset.category_id.journal_id.type == 'purchase' and 1) or -1
         period_ids = period_obj.find(cr, uid, date.strftime('%Y-%m-%d'), context=context)
         existing_move_ids = move_obj.search(cr, uid, [('period_id','=',period_ids and period_ids[0]),
-                                                      ('ref','=',asset.category_id.name)],
+                                                      '|',('ref','=',asset.category_id.name),('ref','=',asset.name)],
                                             context=context)
         if not existing_move_ids:
             move_vals = {
@@ -194,7 +196,7 @@ class addsol_account_asset(osv.osv):
         existing_move_lines = move_line_obj.search(cr, uid, [('move_id','=',move_id),
                                                              ('period_id','=',period_ids and period_ids[0]),
                                                              ('date','=',date.strftime('%Y-%m-%d')),
-                                                             ('name','=',asset.name)])
+                                                             '|',('name','=',asset.name),('ref','=',asset.name)])
         if not existing_move_lines:
             move_line_obj.create(cr, uid, {
                 'name': asset.name,
