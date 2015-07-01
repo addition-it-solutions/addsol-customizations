@@ -136,8 +136,10 @@ class addsol_account_asset(osv.osv):
             flag = asset.method_period == 1 and True or False
             depn_start_date = False
             for depn in asset.depreciation_line_ids:
+                if depn.move_check:
+                    continue
                 if depn.depreciation_date <= current_date:
-                    if flag and not depn.move_check:
+                    if flag:
                         depn_line_obj.create_move(cr, uid, [depn.id], context=context)
                     else:
                         fiscal_date = fisyr_obj.search_read(cr, uid, [('date_start', '<=', depn.depreciation_date), 
