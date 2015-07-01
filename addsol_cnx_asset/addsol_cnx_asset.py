@@ -24,6 +24,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil import rrule, parser
 
 from openerp.osv import osv
+from openerp.tools.translate import _
 
 class addsol_account_asset(osv.osv):
     _inherit = 'account.asset.asset'
@@ -33,11 +34,12 @@ class addsol_account_asset(osv.osv):
         for asset in self.browse(cr, uid, ids, context=context):
             if asset.value_residual == 0.0:
                 continue
+            flag = asset.method_period/12 and True or False
             posted_depreciation_line_ids = depreciation_lin_obj.search(cr, uid, [('asset_id', '=', asset.id), ('move_check', '=', True)],order='depreciation_date desc')
             old_depreciation_line_ids = depreciation_lin_obj.search(cr, uid, [('asset_id', '=', asset.id), ('move_id', '=', False)])
             if old_depreciation_line_ids:
                 depreciation_lin_obj.unlink(cr, uid, old_depreciation_line_ids, context=context)
-
+ 
             amount_to_depr = residual_amount = asset.value_residual
             if asset.prorata:
                 depreciation_date = datetime.strptime(self._get_last_depreciation_date(cr, uid, [asset.id], context)[asset.id], '%Y-%m-%d')
@@ -54,15 +56,17 @@ class addsol_account_asset(osv.osv):
                     if fiscal_date:
                         fis_date = datetime.strptime(fiscal_date[0]['date_start'], '%Y-%m-%d') 
                         depreciation_date = datetime(fis_date.year, fis_date.month, fis_date.day)
+                        if not flag:
+                            depreciation_date = depn_start_date
                     else:
-                        depreciation_date = datetime(purchase_date.year, 1, 1)
+                        raise osv.except_osv(_('Error!'),('No fiscal year defined for %s' %purchase_date.strftime('%Y-%m-%d')))
             day = depreciation_date.day
             month = depreciation_date.month
             year = depreciation_date.year
             total_days = (year % 4) and 365 or 366
-
+ 
             undone_dotation_number = self._compute_board_undone_dotation_nb(cr, uid, asset, depreciation_date, total_days, context=context)
-            if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d'):
+            if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d') and flag:
                 diff_month = (12 * depn_start_date.year + depn_start_date.month) - (12 * fis_date.year + fis_date.month)
             for x in range(len(posted_depreciation_line_ids), undone_dotation_number):
                 new_vals = {}
@@ -78,7 +82,7 @@ class addsol_account_asset(osv.osv):
                      'depreciated_value': (asset.purchase_value - asset.salvage_value) - (residual_amount + amount),
                      'depreciation_date': depreciation_date.strftime('%Y-%m-%d'),
                 }
-                if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d'):
+                if not asset.prorata and depn_start_date.strftime('%Y-%m-%d') > fis_date.strftime('%Y-%m-%d') and flag:
                     if i == 1:
                         new_amount = ((asset.method_period - diff_month) * amount)/asset.method_period
                         new_dep_value = (asset.purchase_value - asset.salvage_value) - (residual_amount + new_amount)
@@ -120,7 +124,7 @@ class addsol_account_asset(osv.osv):
                 day = depreciation_date.day
                 month = depreciation_date.month
                 year = depreciation_date.year
-
+ 
         return True
     
     def automatic_journal_entries(self, cr, uid, context=None):
@@ -129,31 +133,35 @@ class addsol_account_asset(osv.osv):
         current_date = time.strftime('%Y-%m-%d')
         asset_ids = self.search(cr, uid, [('state','=','open'), ('purchase_date','<=',current_date)], context=context)
         for asset in self.browse(cr, uid, asset_ids, context=context):
+            flag = asset.method_period == 1 and True or False
             depn_start_date = False
             for depn in asset.depreciation_line_ids:
-                if depn.depreciation_date <= time.strftime('%Y-%m-%d'):
-                    fiscal_date = fisyr_obj.search_read(cr, uid, [('date_start', '<=', depn.depreciation_date), 
-                                                                  ('date_stop', '>=', depn.depreciation_date)], 
-                                                        ['date_start', 'date_stop'], context=context)
-                    if fiscal_date:
-                        date_start = datetime.strptime(fiscal_date[0]['date_start'], '%Y-%m-%d')
-                        date_stop = datetime.strptime(fiscal_date[0]['date_stop'], '%Y-%m-%d')
-                        if depn.depreciation_date > date_start.strftime('%Y-%m-%d'):
-                            depn_start_date = datetime.strptime(depn.depreciation_date, '%Y-%m-%d')
-                            diff_month = (12 * depn_start_date.year + depn_start_date.month) - (12 * date_start.year + date_start.month)
-                            date_start = depn_start_date
-                        date_range = list(rrule.rrule(rrule.MONTHLY, dtstart=date_start, 
-                                                            until=date_stop))
-                        if depn_start_date and depn.sequence == len(asset.depreciation_line_ids):
-                            date_stop = date_start + relativedelta(months=+diff_month)
+                if depn.depreciation_date <= current_date:
+                    if flag and not depn.move_check:
+                        depn_line_obj.create_move(cr, uid, [depn.id], context=context)
+                    else:
+                        fiscal_date = fisyr_obj.search_read(cr, uid, [('date_start', '<=', depn.depreciation_date), 
+                                                                      ('date_stop', '>=', depn.depreciation_date)], 
+                                                            ['date_start', 'date_stop'], context=context)
+                        if fiscal_date:
+                            date_start = datetime.strptime(fiscal_date[0]['date_start'], '%Y-%m-%d')
+                            date_stop = datetime.strptime(fiscal_date[0]['date_stop'], '%Y-%m-%d')
+                            if depn.sequence == 1 and depn.depreciation_date > date_start.strftime('%Y-%m-%d'):
+                                depn_start_date = datetime.strptime(depn.depreciation_date, '%Y-%m-%d')
+                                diff_month = (12 * depn_start_date.year + depn_start_date.month) - (12 * date_start.year + date_start.month)
+                                date_start = depn_start_date
                             date_range = list(rrule.rrule(rrule.MONTHLY, dtstart=date_start, 
-                                                            until=date_stop))
-                        monthly_amount = depn.amount / len(date_range)
-                        for date in date_range:
-                                if date.strftime('%Y-%m-%d') <= time.strftime('%Y-%m-%d'):
-                                    move_id = self.create_account_moves(cr, uid, asset, date, monthly_amount, context)
-                                    if date.strftime('%Y-%m') == date_stop.strftime('%Y-%m'):
-                                        depn_line_obj.write(cr, uid, depn.id, {'move_id': move_id}, context=context)
+                                                                until=date_stop))
+                            if depn_start_date and depn.sequence == len(asset.depreciation_line_ids):
+                                date_stop = date_start + relativedelta(months=+diff_month)
+                                date_range = list(rrule.rrule(rrule.MONTHLY, dtstart=date_start, 
+                                                                until=date_stop))
+                            monthly_amount = depn.amount / len(date_range)
+                            for date in date_range:
+                                    if date.strftime('%Y-%m-%d') <= current_date:
+                                        move_id = self.create_account_moves(cr, uid, asset, date, monthly_amount, context)
+                                        if date.strftime('%Y-%m') == date_stop.strftime('%Y-%m'):
+                                            depn_line_obj.write(cr, uid, depn.id, {'move_id': move_id}, context=context)
                     
     def create_account_moves(self, cr, uid, asset, date, amount, context=None):
         period_obj = self.pool.get('account.period')
