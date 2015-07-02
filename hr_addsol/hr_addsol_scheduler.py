@@ -125,18 +125,18 @@ class addsol_hr_holidays(osv.osv):
                             if days_left <= 12:
                                 allocate_days += days_left
                         if allocation_range == 'month':
-                            allocate_ids = self.search(cr, uid, [('date_from','>=',date_from), 
-                                                                      ('date_to','<=',date_to), 
-                                                                      ('type','=','add'), 
-                                                                      ('employee_id','=',emp.id),
-                                                                      ('holiday_status_id','=',holiday_status.id)], context=context)
+                            allocate_ids = self.search(cr, uid, [#('date_from','>=',date_from), 
+                                                                 #('date_to','<=',date_to), 
+                                                                  ('type','=','add'), 
+                                                                  ('employee_id','=',emp.id),
+                                                                  ('holiday_status_id','=',holiday_status.id)], context=context)
                             if allocate_ids:
                                 continue
                             vals = {
                                     'name': 'Monthly Allocation of '+ holiday_status.type,
                                     'number_of_days_temp': allocate_days,
-                                    'date_from': date_from,
-                                    'date_to': date_to,
+#                                     'date_from': date_from,
+#                                     'date_to': date_to,
                                     'employee_id': emp.id,
                                     'holiday_status_id': holiday_status.id,
                                     'type': 'add',
