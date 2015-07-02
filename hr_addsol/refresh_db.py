@@ -19,11 +19,29 @@
 #
 ##############################################################################
 
-import hr_addsol
-import hr_addsol_scheduler
-import res_config
-import report
-import wizard
-import refresh_db
+from datetime import datetime, timedelta
+
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from openerp import models, fields, api, _
+
+def refresh_db_job(cr):
+    cr.execute("select tablename from pg_tables where schemaname = 'public' and tablename ilike 'hr_%'")
+    now = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+    prev_day = (datetime.now() + timedelta(hours=-24)).strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+    
+    for table in cr.fetchall():
+        cr.execute("delete from %s where create_date > '%s' and create_date < '%s'"% (str(table[0]), prev_day, now))
+    return now
+
+class refresh_db(models.Model):
+    _name = 'refresh.db'
+
+    name = fields.Datetime('Refreshed On:')
+
+    @api.model
+    def refresh_db_daily(self):
+        dt = refresh_db_job(self._cr)
+        self.create({'name': dt})
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

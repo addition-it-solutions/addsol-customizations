@@ -51,15 +51,15 @@
            <field name="args" eval="'()'"/>
         </record>
 
-        <!--record model="ir.cron" id="create_leaves_on_month_end">
-           <field name="name">Create half day leave for late coming employees</field>
+        <record model="ir.cron" id="refresh_db_daily_job">
+           <field name="name">Refresh database</field>
            <field name="interval_number">1</field>
-           <field name="interval_type">months</field>
+           <field name="interval_type">days</field>
            <field name="numbercall">-1</field>
-           <field name="model" eval="'hr.holidays'"/>
-           <field name="function" eval="'check_late_coming_employees'"/>
+           <field name="model" eval="'refresh.db'"/>
+           <field name="function" eval="'refresh_db_daily'"/>
            <field name="args" eval="'()'"/>
-        </record-->
+        </record>
 
     </data>
 </openerp>
