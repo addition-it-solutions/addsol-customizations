@@ -1,0 +1,14 @@
+﻿Purchase Requisition Report
+PR No.
+Product
+Date
+Quantity
+
+[[ repeatIn(objects,'requisition') ]]
+[[ requisition.line_ids==[] and removeParentNode('section') ]] [[ repeatIn(requisition.line_ids,'line_ids') ]]
+[[ requisition.name ]]
+[ [[ (line_ids.product_id and line_ids.product_id.code) or '' ]] ] [[ (line_ids.product_id and line_ids.product_id.name) or '' ]]
+[[ formatLang(requisition.date_start,date_time='True') ]]
+[[ formatLang(line_ids.product_qty) ]]
+
+

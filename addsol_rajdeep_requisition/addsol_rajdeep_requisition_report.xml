@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report auto="False" 
+                id="report_purchase_requisition_addsol" 
+                model="purchase.requisition" 
+                name="requisition.report" 
+                rml="addsol_rajdeep_requisition/report/requisition_report.rml"
+                string="Requisition Report"/>
+    </data>
+</openerp>
