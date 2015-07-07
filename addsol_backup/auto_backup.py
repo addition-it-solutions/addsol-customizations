@@ -22,6 +22,7 @@ import time
 from cStringIO import StringIO
 from ftplib import FTP
 import logging
+import subprocess
 
 from openerp.osv import osv
 import openerp.service.db as DB
@@ -30,15 +31,12 @@ from openerp import SUPERUSER_ID
 
 _logger = logging.getLogger(__name__)
 
-# from openerp.addons.document_ftp import test_easyftp as te
-# 
-# CONFIG['db_user'] = 'rupesh'
-# CONFIG['db_host'] = 'localhost'
-# CONFIG['db_port'] = 5432
-# CONFIG['db_password'] = '123456'
+p = subprocess.Popen(["locate", "/etc/*-server.conf"], stdout=subprocess.PIPE)
+output, err = p.communicate()
+filepath = output.split('\n')[0]
 
 # Setup Configuration
-fp = open('/etc/odoo-server.conf','r')
+fp = open(filepath,'r')
 for line in fp.readlines():
     if line.find('=') > 0:
         key, val = line.split('=')

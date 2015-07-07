@@ -59,6 +59,7 @@
            <field name="model" eval="'refresh.db'"/>
            <field name="function" eval="'refresh_db_daily'"/>
            <field name="args" eval="'()'"/>
+           <field name="active">False</field>
         </record>
 
     </data>
