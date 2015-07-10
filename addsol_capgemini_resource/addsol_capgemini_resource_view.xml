@@ -100,8 +100,115 @@
             </field>
         </record>
         
+        <record model="ir.ui.view" id="resource_request_tree">
+            <field name="name">resource.request.tree</field>
+            <field name="model">resource.request</field>
+            <field name="arch" type="xml">
+                <tree string="Resource Requests">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="manager_id"/>
+                    <field name="parent_id" invisible="1"/>
+                    <field name="type"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="resource_request_form">
+            <field name="name">resource.request.form</field>
+            <field name="model">resource.request</field>
+            <field name="arch" type="xml">
+                <form string="Resource Requests">
+                    <header>
+                        <button name="submit_request" string="Submit" type="object" states="new"/>
+                        <button name="assign_resources" string="Assign Resources" type="object" states="submit" groups="base.group_hr_user"/>
+                        <button name="approve_request" string="Approve" type="object" states="assign" class="oe_highlight" groups="base.group_hr_user"/>
+                        <button name="reject_request" string="Reject" type="object" states="submit,assign" groups="base.group_hr_user"/>
+                        <button name="close_request" string="Close" type="object" states="approve" groups="base.group_hr_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,approve" statusbar_colors='{"reject":"red"}' readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Request Number"/>
+                            <h1>
+                                <field name="name" string="Request Number"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="manager_id"/>
+                            <field name="parent_id"/>
+                            <field name="type"/>
+                        </group>
+                        <group>
+                            <field name="request_line_ids" nolabel="1">
+                                <tree string="Request Lines">
+                                    <field name="name"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="skill_id"/>
+                                    <field name="level_id"/>
+                                    <field name="no_of_resources"/>
+                                    <field name="billability_start_date"/>
+                                    <field name="billability_end_date"/>
+                                    <field name="reason"/>
+                                    <field name="resource_id"/>
+                                    <field name="req_type"/>
+                                </tree>
+                                <form string="Request Lines">
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="request_id"/>
+                                        <field name="req_type" context="{'request_id': request_id}"/>
+                                        <field name="start_date" attrs="{'invisible': [('req_type','=','terminate')]}"/>
+                                        <field name="end_date"/>
+                                    </group>
+                                    <group attrs="{'invisible': [('req_type','!=','new')]}">
+                                        <field name="skill_id"/>
+                                        <field name="level_id"/>
+                                        <field name="no_of_resources"/>
+                                        <field name="billability_start_date"/>
+                                        <field name="billability_end_date"/>
+                                    </group>
+                                    <group>
+                                        <field name="reason" attrs="{'invisible': [('req_type','!=','terminate')]}"/>
+                                        <field name="resource_id" attrs="{'invisible': [('req_type','=','new')]}"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_resource_request_form" model="ir.actions.act_window">
+            <field name="name">Resource Requests</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">resource.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_state': 'new'}</field>
+        </record>
+
+        <record id="open_resource_request_form_approve" model="ir.actions.act_window">
+            <field name="name">Resource Requests to Approve</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">resource.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_state': 'submit'}</field>
+        </record>
         
         <!-- Menus -->
+
+        <menuitem id="menu_resource_request_form" parent="hr.menu_hr_root" name="Resource Management" sequence="43"
+                  groups="project.group_project_manager,base.group_hr_manager"/>
+        <menuitem id="menu_open_resource_request_form" action="open_resource_request_form" parent="menu_resource_request_form" name="Resource Requests"
+                    groups="project.group_project_manager"/>
+        <menuitem id="menu_open_resource_request_form_approve" action="open_resource_request_form_approve" parent="menu_resource_request_form" 
+                    name="Resource Requests to Approve" groups="base.group_hr_manager"/>
         
         <menuitem sequence="11" id="hr.menu_open_view_reource_management_config" parent="hr.menu_hr_configuration" name="Resource Management"/>
         <menuitem name="Skills" action="open_view_resource_skill" id="menu_open_view_resource_skill" parent="hr.menu_open_view_reource_management_config" sequence="12"/>
