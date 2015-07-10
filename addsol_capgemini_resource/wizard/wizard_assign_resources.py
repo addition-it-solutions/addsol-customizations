@@ -18,33 +18,27 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name' : 'Resource Management - Addsol',
-    'version' : '1.0',
-    'author' : 'Addition IT Solutions Pvt. Ltd.',
-    'category' : 'Human Resource',
-    'summary': 'Resource Management Customization for Capgemini',
-    'description' : """
-Resource Management Customization for Capgemini by Addition IT Solutions
-========================================================
-    Contact:
-    * website: www.aitspl.com
-    * email: info@aitspl.com    
-    
-Features:
----------
-    
-    
-""",
-    'depends' : ['hr','project'],
-    'data': [
-        'wizard/wizard_assign_resources_view.xml',
-        'addsol_capgemini_resource_view.xml',
-    ],
-    'demo': [],
-    'test': [],
-    'installable': True,
-    'auto_install': False,
-}
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+#from openerp import models, fields, api, _
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+
+class assign_resources(osv.osv_memory):
+    _name = 'assign.resources'
+    _description = "Assign Resources for Project"
+    
+    _columns = {
+        'resource_ids' : fields.many2many('hr.employee','res_request_employee_rel','employee_id','request_id', 'Assigned Resources'),
+    }
+    
+    def assign(self, cr, uid, ids, context=None):
+        resource_obj = self.pool.get('resource.request')
+        for assign_ids in self.browse(cr, uid, ids):
+            if assign_ids:
+                resource_obj.write(cr, uid, context['active_id'],{'resource_ids': assign_ids,'state':'assign'},context=context)
+                
+        return True
+    
+    

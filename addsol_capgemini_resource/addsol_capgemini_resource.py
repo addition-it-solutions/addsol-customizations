@@ -54,25 +54,25 @@ class resource_request(models.Model):
                                ('assign','Assigned'),
                                ('close','Closed')], 'State', default='new')
 
-    @api.model
+    @api.multi
     def submit_request(self):
-        return True
+        return self.write({'state': 'submit'})
     
-    @api.model
+    @api.multi
     def assign_resources(self):
-        return True
+        return self.write({'state': 'assign'})
     
-    @api.model
+    @api.multi
     def approve_request(self):
-        return True
+        return self.write({'state': 'approve'})
     
-    @api.model
+    @api.multi
     def reject_request(self):
-        return True
+        return self.write({'state': 'reject'})
     
-    @api.model
+    @api.multi
     def close_request(self):
-        return True
+        return self.write({'state': 'close'})
  
 class resource_request_lines(models.Model):
     _name = 'resource.request.lines'
@@ -93,7 +93,7 @@ class resource_request_lines(models.Model):
     reason = fields.Char('Reason for Termination')
     resource_id = fields.Many2one('hr.employee','Resource')
 
-class addsol_resorce(models.Model):
+class addsol_resource(models.Model):
     _inherit = 'hr.employee'
     
     skill_set = fields.One2many('resource.skill.set','resource','Skill Set',required=True)
