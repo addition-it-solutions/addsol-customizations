@@ -36,7 +36,7 @@ Features:
     
     
 """,
-    'depends' : ['hr'],
+    'depends' : ['hr','project'],
     'data': [
         'addsol_capgemini_resource_view.xml',
     ],

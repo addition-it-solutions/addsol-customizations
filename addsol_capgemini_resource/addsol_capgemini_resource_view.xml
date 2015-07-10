@@ -66,6 +66,41 @@
             <field name="view_mode">tree,form</field>
         </record>
         
+        <record id="addsol_resource_view" model="ir.ui.view">
+            <field name="name">addsol.resource.view.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Availiable Information">
+                        <sheet>
+                            <group string="Skill Set">
+                                <field name="skill_set" nolabel="1">
+                                    <tree string="Skill Set">
+                                        <field name="resource"/>
+                                        <field name="skill"/>
+                                        <field name="level"/>
+                                    </tree>
+                                </field>       
+                            </group>
+                            <group string="Billable Date">
+                                <label for="billable_start_date" string="Billable Date"/>
+                                <div>
+                                    <field name="billable_start_date" class="oe_inline"/> - <field name="billable_end_date" class="oe_inline" />
+                                </div>
+                            </group>
+                            <group>
+                                <field name="on_bench"/>
+                                <field name="project"/>
+                                <field name="resume"/>
+                            </group>
+                        </sheet>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        
+        
         <!-- Menus -->
         
         <menuitem sequence="11" id="hr.menu_open_view_reource_management_config" parent="hr.menu_hr_configuration" name="Resource Management"/>

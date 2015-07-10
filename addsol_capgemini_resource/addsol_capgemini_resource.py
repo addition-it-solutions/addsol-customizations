@@ -38,6 +38,29 @@ class resource_level(osv.osv):
     _columns = {
         'name' : fields.char("Level Name", required=True, size=200)
     }
+    
+class addsol_resorce(osv.osv):
+    _inherit = 'hr.employee'
+    
+    _columns = {
+        'skill_set' : fields.one2many('resource.skill.set','resource','Skill Set',required=True),
+        'billable_start_date' : fields.date('Billable Start Date'),
+        'billable_end_date' : fields.date('Billable End Date'),
+        'on_bench' : fields.boolean('On Bench'),
+        'project' : fields.many2one('project.project','Project',required=True),
+        'resume' : fields.binary('Resume',required=True),
+        
+    }
+    
 
+class resource_skil_set(osv.osv):
+    _name = 'resource.skill.set'
+    _description = "Resource skill set"
+    
+    _columns = {
+        'resource' : fields.many2one('hr.employee','Resource',required=True),
+        'skill' : fields.many2one('resource.skill','Skill',required=True),
+        'level' : fields.many2one('resource.level','Level',required=True),
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
