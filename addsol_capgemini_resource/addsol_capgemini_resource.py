@@ -52,7 +52,7 @@ class resource_request(models.Model):
                                ('approve','Approved'),
                                ('reject','Rejected'),
                                ('assign','Assigned'),
-                               ('close','Closed')], 'State')
+                               ('close','Closed')], 'State', default='new')
 
     @api.model
     def submit_request(self):
