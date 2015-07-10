@@ -148,15 +148,21 @@
                             </h1>
                         </div>
                         <group>
-                            <field name="project_id"/>
-                            <field name="manager_id"/>
-                            <field name="parent_id"/>
-                            <field name="type"/>
+                            <group>
+                                <field name="project_id"/>
+                                <field name="type"/>
+                            </group>
+                            <group>
+                                <field name="manager_id"/>
+                                <field name="parent_id" attrs="{'invisible': [('type','!=','extension')]}"/>
+                            </group>
                         </group>
                         <group>
                             <field name="request_line_ids" nolabel="1">
                                 <tree string="Request Lines">
-                                    <field name="name"/>
+                                    <field name="req_type" invisible="1"/>
+                                    <field name="sequence"/>
+                                    <field name="resource_id"/>
                                     <field name="start_date"/>
                                     <field name="end_date"/>
                                     <field name="skill_id"/>
@@ -164,31 +170,39 @@
                                     <field name="no_of_resources"/>
                                     <field name="billability_start_date"/>
                                     <field name="billability_end_date"/>
-                                    <field name="reason"/>
-                                    <field name="resource_id"/>
-                                    <field name="req_type"/>
                                 </tree>
                                 <form string="Request Lines">
                                     <group>
-                                        <field name="name"/>
-                                        <field name="request_id"/>
-                                        <field name="req_type" context="{'request_id': request_id}"/>
-                                        <field name="start_date" attrs="{'invisible': [('req_type','=','terminate')]}"/>
-                                        <field name="end_date"/>
+                                        <group>
+                                            <field name="sequence"/>
+                                            <field name="request_id" invisible="1"/>
+                                            <field name="req_type" invisible="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="start_date" attrs="{'invisible': [('req_type','=','terminate')], 'required': [('req_type','in',['new','extension'])]}"/>
+                                            <field name="end_date"/>
+                                        </group>
                                     </group>
                                     <group attrs="{'invisible': [('req_type','!=','new')]}">
-                                        <field name="skill_id"/>
-                                        <field name="level_id"/>
-                                        <field name="no_of_resources"/>
-                                        <field name="billability_start_date"/>
-                                        <field name="billability_end_date"/>
+                                        <group>
+                                            <field name="skill_id" attrs="{'required': [('req_type','=','new')]}"/>
+                                            <field name="level_id" attrs="{'required': [('req_type','=','new')]}"/>
+                                            <field name="no_of_resources" attrs="{'required': [('req_type','=','new')]}"/>
+                                        </group>
+                                        <group>
+                                            <field name="billability_start_date" attrs="{'required': [('req_type','=','new')]}"/>
+                                            <field name="billability_end_date" attrs="{'required': [('req_type','=','new')]}"/>
+                                        </group>
                                     </group>
                                     <group>
-                                        <field name="reason" attrs="{'invisible': [('req_type','!=','terminate')]}"/>
-                                        <field name="resource_id" attrs="{'invisible': [('req_type','=','new')]}"/>
+                                        <field name="resource_id" attrs="{'invisible': [('req_type','=','new')], 'required': [('req_type','in',['extension','terminate'])]}"/>
+                                        <field name="reason" attrs="{'invisible': [('req_type','!=','terminate')], 'required': [('req_type','=','terminate')]}"/>
                                     </group>
                                 </form>
                             </field>
+                        </group>
+                        <group string="Assigned Resources" attrs="{'invisible': [('state','in',['new','submit'])]}">
+                            <field name="resource_ids" nolabel="1" readonly="1"/>
                         </group>
                     </sheet>
                 </form>

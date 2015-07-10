@@ -37,16 +37,22 @@ class resource_request(models.Model):
     _name = 'resource.request'
     _description = "Resource Requests"
     
-    name = fields.Char('Request', required=True)
-    project_id = fields.Many2one('project.project','Project')
-    manager_id = fields.Many2one('hr.employee', 'Project Manager')
+    def _manager_get(self):
+        ids = self.env['hr.employee'].search([('user_id', '=', self._uid)])
+        if ids:
+            return ids[0]
+        return False
+    
+    name = fields.Char('Request', required=True, default=lambda self: self.env['ir.sequence'].get('resource.request.number'))
+    project_id = fields.Many2one('project.project','Project', required=True)
+    manager_id = fields.Many2one('hr.employee', 'Project Manager', required=True, default=_manager_get)
     parent_id = fields.Many2one('resource.request','Parent Request')
     request_line_ids = fields.One2many('resource.request.lines','request_id', 'Request Lines')
     type = fields.Selection([('new','New'), 
                               ('extension','Extension'), 
                               ('terminate','Termination')],
-                             'Type', default='new')
-    resource_ids = fields.Many2many('hr.employee','employee_id','request_id', 'Assigned Resources')
+                             'Type', default='new', required=True)
+    resource_ids = fields.Many2many('hr.employee','res_request_employee_rel','employee_id','request_id', 'Assigned Resources')
     state = fields.Selection([('new','New'),
                                ('submit','Waiting for Approval'),
                                ('approve','Approved'),
@@ -77,10 +83,11 @@ class resource_request(models.Model):
 class resource_request_lines(models.Model):
     _name = 'resource.request.lines'
     _description = "Request Lines"
+    _rec_name = 'sequence'
 
-    name = fields.Char('Request Line', required=True)
+    sequence = fields.Integer('Sequence', default=5)
     start_date = fields.Date('Start Date')
-    end_date = fields.Date('End Date')
+    end_date = fields.Date('End Date', required=True)
     request_id = fields.Many2one('resource.request','Request')
     req_type = fields.Selection(related='request_id.type', selection=[('new','New'), 
                               ('extension','Extension'), 
@@ -90,7 +97,7 @@ class resource_request_lines(models.Model):
     no_of_resources = fields.Integer('No. of Resources')
     billability_start_date = fields.Date('Billability Start Date')
     billability_end_date = fields.Date('Billability End Date')
-    reason = fields.Char('Reason for Termination')
+    reason = fields.Text('Reason for Termination')
     resource_id = fields.Many2one('hr.employee','Resource')
 
 class addsol_resource(models.Model):

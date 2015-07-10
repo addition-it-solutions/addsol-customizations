@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="resource_request_number_type" model="ir.sequence.type">
+            <field name="name">Resource Request Number</field>
+            <field name="code">resource.request.number</field>
+        </record>
+        <record id="resource_request_number_sequence" model="ir.sequence">
+            <field name="name">Resource Request Number</field>
+            <field name="code">resource.request.number</field>
+            <field name="prefix">REQ/%(month)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="4" name="padding"/>
+        </record>
+
+    </data>
+</openerp>

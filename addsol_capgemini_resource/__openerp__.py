@@ -39,6 +39,7 @@ Features:
     'depends' : ['hr','project'],
     'data': [
         'wizard/wizard_assign_resources_view.xml',
+        'addsol_capgemini_resource_data.xml',
         'addsol_capgemini_resource_view.xml',
     ],
     'demo': [],

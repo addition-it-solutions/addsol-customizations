@@ -30,15 +30,15 @@ class assign_resources(osv.osv_memory):
     _description = "Assign Resources for Project"
     
     _columns = {
-        'resource_ids' : fields.many2many('hr.employee','res_request_employee_rel','employee_id','request_id', 'Assigned Resources'),
+        'resource_ids' : fields.many2many('hr.employee','res_request_assign_rel','employee_id','assign_id', 'Assigned Resources'),
     }
     
     def assign(self, cr, uid, ids, context=None):
         resource_obj = self.pool.get('resource.request')
-        for assign_ids in self.browse(cr, uid, ids):
-            if assign_ids:
-                resource_obj.write(cr, uid, context['active_id'],{'resource_ids': assign_ids,'state':'assign'},context=context)
-                
+        for assign_id in self.browse(cr, uid, ids):
+            if assign_id:
+                res_ids = [res.id for res in assign_id.resource_ids]
+                resource_obj.write(cr, uid, context['active_id'],{'resource_ids': [(4, res_id) for res_id in res_ids],'state':'assign'},context=context)
         return True
     
     
