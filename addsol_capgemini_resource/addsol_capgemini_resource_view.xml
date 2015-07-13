@@ -75,11 +75,11 @@
                     <page string="Availiable Information">
                         <group string="Skills Set">
                             <field name="skill_set" nolabel="1">
-                                <tree string="Skill Set">
+                                <tree string="Skill Set" editable="bottom">
                                     <field name="skill"/>
                                     <field name="level"/>
                                 </tree>
-                            </field>       
+                            </field>
                         </group>
                         <group string="Billability">
                             <label for="billable_start_date" string="Billable Date"/>
