@@ -73,28 +73,25 @@
             <field name="arch" type="xml">
                 <notebook position="inside">
                     <page string="Availiable Information">
-                        <sheet>
-                            <group string="Skill Set">
-                                <field name="skill_set" nolabel="1">
-                                    <tree string="Skill Set">
-                                        <field name="resource"/>
-                                        <field name="skill"/>
-                                        <field name="level"/>
-                                    </tree>
-                                </field>       
-                            </group>
-                            <group string="Billable Date">
-                                <label for="billable_start_date" string="Billable Date"/>
-                                <div>
-                                    <field name="billable_start_date" class="oe_inline"/> - <field name="billable_end_date" class="oe_inline" />
-                                </div>
-                            </group>
-                            <group>
-                                <field name="on_bench"/>
-                                <field name="project"/>
-                                <field name="resume"/>
-                            </group>
-                        </sheet>
+                        <group string="Skill Set">
+                            <field name="skill_set" nolabel="1">
+                                <tree string="Skill Set">
+                                    <field name="skill"/>
+                                    <field name="level"/>
+                                </tree>
+                            </field>       
+                        </group>
+                        <group string="Billable Date">
+                            <label for="billable_start_date" string="Billable Date"/>
+                            <div>
+                                <field name="billable_start_date" class="oe_inline"/> - <field name="billable_end_date" class="oe_inline" />
+                            </div>
+                        </group>
+                        <group>
+                            <field name="on_bench"/>
+                            <field name="project"/>
+                            <field name="resume"/>
+                        </group>
                     </page>
                 </notebook>
             </field>
@@ -170,6 +167,7 @@
                                     <field name="no_of_resources"/>
                                     <field name="billability_start_date"/>
                                     <field name="billability_end_date"/>
+                                    <field name="progress" widget="progressbar"/>
                                 </tree>
                                 <form string="Request Lines">
                                     <group>

@@ -43,6 +43,7 @@ class resource_request(models.Model):
             return ids[0]
         return False
     
+    
     name = fields.Char('Request', required=True, default=lambda self: self.env['ir.sequence'].get('resource.request.number'))
     project_id = fields.Many2one('project.project','Project', required=True)
     manager_id = fields.Many2one('hr.employee', 'Project Manager', required=True, default=_manager_get)
@@ -59,7 +60,7 @@ class resource_request(models.Model):
                                ('reject','Rejected'),
                                ('assign','Assigned'),
                                ('close','Closed')], 'State', default='new')
-
+    
     @api.multi
     def submit_request(self):
         return self.write({'state': 'submit'})
@@ -79,11 +80,16 @@ class resource_request(models.Model):
     @api.multi
     def close_request(self):
         return self.write({'state': 'close'})
+    
  
 class resource_request_lines(models.Model):
     _name = 'resource.request.lines'
     _description = "Request Lines"
     _rec_name = 'sequence'
+
+    @api.one
+    def _progress_rate(self):
+        self.progress = 50.0
 
     sequence = fields.Integer('Sequence', default=5)
     start_date = fields.Date('Start Date')
@@ -99,6 +105,8 @@ class resource_request_lines(models.Model):
     billability_end_date = fields.Date('Billability End Date')
     reason = fields.Text('Reason for Termination')
     resource_id = fields.Many2one('hr.employee','Resource')
+    progress = fields.Float(compute='_progress_rate', string='Progress')
+
 
 class addsol_resource(models.Model):
     _inherit = 'hr.employee'
@@ -107,8 +115,8 @@ class addsol_resource(models.Model):
     billable_start_date= fields.Date('Billable Start Date')
     billable_end_date= fields.Date('Billable End Date')
     on_bench= fields.Boolean('On Bench')
-    project= fields.Many2one('project.project','Project',required=True)
-    resume= fields.Binary('Resume',required=True)
+    project= fields.Many2one('project.project','Project')
+    resume= fields.Binary('Resume')
 
 class resource_skil_set(models.Model):
     _name = 'resource.skill.set'
