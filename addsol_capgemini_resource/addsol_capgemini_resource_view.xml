@@ -15,7 +15,7 @@
         </record>
         
         <record model="ir.ui.view" id="resource_skill_view_tree">
-            <field name="name">resource.skill.view..tree</field>
+            <field name="name">resource.skill.view.tree</field>
             <field name="model">resource.skill</field>
             <field name="arch" type="xml">
                 <tree string="Skills">
@@ -45,7 +45,7 @@
         </record>
         
         <record model="ir.ui.view" id="resource_level_view_tree">
-            <field name="name">resource.level.view..tree</field>
+            <field name="name">resource.level.view.tree</field>
             <field name="model">resource.level</field>
             <field name="arch" type="xml">
                 <tree string="Levels">
@@ -68,7 +68,7 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
                 <notebook position="inside">
-                    <page string="Availiable Information" groups="project.group_project_manager,base.group_hr_manager">
+                    <page string="Billability &amp; Skills" groups="project.group_project_manager,base.group_hr_manager">
                         <group string="Skills Set">
                             <field name="skill_set" nolabel="1">
                                 <tree string="Skill Set" editable="bottom">
@@ -98,10 +98,13 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_filter"/>
             <field name="arch" type="xml">
-                <search string="Employees">
+                <xpath expr="//field[@name='name']" position="after">
                     <field name="skill_set" string="Skill" filter_domain="[('skill_set.skill','ilike',self)]"/>
                     <field name="skill_set" string="Level" filter_domain="[('skill_set.level','ilike',self)]"/>
-                </search>
+                </xpath>
+                <xpath expr="//group/filter[@string='Job']" position="after">
+                    <filter string="On Bench" context="{'group_by':'on_bench'}"/>
+                </xpath>
             </field>
         </record>
         
@@ -154,7 +157,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="project_id"/>
+                                <field name="project_id" domain="[('user_id','=',uid)]"/>
                                 <field name="type"/>
                             </group>
                             <group>
@@ -207,7 +210,7 @@
                                 </form>
                             </field>
                         </group>
-                        <group string="Assigned Resources" attrs="{'invisible': [('state','in',['new','submit'])]}">
+                        <group string="Assigned Resources" attrs="{'invisible': [('state','in',['new','submit','approve'])]}">
                             <field name="resource_ids" nolabel="1" readonly="1"/>
                         </group>
                     </sheet>

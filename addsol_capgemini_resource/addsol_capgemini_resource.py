@@ -45,15 +45,15 @@ class resource_request(models.Model):
     
     
     name = fields.Char('Request', required=True, default=lambda self: self.env['ir.sequence'].get('resource.request.number'))
-    project_id = fields.Many2one('project.project','Project', required=True)
     manager_id = fields.Many2one('hr.employee', 'Project Manager', required=True, default=_manager_get)
+    project_id = fields.Many2one('project.project','Project', required=True)
     parent_id = fields.Many2one('resource.request','Parent Request')
     request_line_ids = fields.One2many('resource.request.lines','request_id', 'Request Lines')
     type = fields.Selection([('new','New'), 
                               ('extension','Extension'), 
                               ('terminate','Termination')],
                              'Type', default='new', required=True)
-    resource_ids = fields.Many2many('hr.employee','res_request_employee_rel','employee_id','request_id', 'Assigned Resources')
+    resource_ids = fields.Many2many('hr.employee', string='Assigned Resources')
     state = fields.Selection([('new','New'),
                                ('submit','Waiting for Approval'),
                                ('approve','Approved'),
