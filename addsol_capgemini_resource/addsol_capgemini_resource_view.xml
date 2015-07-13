@@ -73,7 +73,7 @@
             <field name="arch" type="xml">
                 <notebook position="inside">
                     <page string="Availiable Information">
-                        <group string="Skill Set">
+                        <group string="Skills Set">
                             <field name="skill_set" nolabel="1">
                                 <tree string="Skill Set">
                                     <field name="skill"/>
@@ -81,19 +81,31 @@
                                 </tree>
                             </field>       
                         </group>
-                        <group string="Billable Date">
+                        <group string="Billability">
                             <label for="billable_start_date" string="Billable Date"/>
                             <div>
                                 <field name="billable_start_date" class="oe_inline"/> - <field name="billable_end_date" class="oe_inline" />
                             </div>
-                        </group>
-                        <group>
                             <field name="on_bench"/>
                             <field name="project"/>
+                        </group>
+                        <group string="Resume">
                             <field name="resume"/>
                         </group>
                     </page>
                 </notebook>
+            </field>
+        </record>
+
+        <record id="addsol_view_employee_filter" model="ir.ui.view">
+            <field name="name">Employees</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <search string="Employees">
+                    <field name="skill_set" string="Skill" filter_domain="[('skill_set.skill','ilike',self)]"/>
+                    <field name="skill_set" string="Level" filter_domain="[('skill_set.level','ilike',self)]"/>
+                </search>
             </field>
         </record>
         

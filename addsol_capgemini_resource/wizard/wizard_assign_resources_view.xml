@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
                 <form string="Assign Resources">
                     <sheet string="Assign Resources">
-                        <group col="4">
+                        <separator string="Resources best matched the search..."/>
+                        <group>
                             <field name="resource_ids" nolabel="1"/>
                         </group>
                         <footer>
