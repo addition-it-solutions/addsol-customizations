@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_resource_request_pm,Resource Requests PM,model_resource_request,project.group_project_manager,1,1,1,1
+access_resource_request_line_pm,Resource Request Lines PM,model_resource_request_lines,project.group_project_manager,1,1,1,1
+access_resource_request_rmg,Resource Requests RMG,model_resource_request,base.group_hr_manager,1,1,1,1
+access_resource_skill_rmg,Resource Skills RMG,model_resource_skill,base.group_hr_manager,1,1,1,1
+access_resource_level_rmg,Resource Levels RMG,model_resource_level,base.group_hr_manager,1,1,1,1
+access_resource_skill_set_rmg,Resource Skill Set RMG,model_resource_skill_set,base.group_hr_manager,1,1,1,1
+access_resource_skill_set_pm,Resource Skill Set PM,model_resource_skill_set,project.group_project_manager,1,0,0,0
