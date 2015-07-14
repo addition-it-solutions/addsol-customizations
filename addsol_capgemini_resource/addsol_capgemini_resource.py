@@ -89,22 +89,25 @@ class resource_request_lines(models.Model):
 
     @api.one
     def _progress_rate(self):
-        self._cr.execute("""
-            SELECT resource_request_lines.id, count(resource_request_lines.no_of_resources),resource_request_lines.no_of_resources
-            FROM public.hr_employee_resource_request_rel, public.resource_request, public.resource_request_lines, public.resource_skill_set
-            WHERE hr_employee_resource_request_rel.hr_employee_id = resource_skill_set.resource AND
-                resource_request.id = resource_request_lines.request_id AND
-                resource_request.id = hr_employee_resource_request_rel.resource_request_id AND
-                resource_request_lines.skill_id = resource_skill_set.skill AND
-                resource_request_lines.level_id = resource_skill_set.level AND
-                resource_request_lines.id = %s
-            Group By resource_request_lines.id
-          """%self.ids[0])
-        for id, count , no_of_res in self._cr.fetchall():
-            if count == no_of_res:
-                self.progress = 100.0
-            else:
-                self.progress = float(count)/float(no_of_res)*100
+        if self.ids != []:
+            self._cr.execute("""
+                SELECT resource_request_lines.id, count(resource_request_lines.no_of_resources),resource_request_lines.no_of_resources
+                FROM public.hr_employee_resource_request_rel, public.resource_request, public.resource_request_lines, public.resource_skill_set
+                WHERE hr_employee_resource_request_rel.hr_employee_id = resource_skill_set.resource AND
+                    resource_request.id = resource_request_lines.request_id AND
+                    resource_request.id = hr_employee_resource_request_rel.resource_request_id AND
+                    resource_request_lines.skill_id = resource_skill_set.skill AND
+                    resource_request_lines.level_id = resource_skill_set.level AND
+                    resource_request_lines.id = %s
+                Group By resource_request_lines.id
+              """%self.ids[0])
+            for id, count , no_of_res in self._cr.fetchall():
+                if count == no_of_res:
+                    self.progress = 100.0
+                else:
+                    self.progress = float(count)/float(no_of_res)*100
+        else:
+            self.progress = 0.0
 
     sequence = fields.Integer('Sequence', default=5)
     start_date = fields.Date('Start Date')
