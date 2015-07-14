@@ -25,9 +25,10 @@
     'category' : 'Human Resource',
     'summary': 'Resource Management Customization for Capgemini',
     'description' : """
-Resource Management Customization for Capgemini by Addition IT Solutions
-========================================================
+Resource Management by Addition IT Solutions
+=============================================
     Contact:
+    --------
     * website: www.aitspl.com
     * email: info@aitspl.com    
     
@@ -41,6 +42,7 @@ Features:
         'wizard/wizard_assign_resources_view.xml',
         'addsol_capgemini_resource_data.xml',
         'addsol_capgemini_resource_view.xml',
+        'addsol_capgemini_resource_workflow.xml',
         'security/ir.model.access.csv',
     ],
     'demo': [],

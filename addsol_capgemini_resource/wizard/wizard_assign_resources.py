@@ -77,7 +77,7 @@ class assign_resources(osv.osv_memory):
                                                                       'project': line.request_id.project_id.id,
                                                                       'on_bench': False})
                 
-                request_obj.write(cr, uid, record_id, {'resource_ids': [(4, res_id) for res_id in res_ids],'state':'assign'},context=context)
-
+                request_obj.write(cr, uid, record_id, {'resource_ids': [(4, res_id) for res_id in res_ids]},context=context)
+                request_obj.signal_workflow(cr, uid, [record_id], 'assign_approve')
         return True
 

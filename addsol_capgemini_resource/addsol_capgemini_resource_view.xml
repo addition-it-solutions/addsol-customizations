@@ -141,11 +141,12 @@
             <field name="arch" type="xml">
                 <form string="Resource Requests">
                     <header>
-                        <button name="submit_request" string="Submit" type="object" states="new" class="oe_highlight"/>
-                        <button name="%(action_assign_resources_wizard)d" string="Assign Resources" type="action" states="approve" class="oe_highlight" groups="base.group_hr_user"/>
-                        <button name="approve_request" string="Approve" type="object" states="submit" class="oe_highlight" groups="base.group_hr_user"/>
-                        <button name="reject_request" string="Reject" type="object" states="submit,assign" groups="base.group_hr_user"/>
-                        <button name="close_request" string="Close" type="object" states="approve" groups="base.group_hr_user"/>
+                        <button name="request_submit" string="Submit" states="new" class="oe_highlight"/>
+                        <button name="171" string="Assign Resources" type="action" states="submit" class="oe_highlight" groups="base.group_hr_user"/>
+                        <button name="assign_approve" string="Approve" states="assign" class="oe_highlight" groups="base.group_hr_user"/>
+                        <button name="submit_approve" string="Approve" states="submit" class="oe_highlight" groups="base.group_hr_user"/>
+                        <button name="assign_reject" string="Reject" states="assign" groups="base.group_hr_user"/>
+                        <!--button name="close_request" string="Close" type="object" states="approve" groups="base.group_hr_user"/-->
                         <field name="state" widget="statusbar" statusbar_visible="new,approve" statusbar_colors='{"reject":"red"}' readonly="1"/>
                     </header>
                     <sheet>
@@ -210,8 +211,8 @@
                                 </form>
                             </field>
                         </group>
-                        <group string="Assigned Resources" attrs="{'invisible': [('state','in',['new','submit','approve'])]}">
-                            <field name="resource_ids" nolabel="1" readonly="1"/>
+                        <group string="Assigned Resources">
+                            <field name="resource_ids" nolabel="1"/>
                         </group>
                     </sheet>
                 </form>
