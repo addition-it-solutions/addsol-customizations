@@ -96,17 +96,15 @@ class resource_request_lines(models.Model):
                 resource_request.id = resource_request_lines.request_id AND
                 resource_request.id = hr_employee_resource_request_rel.resource_request_id AND
                 resource_request_lines.skill_id = resource_skill_set.skill AND
-                resource_request_lines.level_id = resource_skill_set.level 
+                resource_request_lines.level_id = resource_skill_set.level AND
+                resource_request_lines.id = %s
             Group By resource_request_lines.id
-          """)
-        #print '---Query result--->',cr.fetchall()
+          """%self.ids[0])
         for id, count , no_of_res in self._cr.fetchall():
             if count == no_of_res:
                 self.progress = 100.0
-                print 'if progress---->',self.progress
             else:
                 self.progress = float(count)/float(no_of_res)*100
-                print 'else progress---->',self.progress
 
     sequence = fields.Integer('Sequence', default=5)
     start_date = fields.Date('Start Date')
