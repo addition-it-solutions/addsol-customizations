@@ -127,9 +127,9 @@ class addsol_resource(models.Model):
     _inherit = 'hr.employee'
     
     skill_set = fields.One2many('resource.skill.set','resource','Skill Set',required=True)
-    billable_start_date= fields.Date('Billable Start Date')
-    billable_end_date= fields.Date('Billable End Date')
-    on_bench= fields.Boolean('On Bench')
+    billable_start_date= fields.Date('Billability Start Date')
+    billable_end_date= fields.Date('Billability End Date')
+    on_bench= fields.Boolean('On Bench', default=True)
     project= fields.Many2one('project.project','Project')
     resume= fields.Binary('Resume')
 
