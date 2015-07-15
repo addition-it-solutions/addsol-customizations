@@ -142,7 +142,7 @@
                 <form string="Resource Requests">
                     <header>
                         <button name="submit_request" string="Submit" type="object" states="new" class="oe_highlight"/>
-                        <button name="%(action_assign_resources_wizard)d" string="Assign Resources" type="action" class="oe_highlight" attrs="{'invisible': [('type','!=','new'),('state','!=','submit')]}"/>
+                        <button name="%(action_assign_resources_wizard)d" type="action" string="Assign Resources" attrs="{'invisible':['|',('type','!=','new'), ('state','!=','submit')]}" class="oe_highlight"/>
                         <button name="assign_approve" string="Approve" states="assign" class="oe_highlight" groups="base.group_hr_user"/>
                         <button name="submit_approve" string="Approve" states="submit" class="oe_highlight" groups="base.group_hr_user"/>
                         <button name="assign_reject" string="Reject" states="assign" groups="base.group_hr_user"/>
