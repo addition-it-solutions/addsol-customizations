@@ -63,8 +63,12 @@ class resource_request(models.Model):
     
     @api.multi
     def submit_request(self):
-        return self.write({'state': 'submit'})
-    
+        if self.resource_ids:
+            return self.signal_workflow('request_assign')
+        else:
+            self.write({'state': 'submit'})
+        return self.signal_workflow('request_submit')
+
     @api.multi
     def assign_resources(self):
         return self.write({'state': 'assign'})

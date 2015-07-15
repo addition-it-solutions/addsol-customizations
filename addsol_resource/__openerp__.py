@@ -27,15 +27,16 @@
     'description' : """
 Resource Management by Addition IT Solutions
 =============================================
-    Contact:
-    --------
+Contact:
+--------
     * website: www.aitspl.com
     * email: info@aitspl.com    
     
 Features:
 ---------
-    
-    
+    * Project Manager can request for resources based on project needs.
+    * Resource Manager can assign resources/approve/reject the request.
+    * Resources can be searched based on their skills and can be selected automatically according to requirement criteria.
 """,
     'depends' : ['hr','project'],
     'data': [

@@ -24,7 +24,7 @@
         <record id="act_submit" model="workflow.activity">
             <field name="wkf_id" ref="wkf_res"/>
             <field name="name">submit</field>
-            <field name="action">write({'state':'submit'})</field>
+            <field name="action">submit_request()</field>
             <field name="kind">function</field>
         </record>
 
@@ -71,7 +71,7 @@
         <record id="submit_assign" model="workflow.transition">
             <field name="act_from" ref="act_submit"/>
             <field name="act_to" ref="act_assign"/>
-            <field name="condition">[('type','=','new')]</field>
+            <field name="condition">type=='new'</field>
             <field name="signal">submit_assign</field>
         </record>
 
@@ -84,7 +84,7 @@
         <record id="submit_approve" model="workflow.transition">
             <field name="act_from" ref="act_submit"/>
             <field name="act_to" ref="act_approve"/>
-            <field name="condition">[('type','in', ['extension','terminate'])]</field>
+            <field name="condition">type=='extension' or type=='terminate'</field>
             <field name="signal">submit_approve</field>
         </record>
 
