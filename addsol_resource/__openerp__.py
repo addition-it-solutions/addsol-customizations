@@ -18,9 +18,37 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-import addsol_capgemini_resource
-import wizard
-
+{
+    'name' : 'Resource Management - Addsol',
+    'version' : '1.0',
+    'author' : 'Addition IT Solutions Pvt. Ltd.',
+    'category' : 'Human Resource',
+    'summary': 'Resource Management Customization',
+    'description' : """
+Resource Management by Addition IT Solutions
+=============================================
+    Contact:
+    --------
+    * website: www.aitspl.com
+    * email: info@aitspl.com    
+    
+Features:
+---------
+    
+    
+""",
+    'depends' : ['hr','project'],
+    'data': [
+        'wizard/wizard_assign_resources_view.xml',
+        'addsol_resource_data.xml',
+        'addsol_resource_view.xml',
+        'addsol_resource_workflow.xml',
+        'security/ir.model.access.csv',
+    ],
+    'demo': [],
+    'test': [],
+    'installable': True,
+    'auto_install': False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
