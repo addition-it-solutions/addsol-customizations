@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <!-- Tags -->
+        <record model="ir.ui.view" id="tag_request_view_form">
+            <field name="name">tag.request.view.form</field>
+            <field name="model">tag.request</field>
+            <field name="arch" type="xml">
+                <form string="Tags">
+                    <group col="4">
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="tag_request_view_tree">
+            <field name="name">tag.request.view.tree</field>
+            <field name="model">tag.request</field>
+            <field name="arch" type="xml">
+                <tree string="Tags">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="open_view_tag_request" model="ir.actions.act_window">
+            <field name="name">Tags</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tag.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="addsol_capgemini_resource_view" model="ir.ui.view">
+            <field name="name">addsol.capgemini.resource.view.form</field>
+            <field name="model">resource.request</field>
+            <field name="inherit_id" ref="addsol_resource.resource_request_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="tag_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Menus -->
+        
+        <menuitem name="Tags" action="open_view_tag_request" id="menu_open_view_tag_request" parent="hr.menu_open_view_reource_management_config" sequence="14"/>
+        
+        
+    </data>
+</openerp>
