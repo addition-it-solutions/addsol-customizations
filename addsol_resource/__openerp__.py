@@ -45,6 +45,7 @@ Features:
         'addsol_resource_view.xml',
         'addsol_resource_workflow.xml',
         'security/ir.model.access.csv',
+        'security/ir_rule.xml',
     ],
     'demo': [],
     'test': [],
