@@ -130,7 +130,7 @@
                 <search string="Search Requests">
                     <field name="name"/>
                     <separator/>                   
-                    <filter domain="[('state','=','submit')]" string="To Approve" name="submit"/>
+                    <filter domain="[('state','in',['submit','assign'])]" string="To Approve" name="submit"/>
                 </search>
             </field>
         </record>
