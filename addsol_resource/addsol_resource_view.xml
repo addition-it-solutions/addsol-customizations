@@ -247,9 +247,9 @@
         <menuitem id="menu_open_resource_request_form_approve" action="open_resource_request_form_approve" parent="menu_resource_request_form" 
                     name="Resource Requests to Approve" groups="base.group_hr_manager"/>
         
-        <menuitem sequence="11" id="hr.menu_open_view_reource_management_config" parent="hr.menu_hr_configuration" name="Resource Management"/>
-        <menuitem name="Skills" action="open_view_resource_skill" id="menu_open_view_resource_skill" parent="hr.menu_open_view_reource_management_config" sequence="12"/>
-        <menuitem name="Levels" action="open_view_resource_level" id="menu_open_view_resource_level" parent="hr.menu_open_view_reource_management_config" sequence="13"/>
+        <menuitem sequence="11" id="menu_open_view_reource_management_config" parent="hr.menu_hr_configuration" name="Resource Management"/>
+        <menuitem name="Skills" action="open_view_resource_skill" id="menu_open_view_resource_skill" parent="menu_open_view_reource_management_config" sequence="12"/>
+        <menuitem name="Levels" action="open_view_resource_level" id="menu_open_view_resource_level" parent="menu_open_view_reource_management_config" sequence="13"/>
         
     </data>
 </openerp>

@@ -39,7 +39,7 @@ Features:
     * Resources can be searched based on their skills and can be selected automatically according to requirement criteria.
     * Project Manager can add tag(Soft Lock or Hard Lock) on request.
 """,
-    'depends' : ['addsol_resource'],
+    'depends' : ['addsol_resource','base_action_rule'],
     'data': [
         'addsol_capgemini_resource_view.xml',
     ],

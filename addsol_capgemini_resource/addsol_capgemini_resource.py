@@ -21,17 +21,24 @@
 
 from openerp import models, fields, api, _
 
-class tag_request(models.Model):
-    _name = 'tag.request'
-    _description = "Request Tag"
-    
-    name = fields.Char("Tag Name", required=True)
-    
-    
+class resource_competancy(models.Model):
+    _name = 'resource.competancy'
+    _description = "Resource Competancy"
+
+    name = fields.Char("Name", required=True)
+
+class resource_skil_set(models.Model):
+    _inherit = 'resource.skill.set'
+    competancy_id = fields.Many2one('resource.competancy','Competancy',required=True)
+
 class resource_request(models.Model):
     _inherit = 'resource.request'
     
-    tag_ids = fields.Many2many('tag.request', string="Tag")
+    tag = fields.Selection([('soft_lock','Soft-Lock'),('hard_lock','Hard-Lock')], string="Tag")
+    
+class resource_request_lines(models.Model):
+    _inherit = 'resource.request.lines'
+    competancy_id = fields.Many2one('resource.competancy','Competancy',required=True)
     
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
