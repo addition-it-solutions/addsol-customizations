@@ -37,6 +37,7 @@ Features:
     * Project Manager can request for resources based on project needs.
     * Resource Manager can assign resources/approve/reject the request.
     * Resources can be searched based on their skills and can be selected automatically according to requirement criteria.
+    * Project Manager can add tag(Soft Lock or Hard Lock) on request.
 """,
     'depends' : ['addsol_resource'],
     'data': [
