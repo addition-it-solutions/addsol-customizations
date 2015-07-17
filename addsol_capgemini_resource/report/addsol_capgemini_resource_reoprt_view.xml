@@ -30,6 +30,8 @@
                     <field name="competancy"/>
                     <field name="skill"/>
                     <field name="level"/>
+                    <field name="tag"/>
+                    <field name="state"/>
                     <field name="no_of_resources"/>
                     <separator/>
                     <group expand="1" string="Group By">
@@ -38,6 +40,8 @@
                         <filter string="Competancy" name="Competancy" context="{'group_by':'competancy'}"/>
                         <filter string="Skill" name="Skill" context="{'group_by':'skill'}"/>
                         <filter string="Level" name="Level" context="{'group_by':'level'}"/>
+                        <filter string="Tag" name="Tag" context="{'group_by':'tag'}"/>
+                        <filter string="State" name="State" context="{'group_by':'state'}"/>
                         <separator/>
                     </group>
                 </search>

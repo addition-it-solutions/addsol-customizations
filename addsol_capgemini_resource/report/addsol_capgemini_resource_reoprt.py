@@ -34,6 +34,14 @@ class demand_analysis_report(osv.osv):
         'skill' : fields.many2one('resource.skill', readonly=True),
         'level' : fields.many2one('resource.level', readonly=True),
         'no_of_resources': fields.integer('No. of Resources', readonly=True),
+        'tag' : fields.selection([('soft_lock','Soft-Lock'),('hard_lock','Hard-Lock')], string="Tag"),
+        'state' : fields.selection([('new','New'),
+                                   ('submit','Waiting for Approval'),
+                                   ('approve','Approved'),
+                                   ('reject','Rejected'),
+                                   ('assign','Assigned'),
+                                   ('close','Closed')], 'State', default='new')
+                
         
     }
 
@@ -44,6 +52,8 @@ class demand_analysis_report(osv.osv):
               SELECT
                     l.id as id,
                     r.manager_id as manager_id,
+                    r.tag,
+                    r.state as state,
                     l.request_id as request_id,
                     l.competancy_id as competancy,
                     l.skill_id as skill,
@@ -54,6 +64,8 @@ class demand_analysis_report(osv.osv):
                 GROUP BY
                     l.id ,
                     r.manager_id,
+                    r.tag,
+                    r.state,
                     l.request_id,
                     l.competancy_id,
                     l.skill_id,
