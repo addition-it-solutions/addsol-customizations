@@ -19,14 +19,14 @@
 #
 ##############################################################################
 {
-    'name' : 'Resource Management - Addsol',
+    'name' : 'Resource Management for Capgemini - Addsol',
     'version' : '1.0',
     'author' : 'Addition IT Solutions Pvt. Ltd.',
     'category' : 'Human Resource',
     'summary': 'Resource Management Customization for Capgemini',
     'description' : """
-Resource Management Customization for Capgemini
-===============================================
+Resource Management for Capgemini
+=================================
 Contact:
 --------
     * website: www.aitspl.com

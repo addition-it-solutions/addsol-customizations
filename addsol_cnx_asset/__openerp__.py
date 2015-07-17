@@ -20,7 +20,7 @@
 ##############################################################################
 
 {
-    'name': 'Assets - Addsol',
+    'name': 'Assets for CNX - Addsol',
     'version': '1.0',
     'author': 'Addition IT Solutions Pvt. Ltd.',
     'category': 'Accounting & Finance',

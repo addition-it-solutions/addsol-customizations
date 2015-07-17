@@ -27,8 +27,8 @@
     'summary': 'Database Backup Weekly',
     'website': 'https://www.aitspl.com',
     'description': """
-Backup Database Script by Addition IT Solutions
-====================================
+Backup Database Script
+======================
     Weekly Backup of all database
     
 Contact:
