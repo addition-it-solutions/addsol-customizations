@@ -18,36 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name' : 'Resource Management - Addsol',
-    'version' : '1.0',
-    'author' : 'Addition IT Solutions Pvt. Ltd.',
-    'category' : 'Human Resource',
-    'summary': 'Resource Management Customization for Capgemini',
-    'description' : """
-Resource Management Customization for Capgemini
-===============================================
-Contact:
---------
-    * website: www.aitspl.com
-    * email: info@aitspl.com    
-    
-Features:
----------
-    * Project Manager can request for resources based on project needs.
-    * Resource Manager can assign resources/approve/reject the request.
-    * Resources can be searched based on their skills and can be selected automatically according to requirement criteria.
-    * Project Manager can add tag(Soft Lock or Hard Lock) on request.
-""",
-    'depends' : ['addsol_resource','base_action_rule'],
-    'data': [
-        'addsol_capgemini_resource_view.xml',
-        'report/addsol_capgemini_resource_reoprt_view.xml'
-    ],
-    'demo': [],
-    'test': [],
-    'installable': True,
-    'auto_install': False,
-}
+
+import addsol_capgemini_resource_reoprt
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

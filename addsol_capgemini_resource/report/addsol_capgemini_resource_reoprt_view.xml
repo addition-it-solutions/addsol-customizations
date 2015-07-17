@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <menuitem
+            id="hr.menu_hr_reporting"
+            name="Human Resources"
+            parent="base.menu_reporting"
+            sequence="40" />
+            
+        <record id="view_demand_analysis_graph" model="ir.ui.view">
+            <field name="name">demand.analysis.report.graph</field>
+            <field name="model">demand.analysis.report</field>
+            <field name="arch" type="xml">
+                <graph string="Demand Analysis" type="pivot">
+                     <field name="request_id" type="row"/>
+                     <field name="manager_id" type="col"/>
+                     <field name="no_of_resources" type="measure"/>
+                 </graph>
+             </field>
+        </record>
+            
+        <record id="view_demand_analysis_search" model="ir.ui.view">
+            <field name="name">demand.analysis.report.search</field>
+            <field name="model">demand.analysis.report</field>
+            <field name="arch" type="xml">
+                <search string="Demand Analysis">
+                    <field name="manager_id"/>
+                    <field name="request_id"/>
+                    <field name="competancy"/>
+                    <field name="skill"/>
+                    <field name="level"/>
+                    <field name="no_of_resources"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Request" name="Request" context="{'group_by':'request_id'}"/>
+                        <filter string="Manager" name="Manager" context="{'group_by':'manager_id'}"/>
+                        <filter string="Competancy" name="Competancy" context="{'group_by':'competancy'}"/>
+                        <filter string="Skill" name="Skill" context="{'group_by':'skill'}"/>
+                        <filter string="Level" name="Level" context="{'group_by':'level'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+       <record id="action_demand_analysis_report_tree" model="ir.actions.act_window">
+            <field name="name">Demand Analysis</field>
+            <field name="res_model">demand.analysis.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field name="search_view_id" ref="view_demand_analysis_search"/>
+            <field name="context">{'group_by_no_leaf':1,'group_by':[]}</field>
+        </record>
+
+        <menuitem action="action_demand_analysis_report_tree" id="menu_demand_analysis_report_tree" parent="hr.menu_hr_reporting" sequence="10"/>
+
+    </data>
+</openerp>
