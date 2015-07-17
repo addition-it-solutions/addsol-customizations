@@ -19,7 +19,29 @@
                  </graph>
              </field>
         </record>
-            
+        
+        <!-- Custom reports (aka filters) -->
+        <record id="filter_demand_analysis_report_competancy" model="ir.filters">
+            <field name="name">By Competancy</field>
+            <field name="model_id">demand.analysis.report</field>
+            <field name="user_id" eval="False"/>
+            <field name="context">{'group_by': ['request_id'], 'col_group_by': ['competancy'], 'measures': ['no_of_resources']}</field>
+        </record>
+        
+        <record id="filter_demand_analysis_report_skill" model="ir.filters">
+            <field name="name">By Skill</field>
+            <field name="model_id">demand.analysis.report</field>
+            <field name="user_id" eval="False"/>
+            <field name="context">{'group_by': ['request_id'], 'col_group_by': ['skill'], 'measures': ['no_of_resources']}</field>
+        </record>
+        
+        <record id="filter_demand_analysis_report_level" model="ir.filters">
+            <field name="name">By Level</field>
+            <field name="model_id">demand.analysis.report</field>
+            <field name="user_id" eval="False"/>
+            <field name="context">{'group_by': ['request_id'], 'col_group_by': ['level'], 'measures': ['no_of_resources']}</field>
+        </record>
+        
         <record id="view_demand_analysis_search" model="ir.ui.view">
             <field name="name">demand.analysis.report.search</field>
             <field name="model">demand.analysis.report</field>
