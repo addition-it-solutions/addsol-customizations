@@ -14,35 +14,29 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 
-                <xpath expr="//form/sheet/group/group" position="after">
-                    <group>
-                        <field name="order_detail"/>
-                        <field name="freight_paid_topay"/>
-                    </group>
-                    <group>
-                        <field name="excisable_commodity_id"/>
-                        <field name="exemption_notification_no"/>
-                    </group>
-                    <group>
-                        <field name="tariff_sub_heading_id"/>
-                        <field name="debit_entry_txt"/>
-                    </group>
-                    
-                    <group string="Warehouse"/>
-                    <group />
-                    <group>
-                        <field name="time_of_issue"/>
-                        <field name="dispatch_through"/>
-                    </group>
-                    <group>
-                        <field name="time_of_removal"/>
-                        <field name="dispatch_to"/>
-                    </group>
-                    <group>
-                        <field name="l_r_details"/>
-                        <field name="vehicle_no"/>
-                    </group>
-                    
+                <xpath expr="//form/sheet/notebook/page[@string='Other Info']" position="after">
+                    <page string="Warehouse Details">
+                        <group col="4">
+                            <group>
+                                <field name="order_detail"/>
+                                <field name="excisable_commodity_id"/>
+                                <field name="exemption_notification_no"/>
+                                <field name="time_of_issue"/>
+                                <field name="dispatch_through"/>
+                                <field name="l_r_details"/>
+                                
+                            </group>
+                            <group>
+                                <field name="freight_paid_topay"/>
+                                <field name="tariff_sub_heading_id"/>
+                                <field name="debit_entry_txt"/>
+                                <field name="time_of_removal"/>
+                                <field name="dispatch_to"/>
+                                <field name="vehicle_no"/>
+                            </group>
+                         
+                        </group>
+                    </page>
                     
                 </xpath>
                 <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='account_id']" position="attributes">

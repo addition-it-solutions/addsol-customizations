@@ -41,6 +41,8 @@ Features:
     'data': [
         'addsol_ramco_invoice_view.xml',
         'addsol_ramco_invoice_workflow.xml',
+        'addsol_ramco_invoice_report.xml',
+        'views/report_ramco_invoice.xml',
     ],
     'demo': [],
     'test': [],

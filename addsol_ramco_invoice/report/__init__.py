@@ -19,8 +19,6 @@
 #
 ##############################################################################
 
-import addsol_ramco_invoice
-import report
-
+import ramco_invoice
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

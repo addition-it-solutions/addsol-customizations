@@ -19,8 +19,29 @@
 #
 ##############################################################################
 
-import addsol_ramco_invoice
-import report
+import time
+from openerp.osv import osv
+from openerp.report import report_sxw
+from openerp.tools import amount_to_text_en
+
+
+class ramco_invoice_print(report_sxw.rml_parse):
+
+    def __init__(self, cr, uid, name, context):
+        super(ramco_invoice_print, self).__init__(cr, uid, name, context=context)
+        self.localcontext.update({
+            'time': time,
+            'convert': self.convert,
+        })
+        
+    def convert(self, amount):
+        return amount_to_text_en.amount_to_text(amount, 'en');
+
+class report_ramco_invoice(osv.AbstractModel):
+    _name = 'report.addsol_ramco_invoice.report_ramco_invoice'
+    _inherit = 'report.abstract_report'
+    _template = 'addsol_ramco_invoice.report_ramco_invoice'
+    _wrapped_report_class = ramco_invoice_print
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
