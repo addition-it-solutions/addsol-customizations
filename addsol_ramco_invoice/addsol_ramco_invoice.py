@@ -26,6 +26,18 @@ class addsol_ramco_invoice(models.Model):
     
 
     nxt_number = fields.Integer(string='Next Number')
+    order_detail = fields.Char("Your Order Details")
+    freight_paid_topay = fields.Char("Freight Paid / To Pay")
+    excisable_commodity_id = fields.Many2one('ramco.excisable.commodity',"Excisable Commodity")
+    tariff_sub_heading_id = fields.Many2one('ramco.tariff.heading',"Tariff Sub Heading No.")
+    exemption_notification_no = fields.Char("Exemption Notification No.")
+    debit_entry_txt = fields.Char("Debit Entry Text")
+    time_of_issue = fields.Char("Time of Issue")
+    time_of_removal = fields.Char("Time of Removal")
+    dispatch_through = fields.Char("Dispatch Through")
+    dispatch_to = fields.Char("Dispatch To")
+    l_r_details = fields.Char("LR Details")
+    vehicle_no = fields.Char("Vehicle No")
 
     @api.multi
     def action_number(self):
@@ -48,5 +60,34 @@ class addsol_ramco_invoice(models.Model):
             sequence_obj = self.env['ir.sequence'].browse(seq_id)
             sequence_obj.write({'number_next': inv_id.nxt_number})
         return super(addsol_ramco_invoice, self).unlink()
+    
+    
+class ramco_account_invoice_line(models.Model):
+    _inherit = 'account.invoice.line'
+    
+    sr_no = fields.Integer("Sr. No")
+    bundles_no_desc = fields.Char("Bundles No & descriprion")
+
+
+class ramco_excisable_commodity(models.Model):
+    _name = 'ramco.excisable.commodity'
+    _description = "Excisable Commodity"
+    
+    name = fields.Char("name", required=True, size=500)
+
+class ramco_tariff_heading(models.Model):
+    _name = 'ramco.tariff.heading'
+    _description = "Tariff Sub Heading No."
+    
+    name = fields.Char("Tariff Sub Heading Number", required=True, size=200)
+    
+class addsol_ramco_res_partner(models.Model):
+    _inherit = 'res.partner'
+    
+    ecc_no = fields.Char("Ecc No")
+    division = fields.Char("Division")
+    range = fields.Char("Range")
+    commissionerate = fields.Char("Commissionerate")
+    supplier_code_no = fields.Char("Supplier Code No.")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
