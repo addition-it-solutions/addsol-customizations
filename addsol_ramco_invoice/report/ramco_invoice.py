@@ -35,7 +35,7 @@ class ramco_invoice_print(report_sxw.rml_parse):
         })
         
     def convert(self, amount):
-        return amount_to_text_en.amount_to_text(amount, 'en');
+        return amount_to_text_en.amount_to_text(amount, 'en', 'Rupees')
 
 class report_ramco_invoice(osv.AbstractModel):
     _name = 'report.addsol_ramco_invoice.report_ramco_invoice'
