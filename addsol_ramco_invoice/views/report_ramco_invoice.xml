@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <template id="report_ramco_invoice_document">
+        <t t-call="report.html_container">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <address t-field="o.partner_id"
+                                t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' /><br/>
+                            <span t-field="o.partner_id.ecc_no"/><br/>
+                            <span t-field="o.partner_id.division"/><br/>
+                            <span t-field="o.partner_id.range"/><br/>
+                            <span t-field="o.partner_id.commissionerate"/><br/>
+                            <span t-field="o.partner_id.supplier_code_no"/><br/>
+                        </div>
+                        <div class="col-xs-4">
+                            <span t-field="o.number"/><br/>
+                            <span t-field="o.date_invoice"/><br/>
+                            <span t-field="o.order_detail"/><br/>
+                            <span t-field="o.number"/><br/>
+                            <span t-field="o.date_invoice"/><br/>
+                            <span t-field="o.freight_paid_topay"/><br/>
+                            <span t-field="o.excisable_commodity_id"/>
+                            <span t-field="o.tariff_sub_heading_id"/><br/>
+                            <span t-field="o.exemption_notification_no"/>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <table >
+                        <thead>
+                            <tr>
+                                <th>Sr.No.</th>
+                                <th>Description Specification of Goods</th>
+                                <th>Chapter Tariff Heading No.</th>
+                                <th>Details of Bundles</th>
+                                <th>Quantity of Goods</th>
+                                <th>Rate(Rs.)</th>
+                                <th>Assessable Value(Rs.)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.invoice_line" t-as="l">
+                                <td><span t-field="l.sr_no"/></td>
+                                <td><span t-field="l.name"/></td>
+                                <td><span t-field="o.tariff_sub_heading_id"/></td>
+                                <td><span t-field="l.bundles_no_desc"/></td>
+                                <td>
+                                    <span t-field="l.quantity"/>
+                                    <span t-field="l.uos_id"  groups="product.group_uom"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.price_unit"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.price_subtotal" 
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5><span t-field="o.debit_entry_txt"/></h5>
+
+                    <h5><span t-esc="convert(o.amount_total)"/></h5>
+
+                    <table class="table table-condensed">
+                        <tbody class="invoice_tbody">
+                            <tr >
+                                <td><span t-field="o.time_of_issue"/></td>
+                                <td><span t-field="o.time_of_removal"/></td>
+                            </tr>
+                            <tr>
+                                <td><span t-field="o.dispatch_through"/></td>
+                            </tr>
+                            <tr>
+                                <td><span t-field="o.dispatch_to"/></td>
+                            </tr>
+                            <tr>
+                                <td><span t-field="o.l_r_details"/></td>
+                                <td><span t-field="o.vehicle_no"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h6><span t-field="o.payment_term"/></h6>
+                    <span t-if="o.partner_id.tin_no">Customer's VAT(TIN) No. :<span t-field="o.partner_id.tin_no"/></span><br/>
+                    <span t-if="o.partner_id.cst_no">Customer's CST(TIN) No. :<span t-field="o.partner_id.cst_no"/></span><br/>
+                    <span t-if="o.partner_id.pan_no">Customer's PAN No.      :<span t-field="o.partner_id.pan_no"/></span>
+                    
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_ramco_invoice">
+        <t t-call="report.html_container">
+            <t t-foreach="doc_ids" t-as="doc_id">
+                <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'addsol_ramco_invoice.report_ramco_invoice_document')"/>
+            </t>
+        </t>
+    </template>
+
+</data> 
+</openerp>
