@@ -6,89 +6,171 @@
             <t t-call="report.external_layout">
                 <div class="page">
                     <div class="row">
-                        <div class="col-xs-8">
+                        <div class="col-xs-7">
+                            <h5><b>Name and Address of Buyer:</b></h5>
                             <address t-field="o.partner_id"
-                                t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' /><br/>
-                            <span t-field="o.partner_id.ecc_no"/><br/>
-                            <span t-field="o.partner_id.division"/><br/>
-                            <span t-field="o.partner_id.range"/><br/>
-                            <span t-field="o.partner_id.commissionerate"/><br/>
-                            <span t-field="o.partner_id.supplier_code_no"/><br/>
+                                t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                            <table>
+                                <tr>
+                                    <td>ECC No.</td> 
+                                    <td>: <span t-field="o.partner_id.ecc_no"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Range</td> 
+                                    <td>: <span t-field="o.partner_id.division"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Division</td> 
+                                    <td>: <span t-field="o.partner_id.range"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Commissionerate</td> 
+                                    <td>: <span t-field="o.partner_id.commissionerate"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Supplier Code No.</td> 
+                                    <td>: <span t-field="o.partner_id.supplier_code_no"/></td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="col-xs-4">
-                            <span t-field="o.number"/><br/>
-                            <span t-field="o.date_invoice"/><br/>
-                            <span t-field="o.order_detail"/><br/>
-                            <span t-field="o.number"/><br/>
-                            <span t-field="o.date_invoice"/><br/>
-                            <span t-field="o.freight_paid_topay"/><br/>
-                            <span t-field="o.excisable_commodity_id"/>
-                            <span t-field="o.tariff_sub_heading_id"/><br/>
-                            <span t-field="o.exemption_notification_no"/>
-                            
+                        <div class="col-xs-5">
+                            <table>
+                                <tr>
+                                    <td>Invoice No.</td><td>: <span t-field="o.number"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Invoice Date</td><td>: <span t-field="o.date_invoice"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Your Order No.&amp; Date</td><td>: <span t-field="o.order_detail"/></td>
+                                </tr>
+                                <tr><td>Challan No.</td><td>: <span t-field="o.number"/></td></tr>
+                                <tr><td>Challan Date</td><td>: <span t-field="o.date_invoice"/></td></tr>
+                                <tr><td>Freight Paid/To Pay</td><td>: <span t-field="o.freight_paid_topay"/></td></tr>
+                                <tr><td>Excisable Commodity</td><td>: <span t-field="o.excisable_commodity_id"/></td></tr>
+                                <tr><td>Tariff Sub Heading No.</td><td>: <span t-field="o.tariff_sub_heading_id"/></td></tr>
+                                <tr><td>Exemption Notfn No.</td><td>: <span t-field="o.exemption_notification_no"/></td></tr>
+                            </table>
                         </div>
                     </div>
-                    
-
-                    <table >
-                        <thead>
-                            <tr>
-                                <th>Sr.No.</th>
-                                <th>Description Specification of Goods</th>
-                                <th>Chapter Tariff Heading No.</th>
-                                <th>Details of Bundles</th>
-                                <th>Quantity of Goods</th>
-                                <th>Rate(Rs.)</th>
-                                <th>Assessable Value(Rs.)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-foreach="o.invoice_line" t-as="l">
-                                <td><span t-field="l.sr_no"/></td>
-                                <td><span t-field="l.name"/></td>
-                                <td><span t-field="o.tariff_sub_heading_id"/></td>
-                                <td><span t-field="l.bundles_no_desc"/></td>
-                                <td>
-                                    <span t-field="l.quantity"/>
-                                    <span t-field="l.uos_id"  groups="product.group_uom"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="l.price_unit"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="l.price_subtotal" 
-                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <h5><span t-field="o.debit_entry_txt"/></h5>
-
-                    <h5><span t-esc="convert(o.amount_total)"/></h5>
-
-                    <table class="table table-condensed">
-                        <tbody class="invoice_tbody">
-                            <tr >
-                                <td><span t-field="o.time_of_issue"/></td>
-                                <td><span t-field="o.time_of_removal"/></td>
-                            </tr>
-                            <tr>
-                                <td><span t-field="o.dispatch_through"/></td>
-                            </tr>
-                            <tr>
-                                <td><span t-field="o.dispatch_to"/></td>
-                            </tr>
-                            <tr>
-                                <td><span t-field="o.l_r_details"/></td>
-                                <td><span t-field="o.vehicle_no"/></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <h6><span t-field="o.payment_term"/></h6>
-                    <span t-if="o.partner_id.tin_no">Customer's VAT(TIN) No. :<span t-field="o.partner_id.tin_no"/></span><br/>
-                    <span t-if="o.partner_id.cst_no">Customer's CST(TIN) No. :<span t-field="o.partner_id.cst_no"/></span><br/>
-                    <span t-if="o.partner_id.pan_no">Customer's PAN No.      :<span t-field="o.partner_id.pan_no"/></span>
-                    
+                    <br/>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table >
+                                <thead>
+                                    <tr>
+                                        <th>Sr.No.</th>
+                                        <th>Description Specification of Goods</th>
+                                        <th>Chapter Tariff Heading No.</th>
+                                        <th>Details of Bundles</th>
+                                        <th>Quantity of Goods</th>
+                                        <th>Rate(Rs.)</th>
+                                        <th>Assessable Value(Rs.)</th>
+                                    </tr>
+                                </thead> 
+                                <tbody>
+                                    <tr t-foreach="o.invoice_line" t-as="l">
+                                        <td><span t-field="l.sr_no"/></td>
+                                        <td><span t-field="l.name"/></td>
+                                        <td><span t-field="o.tariff_sub_heading_id"/></td>
+                                        <td><span t-field="l.bundles_no_desc"/></td>
+                                        <td>
+                                            <span t-field="l.quantity"/>
+                                            <span t-field="l.uos_id"  groups="product.group_uom"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="l.price_unit"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="l.price_subtotal" 
+                                                t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/><br/><br/><br/><br/><br/><br/><br/>
+                    <h6>Debit Entry No.as per role 8 of central Excise Rule2002:- <span t-field="o.debit_entry_txt"/></h6>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <h6>Cenvat Payable(in words) Rs.: <b><span t-esc="convert(o.amount_total)"/></b></h6>
+                        </div>
+                        <div class="col-xs-4">
+                            <h6>Total Assessable Value(Rs) <span t-field="o.amount_untaxed" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <table>
+                                <tbody>
+                                    <tr >
+                                        <td>Time of Issue</td>
+                                        <td>: <span t-field="o.time_of_issue"/></td>
+                                        <td>Time of Removal</td>
+                                        <td>: <span t-field="o.time_of_removal"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dispatch Through</td>
+                                        <td>: <span t-field="o.dispatch_through"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dispatch To</td><td>: <span t-field="o.dispatch_to"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>L.R.No.&amp; Date</td>
+                                        <td>: <span t-field="o.l_r_details"/></td>
+                                        <td>Vehicle Number</td>
+                                        <td>: <span t-field="o.vehicle_no"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-4">
+                            <table>
+                                <tr t-foreach="o.tax_line" t-as="tx">
+                                    <td><span t-field="tx.name"/></td>
+                                    <td><span t-field="tx.amount"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <table>
+                                <tr><td>Terms of Payment</td><td> : <span t-field="o.payment_term"/></td></tr>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <br/>
+                    <br/><br/>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <table>
+                                <tr><td>Rs.</td><td>: <b><span t-esc="convert(o.amount_total)"/></b></td></tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-4">
+                            <table>
+                                <tr><td><b>Grand Total(Rs) </b></td><td><span t-field="o.amount_total"/></td></tr>
+                            </table>
+                        </div>
+                    </div><br/><br/><br/>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <table>
+                                <tr><td>Customer's VAT(TIN) No. </td><td> : <span t-field="o.partner_id.tin_no"/></td></tr>
+                                <tr><td>Customer's CST(TIN) No.</td><td> : <span t-field="o.partner_id.cst_no"/></td></tr>
+                                <tr><td>Customer's PAN No.</td><td> : <span t-field="o.partner_id.pan_no"/></td></tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-4">
+                            <h5><b>For Ramco Extrusion Pvt. Ltd.</b></h5>
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>
