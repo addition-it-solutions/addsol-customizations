@@ -37,7 +37,7 @@ class document_ftp_browse(osv.osv_memory):
             user_pool = self.pool.get('res.users')
             current_user = user_pool.browse(cr, uid, uid, context=context)
             data_pool = self.pool.get('ir.model.data')
-            aid = data_pool._get_id(cr, uid, 'document_ftp', 'action_document_browse')
+            aid = data_pool._get_id(cr, uid, 'addsol_document_ftp', 'action_document_browse')
             aid = data_pool.browse(cr, uid, aid, context=context).res_id
             ftp_url = self.pool.get('ir.actions.act_url').browse(cr, uid, aid, context=context)
             url = ftp_url.url and ftp_url.url.split('ftp://') or []
