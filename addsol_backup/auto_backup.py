@@ -19,7 +19,6 @@
 #
 ##############################################################################
 import time
-from cStringIO import StringIO
 from ftplib import FTP
 import logging
 import subprocess
@@ -62,7 +61,7 @@ class addsol_res_users(osv.osv):
                 foldername += '/'+ url
         db_list = DB.exp_list()
         for db in db_list:
-            backup_db = StringIO(DB.exp_dump(db))
+            backup_db = DB.exp_dump(db)
             values = {
                       'host': str(host),
                       'port': str(port),
@@ -74,6 +73,7 @@ class addsol_res_users(osv.osv):
                       'db_name': db,
             }
             self.get_ftp(cr, uid, values, context)
+            break
         _logger.info("Auto Backup Completed...")
 
     def get_ftp(self, cr, uid, values, context=None):
@@ -94,8 +94,11 @@ class addsol_res_users(osv.osv):
         except:
             _logger.info('Authentication Failed! User: %s'%(user,))
         db = values.get('db_name')
+        fw = open(db +'_'+time.strftime('%Y-%m-%d')+'.dump','w')
+        fw.write(backup_db.decode('base64'))
         ftp.cwd(foldername)
-        ftp.storbinary('STOR ' + db +'_'+time.strftime('%Y-%m-%d')+'.sql', backup_db)
+        ftp.storbinary('STOR ' + db +'_'+time.strftime('%Y-%m-%d')+'.dump', open(db +'_'+time.strftime('%Y-%m-%d')+'.dump','rb'))
         ftp.close()
+        fw.close()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
