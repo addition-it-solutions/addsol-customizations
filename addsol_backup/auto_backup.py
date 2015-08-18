@@ -73,7 +73,6 @@ class addsol_res_users(osv.osv):
                       'db_name': db,
             }
             self.get_ftp(cr, uid, values, context)
-            break
         _logger.info("Auto Backup Completed...")
 
     def get_ftp(self, cr, uid, values, context=None):
