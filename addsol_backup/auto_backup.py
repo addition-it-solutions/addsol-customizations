@@ -23,6 +23,7 @@ from ftplib import FTP
 import logging
 import subprocess
 import os
+import tempfile
 
 from openerp.osv import osv
 import openerp.service.db as DB
@@ -94,14 +95,17 @@ class addsol_res_users(osv.osv):
         except:
             _logger.info('Authentication Failed! User: %s'%(user,))
         db = values.get('db_name')
+        data_file = tempfile.NamedTemporaryFile(delete=False)
+        data_file.write(backup_db.decode('base64'))
+        data_file.close()
         filename = db +'_'+time.strftime('%Y-%m-%d')+'.dump'
-        fw = open(filename,'w')
-        fw.write(backup_db.decode('base64'))
-        fw.close()
+        #fw = open(filename,'w')
+        #fw.write(backup_db.decode('base64'))
+        #fw.close()
         ftp.cwd(foldername)
-        ftp.storbinary('STOR ' + filename, open(filename,'rb'))
+        ftp.storbinary('STOR ' + filename, open(data_file.name,'rb'))
+        #ftp.storbinary('STOR ' + filename, open(filename,'rb'))
         ftp.close()
-        os.unlink(filename)
-        
+        os.unlink(data_file.name)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
