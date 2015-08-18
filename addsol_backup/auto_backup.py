@@ -22,6 +22,7 @@ import time
 from ftplib import FTP
 import logging
 import subprocess
+import os
 
 from openerp.osv import osv
 import openerp.service.db as DB
@@ -73,7 +74,6 @@ class addsol_res_users(osv.osv):
                       'db_name': db,
             }
             self.get_ftp(cr, uid, values, context)
-            break
         _logger.info("Auto Backup Completed...")
 
     def get_ftp(self, cr, uid, values, context=None):
@@ -94,11 +94,14 @@ class addsol_res_users(osv.osv):
         except:
             _logger.info('Authentication Failed! User: %s'%(user,))
         db = values.get('db_name')
-        fw = open(db +'_'+time.strftime('%Y-%m-%d')+'.dump','w')
+        filename = db +'_'+time.strftime('%Y-%m-%d')+'.dump'
+        fw = open(filename,'w')
         fw.write(backup_db.decode('base64'))
-        ftp.cwd(foldername)
-        ftp.storbinary('STOR ' + db +'_'+time.strftime('%Y-%m-%d')+'.dump', open(db +'_'+time.strftime('%Y-%m-%d')+'.dump','rb'))
-        ftp.close()
         fw.close()
+        ftp.cwd(foldername)
+        ftp.storbinary('STOR ' + filename, open(filename,'rb'))
+        ftp.close()
+        os.unlink(filename)
+        
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
