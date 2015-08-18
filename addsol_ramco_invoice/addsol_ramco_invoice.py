@@ -41,6 +41,7 @@ class addsol_ramco_invoice(models.Model):
 
     @api.multi
     def action_number(self):
+        # This is code generate invoice number from ir.sequence object  
         previous_id = self.search([('id','not in',self.ids),('state', '=', 'draft')],limit=1,order='id DESC')
         sequence_obj = self.env['ir.sequence'].browse(self.journal_id.sequence_id.id)
         if previous_id:
@@ -55,6 +56,7 @@ class addsol_ramco_invoice(models.Model):
     
     @api.multi
     def unlink(self):
+        # This is code delete the invoice & update next_number of ir.sequence object
         for inv_id in self.browse(self.ids):
             seq_id = inv_id.journal_id.sequence_id.id
             sequence_obj = self.env['ir.sequence'].browse(seq_id)
@@ -89,5 +91,26 @@ class addsol_ramco_res_partner(models.Model):
     range = fields.Char("Range")
     commissionerate = fields.Char("Commissionerate")
     supplier_code_no = fields.Char("Supplier Code No.")
+    
+class addsol_invoice_tax(models.Model):
+    _inherit = 'account.invoice.tax'
+    
+    @api.v8
+    def compute(self,invoice):
+        # This function is calculate tax & update tax_categ field of account.invoice.tax object which is used to print total of un-taxed amount & base_amount of VAT
+        res = super(addsol_invoice_tax, self).compute(invoice)
+        dict=[]
+        dict = res.values()
+        for val in res.values():
+            tax_name = val.get('name')
+            tax_id = self.env['account.tax'].search([('name', '=', tax_name)])
+            for tax_ids in tax_id:
+                tax = self.env['account.tax'].browse(tax_ids.id)
+                category = tax.tax_categ
+                frm = tax.is_form
+                val['tax_categ'] = category
+                val['is_form'] =  frm
+        return res
+        
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
