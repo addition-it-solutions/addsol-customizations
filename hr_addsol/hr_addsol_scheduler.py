@@ -115,7 +115,7 @@ class addsol_hr_holidays(osv.osv):
         holiday_status_ids = leave_status_obj.search(cr, uid, [], context=context)
         for holiday_status in leave_status_obj.browse(cr, uid, holiday_status_ids, context=context):
             for emp in employee_obj.browse(cr, uid, employee_ids, context=context):
-                if holiday_status.company_id.id == (emp.user_id.company_id and emp.user_id.company_id.id):
+                if emp.user_id.company_id and emp.user_id.company_id.id == holiday_status.company_id.id:
                     allocation_range = emp.user_id.company_id and emp.user_id.company_id.allocation_range or 'month'
                     allocate_days = holiday_status.days_to_allocate
                     if allocate_days > 0:
