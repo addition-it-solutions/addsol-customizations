@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Product -->
+        <record id="view_addsol_product_template" model="ir.ui.view">
+            <field name="name">view.addsol.product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Modification">
+                        <group>
+                            <field name="q_a_required"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="name_1"/>
+                                <field name="name_2"/>
+                            </group>
+                            <group>
+                                <field name="name_3"/>
+                                <field name="name_4"/>
+                            </group>
+                        </group>
+                        
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        
+        <!-- To display the product by searching with Synonyms -->
+        <record id="view_addsol_product_search" model="ir.ui.view">
+            <field name="name">view.addsol.product.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                     <field name="name" string="Synonyms" filter_domain="['|','|','|','|',('name','ilike',self),('name_1','ilike',self),('name_2','ilike',self),('name_3','ilike',self),('name_4','ilike',self)]"/>
+                </xpath>
+            </field>
+        </record>
+        
+        
+        <!--Displays form in Tree view -->
+        
+        <record id="addsol_product_template_tree" model="ir.ui.view">
+            <field name="name">addsol.product.template.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='uom_id']" position="after">
+                    <field name="name_1" invisible="1"/>
+                    <field name="name_2" invisible="1"/>
+                    <field name="name_3" invisible="1"/>
+                    <field name="name_4" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
