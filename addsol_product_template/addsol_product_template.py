@@ -14,13 +14,30 @@ class addsol_product_product(osv.osv):
     
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         #name search method to search the product by using synonyms
-        args.append(('|'))
-        args.append(('|'))
-        args.append(('|'))
-        args.append(('|'))
-        args.append(('name','ilike',name))
-        args.append(('name_1','ilike',name))
-        args.append(('name_2','ilike',name))
-        args.append(('name_3','ilike',name))
-        args.append(('name_4','ilike',name))
-        return super(addsol_product_product,self).name_search(cr, user, '', args=args,operator='ilike', context=context, limit=limit)
+        filter_domain = ['|','|','|','|',('name','ilike',name),('name_1','ilike',name),('name_2','ilike',name),('name_3','ilike',name),('name_4','ilike',name)]
+        for domain in filter_domain:
+            args.append(domain)
+        ids = self.search(cr, user, filter_domain, context=context)
+        return self.name_get(cr, user, ids, context)
+
+    def name_get(self, cr, user, ids, context=None):
+        result = super(addsol_product_product, self).name_get(cr, user, ids, context)
+        result2 = []
+        for res in result:
+            namelist = []
+            record = self.browse(cr, user, res[0], context)
+            if record.name_1:
+                namelist.append(record.name_1)
+            if record.name_2:
+                namelist.append(record.name_2)
+            if record.name_3:
+                namelist.append(record.name_3)
+            if record.name_4:
+                namelist.append(record.name_4)
+            if namelist:
+                new_name = " / ".join(namelist)
+                temp = res[1] + " (" + new_name + ")"
+                result2.append((res[0],temp))
+        if result2:
+            return result2
+        return result
