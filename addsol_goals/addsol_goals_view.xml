@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+ 
+        <record model="ir.ui.view" id="addsol_goals_view_form">
+            <field name="name">addsol.goals.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Target &amp; Goals">
+                        <group>
+                            <field name="salesperson"/>
+                        </group>
+                        <group>
+                            <field name="start_date" class="oe_inline"/> - <field name="end_date" class="oe_inline"/>
+                        </group>
+                        <group>
+                            <field name="goal_ids" nolabel="1">
+                                <tree string="Product" editable="bottom">
+                                    <field name="goal_product_id" invisible="1"/>
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record id="open_view_addsol_goals" model="ir.actions.act_window">
+            <field name="name">Sales Persons</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('salesperson', '=', True)]</field>
+        </record>
+        
+        <menuitem id="menu_open_view_addsol_goals" name="Sales Persons" action="open_view_addsol_goals" parent="base.menu_sales" groups="base.group_sale_manager" sequence="7" />
+
+    </data>
+</openerp>
+
