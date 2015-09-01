@@ -19,26 +19,32 @@
 #
 ##############################################################################
 {
-    'name' : 'Goal - Addsol',
-    'version' : '1.0',
-    'author' : 'Addition IT Solutions Pvt. Ltd.',
-    'category' : 'Sales',
+    'name' : 'addsol_goals',
     'summary': 'Goal Customization',
     'description' : """
-Goal Customization by Addition IT Solutions
-==============================================
+Addition IT Solutions Pvt. Ltd.
+=================================
     Contact:
     * website: www.aitspl.com
-    * email: info@aitspl.com    
+    * email: info@aitspl.com
     
 Features:
 ---------
     * Define target for sales persons
      
 """,
+
+    'author' : 'Addition IT Solutions Pvt. Ltd.',
+    
+    'category' : 'Addsol mods',
+    'version' : '1.0',
+    
     'depends' : ['sale'],
+    
     'data': [
-        'addsol_goals_view.xml',
+        #'security/ir.model.access.csv',
+        'templates.xml',
+        'views/addsol_goals_view.xml',
     ],
     'demo': [],
     'test': [],
