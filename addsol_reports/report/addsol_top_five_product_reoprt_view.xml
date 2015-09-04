@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <menuitem
+            id="menu_sales_marketing"
+            name="Sales and Marketing"
+            parent="base.menu_reporting"
+            sequence="0" />
+            
+        <record id="view_top_five_product_graph" model="ir.ui.view">
+            <field name="name">top.five.product.report.graph</field>
+            <field name="model">top.five.product.report</field>
+            <field name="arch" type="xml">
+                <graph string="Productwise Sale" type="pivot">
+                     <field name="name_template" type="row"/>
+                     <field name="amount_total" type="measure"/>
+                 </graph>
+             </field>
+        </record>
+        
+        <record id="view_top_five_product_search" model="ir.ui.view">
+            <field name="name">top.five.product.report.search</field>
+            <field name="model">top.five.product.report</field>
+            <field name="arch" type="xml">
+                <search string="Productwise Sale">
+                    <field name="product_id"/>
+                    <field name="name_template"/>
+                    <field name="amount_total"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="ProductName" name="ProductName" context="{'group_by':'name_template'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+       <record id="action_top_five_product_report_tree" model="ir.actions.act_window">
+            <field name="name">Productwise Sale</field>
+            <field name="res_model">top.five.product.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field name="search_view_id" ref="view_top_five_product_search"/>
+            <field name="context">{'group_by_no_leaf':1,'group_by':[]}</field>
+        </record>
+
+        <menuitem action="action_top_five_product_report_tree" id="menu_top_five_product_report_tree" parent="menu_sales_marketing" sequence="1"/>
+
+    </data>
+</openerp>
