@@ -39,12 +39,13 @@ Features:
     'category' : 'Addsol mods',
     'version' : '1.0',
     
-    'depends' : ['account'],
+    'depends' : ['account','crm'],
     
     'data': [
         #'security/ir.model.access.csv',
         #'templates.xml',
         'report/addsol_top_five_product_reoprt_view.xml',
+        'report/addsol_outstanding_amount_report_view.xml',
     ],
     'demo': [],
     'test': [],
