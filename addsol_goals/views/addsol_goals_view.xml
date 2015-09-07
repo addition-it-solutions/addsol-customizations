@@ -1,46 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        
- 
-        <record model="ir.ui.view" id="addsol_goals_view_form">
-            <field name="name">addsol.goals.view.form</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form"/>
+
+        <menuitem id="menu_open_view_addsol_target" name="Sales Persons" parent="base.menu_sales" groups="base.group_sale_manager" sequence="7" />
+
+        <record model="ir.ui.view" id="addsol_date_periods_view_tree">
+            <field name="name">addsol.date.periods.view.tree</field>
+            <field name="model">addsol.date.periods</field>
             <field name="arch" type="xml">
-                <notebook position="inside">
-                    <page string="Target &amp; Goals">
+                <tree string="Periods" >
+                    <field name="name"/>
+                    <field name="st_date"/>
+                    <field name="ed_date"/>
+                </tree>
+            </field>
+        </record> 
+
+
+        <record model="ir.ui.view" id="addsol_date_periods_view_form">
+            <field name="name">addsol.date.periods.view.form</field>
+            <field name="model">addsol.date.periods</field>
+            <field name="arch" type="xml">
+                <form string="Periods">
+                    <sheet>
                         <group>
-                            <field name="salesperson"/>
+                            <field name="name"/>
                         </group>
                         <group>
-                            <field name="start_date" class="oe_inline"/> - <field name="end_date" class="oe_inline"/>
+                            <field name="st_date" class="oe_inline"/> - <field name="ed_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_addsol_date_periods" model="ir.actions.act_window">
+            <field name="name">Periods</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">addsol.date.periods</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_open_view_addsol_periods" name="Periods" action="open_view_addsol_date_periods" parent="menu_open_view_addsol_target" groups="base.group_sale_manager" sequence="2" />
+        
+        <record model="ir.ui.view" id="addsol_goals_view_tree">
+            <field name="name">addsol.goals.view.tree</field>
+            <field name="model">addsol.goals</field>
+            <field name="arch" type="xml">
+                <tree string="Target" >
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="period_id"/>
+                </tree>
+            </field>
+        </record> 
+
+        <record model="ir.ui.view" id="view_addsol_goals_form">
+            <field name="name">view.addsol.goals.form</field>
+            <field name="model">addsol.goals</field>
+            <field name="arch" type="xml">
+                <form string="Target">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
                         </group>
                         <group>
-                            <field name="goal_ids" nolabel="1">
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="period_id" />
+                        </group>
+                        <group>
+                            <field name="product_line_ids" nolabel="1">
                                 <tree string="Product" editable="bottom">
-                                    <field name="goal_partner_id" invisible="1"/>
+                                    <field name="target_id" invisible="1"/>
                                     <field name="product_id"/>
                                     <field name="quantity"/>
                                 </tree>
                             </field>
                         </group>
-                    </page>
-                </notebook>
+                    </sheet>
+                </form>
             </field>
         </record>
 
         <record id="open_view_addsol_goals" model="ir.actions.act_window">
-            <field name="name">Sales Persons</field>
+            <field name="name">Set Target</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">res.partner</field>
+            <field name="res_model">addsol.goals</field>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,tree,form</field>
-            <field name="domain">[('salesperson', '=', True)]</field>
+            <field name="view_mode">tree,form</field>
         </record>
-        
-        <menuitem id="menu_open_view_addsol_goals" name="Sales Persons" action="open_view_addsol_goals" parent="base.menu_sales" groups="base.group_sale_manager" sequence="7" />
+
+        <menuitem id="menu_open_view_addsol_goals" name="Set Target" action="open_view_addsol_goals" parent="menu_open_view_addsol_target" groups="base.group_sale_manager" sequence="1" />
 
     </data>
 </openerp>
-

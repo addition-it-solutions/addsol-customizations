@@ -42,8 +42,8 @@ Features:
     'depends' : ['sale'],
     
     'data': [
-        #'security/ir.model.access.csv',
-        'templates.xml',
+        'security/ir.model.access.csv',
+        #'templates.xml',
         'views/addsol_goals_view.xml',
     ],
     'demo': [],
