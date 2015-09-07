@@ -55,7 +55,7 @@
             <field name="context">{'group_by_no_leaf':1,'group_by':[]}</field>
         </record>
 
-        <menuitem action="action_addsol_outstanding_amount_report_tree" id="menu_addsol_outstanding_amount_report_tree" parent="menu_sales_marketing" sequence="2"/>
+        <menuitem action="action_addsol_outstanding_amount_report_tree" id="menu_addsol_outstanding_amount_report_tree" parent="menu_sales_marketing" sequence="2" groups="base.group_sale_manager"/>
 
     </data>
 </openerp>

@@ -24,30 +24,29 @@ from openerp import models, fields, api, _
 from openerp import tools
 
 
-class top_five_product_report(models.Model):
-    _name = "top.five.product.report"
+class top_product_reoprt(models.Model):
+    _name = "top.product.report"
     _description = ""
     _auto = False
     
     name_template = fields.Char("Product Name")
     amount_total = fields.Float("Invoice Total")
-    product_id = fields.Many2one('product.product', "Product Id")
+    
 
     def init(self, cr):
-        tools.sql.drop_view_if_exists(cr, 'top_five_product_report')
+        tools.sql.drop_view_if_exists(cr, 'top_product_reoprt')
         cr.execute("""
-            CREATE view top_five_product_report as
+            CREATE view top_product_reoprt as
               SELECT 
                     MIN(inv.id) as id,
-                    SUM(inv.amount_total) as amount_total, 
-                    invl.product_id as product_id,
-                    product.name_template as name_template
-              FROM 
-                   account_invoice inv
-              JOIN account_invoice_line invl ON invl.invoice_id = inv.id
-              JOIN product_product product ON product.id = invl.product_id
+                    sum(invl.price_subtotal) as amount_total, 
+                    product.name as name_template
+              FROM account_invoice_line invl   
+                  JOIN account_invoice inv ON invl.invoice_id = inv.id
+                  JOIN product_template product ON product.id = invl.product_id
+              WHERE inv.type ='out_invoice'
               GROUP BY 
-                  product.name_template,invl.product_id
+                  product.name
               ORDER BY 
                   amount_total DESC
         """)
