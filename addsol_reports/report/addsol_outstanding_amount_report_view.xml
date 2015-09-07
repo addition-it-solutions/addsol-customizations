@@ -17,6 +17,7 @@
                     <field name="amount_total" type="measure"/>
                     <field name="amount" type="measure"/>
                     <field name="residual" type="measure"/>
+                    <field name="days" type="measure"/>
                 </graph>
              </field>
         </record>

@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_top_product_report,top_product_report,model_top_product_report,base.group_sale_manager,1,0,0,0
 access_addsol_outstanding_amount_report,addsol_outstanding_amount_report,model_addsol_outstanding_amount_report,base.group_sale_manager,1,0,0,0
-
+access_addsol_party_ledger_report,addsol_party_ledger_report,model_party_ledger_report,base.group_sale_manager,1,0,0,0

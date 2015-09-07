@@ -46,6 +46,7 @@ Features:
         #'templates.xml',
         'report/addsol_top_product_report_view.xml',
         'report/addsol_outstanding_amount_report_view.xml',
+        'report/addsol_party_ledger_report_view.xml',
     ],
     'demo': [],
     'test': [],

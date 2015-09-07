@@ -46,16 +46,16 @@ class addsol_outstanding_amount_report(models.Model):
         cr.execute("""
             CREATE view addsol_outstanding_amount_report as
                 SELECT 
-                    MIN(inv.id) as id,
-                    inv.number as number, 
-                    inv.date_invoice as date_invoice, 
-                    inv.date_due as date_due, 
-                    inv.residual as residual ,
-                    part.name as name, 
+                    inv.id as id,
+                    inv.number as number,
+                    inv.date_invoice as date_invoice,
+                    inv.date_due as date_due,
+                    inv.residual as residual,
+                    part.name as name,
                     (current_date - inv.date_invoice) as days,
                     acnt.amount as amount,
-                    usr.login as login, 
-                    COALESCE(st.name, 'Individual') as st_name, 
+                    usr.login as login,
+                    COALESCE(st.name, 'Individual') as st_name,
                     inv.amount_total as amount_total
                 FROM account_invoice inv
                     JOIN res_partner part ON part.id = inv.partner_id
@@ -64,6 +64,6 @@ class addsol_outstanding_amount_report(models.Model):
                     LEFT JOIN sale_member_rel smr ON smr.member_id = usr.id
                     LEFT JOIN crm_case_section st ON st.id = smr.section_id 
                 GROUP BY
-                    inv.number,inv.date_invoice, inv.date_due, inv.residual,part.name,acnt.amount,usr.login,st.name,inv.amount_total
-                ORDER BY st_name, part.name,inv.date_invoice
+                    inv.id, inv.number, inv.date_invoice, inv.date_due, inv.residual, part.name,acnt.amount, usr.login, st.name, inv.amount_total
+                ORDER BY st_name, part.name, inv.date_invoice
         """)

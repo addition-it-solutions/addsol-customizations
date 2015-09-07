@@ -21,6 +21,7 @@
 
 import addsol_top_product_reoprt
 import addsol_outstanding_amount_report
+import addsol_party_ledger_report
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

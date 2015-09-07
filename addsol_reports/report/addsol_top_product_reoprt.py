@@ -38,7 +38,7 @@ class top_product_reoprt(models.Model):
         cr.execute("""
             CREATE view top_product_reoprt as
               SELECT 
-                    MIN(inv.id) as id,
+                    product.id as id,
                     sum(invl.price_subtotal) as amount_total, 
                     product.name as name_template
               FROM account_invoice_line invl   
@@ -46,7 +46,7 @@ class top_product_reoprt(models.Model):
                   JOIN product_template product ON product.id = invl.product_id
               WHERE inv.type ='out_invoice'
               GROUP BY 
-                  product.name
+                  product.name,product.id
               ORDER BY 
                   amount_total DESC
         """)
