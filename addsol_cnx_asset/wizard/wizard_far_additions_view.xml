@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="asset_additions_report_view" model="ir.ui.view">
+            <field name="name">FAR Additions Report</field>
+            <field name="model">asset.far.additions.report</field>
+            <field name="arch" type="xml">
+            <form string="FAR Additions">
+                <separator string="FAR Additions"/>
+                <group>
+                    <field name="fiscalyear_id" on_change="onchange_fiscalyear(fiscalyear_id)"/>
+                </group>
+                <group string="Periods">
+                   <field name="period_from"/>
+                   <field name="period_to"/>
+                </group>
+                <footer>
+                    <button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                    or 
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="action_asset_far_additions_menu" model="ir.actions.act_window">
+            <field name="name">Additions Report</field>
+            <field name="res_model">asset.far.additions.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="asset_additions_report_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_asset_reporting" parent="account.menu_finance_reports" name="FAR Reports" groups="account.group_account_user,account.group_account_manager"/>
+        <menuitem id="menu_far_addition_report" parent="menu_asset_reporting" action="action_asset_far_additions_menu"/>
+
+    </data>
+</openerp>

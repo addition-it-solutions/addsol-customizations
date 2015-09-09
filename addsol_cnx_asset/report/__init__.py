@@ -19,8 +19,6 @@
 #
 ##############################################################################
 
-import addsol_cnx_asset
-import report
-import wizard
+import report_far_additions
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
