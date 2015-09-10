@@ -18,7 +18,21 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import report_far_common
-import report_far_additions
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+class report_far_common(object):
+
+    def _get_fiscalyear(self, data):
+        if data.get('form', False) and data['form'].get('fiscalyear_id', False):
+            return self.pool.get('account.fiscalyear').browse(self.cr, self.uid, data['form']['fiscalyear_id']).name
+        return ''
+    
+    def get_start_period(self, data):
+        if data.get('form', False) and data['form'].get('period_from', False):
+            return self.pool.get('account.period').browse(self.cr,self.uid,data['form']['period_from']).name
+        return ''
+
+    def get_end_period(self, data):
+        if data.get('form', False) and data['form'].get('period_to', False):
+            return self.pool.get('account.period').browse(self.cr, self.uid, data['form']['period_to']).name
+        return ''
+    

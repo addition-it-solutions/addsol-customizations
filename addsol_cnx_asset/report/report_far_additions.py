@@ -21,8 +21,9 @@
 import time
 from openerp.osv import osv
 from openerp.report import report_sxw
+from report_far_common import report_far_common
 
-class report_far_additions(report_sxw.rml_parse):
+class report_far_additions(report_sxw.rml_parse, report_far_common):
     _name = 'report.far.additions'
     
     def set_context(self, objects, data, ids, report_type=None):
@@ -50,22 +51,7 @@ class report_far_additions(report_sxw.rml_parse):
             'sum_assets': self._sum_assets,
         })
         self.context = context
-        
-    def _get_fiscalyear(self, data):
-        if data.get('form', False) and data['form'].get('fiscalyear_id', False):
-            return self.pool.get('account.fiscalyear').browse(self.cr, self.uid, data['form']['fiscalyear_id']).name
-        return ''
-    
-    def get_start_period(self, data):
-        if data.get('form', False) and data['form'].get('period_from', False):
-            return self.pool.get('account.period').browse(self.cr,self.uid,data['form']['period_from']).name
-        return ''
 
-    def get_end_period(self, data):
-        if data.get('form', False) and data['form'].get('period_to', False):
-            return self.pool.get('account.period').browse(self.cr, self.uid, data['form']['period_to']).name
-        return ''
-    
     def _get_assets(self, category):
         asset_obj = self.pool.get('account.asset.asset')
         period_obj = self.pool.get('account.period')
@@ -88,7 +74,7 @@ class report_far_additions(report_sxw.rml_parse):
         for asset in asset_obj.browse(cr, uid, asset_ids):
             res.append(asset)
         return res
-    
+        
     def _sum_assets(self, category):
         addition = 0.0
         assets = self._get_assets(category)
