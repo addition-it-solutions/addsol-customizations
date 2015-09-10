@@ -18,79 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import time
-from lxml import etree
+from openerp.osv import osv
 
-from openerp.osv import fields, osv
-from openerp.osv.orm import setup_modifiers
-from openerp.tools.translate import _
-
-class asset_far_additionss_report(osv.osv_memory):
+class asset_far_additions_report(osv.osv_memory):
+    _inherit = "asset.far.report.common"
     _name = "asset.far.additions.report"
     _description = "Asset FAR Additions Report"
-    
-    _columns = {
-        'fiscalyear_id': fields.many2one('account.fiscalyear', 'Fiscal Year'),
-        'period_from': fields.many2one('account.period', 'Start Period'),
-        'period_to': fields.many2one('account.period', 'End Period'),
-    }
-    
-    def _get_fiscalyear(self, cr, uid, context=None):
-        if context is None:
-            context = {}
-        now = time.strftime('%Y-%m-%d')
-        company_id = self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.id
-        domain = [('company_id', '=', company_id), ('date_start', '<', now), ('date_stop', '>', now)]
-        fiscalyears = self.pool.get('account.fiscalyear').search(cr, uid, domain, limit=1)
-        return fiscalyears and fiscalyears[0] or False
-    
-    def onchange_fiscalyear(self, cr, uid, ids, fiscalyear_id, context=None):
-        res = {'value': {}}
-        start_period = end_period = False
-        if fiscalyear_id:
-            cr.execute('''
-                SELECT * FROM (SELECT p.id
-                               FROM account_period p
-                               LEFT JOIN account_fiscalyear f ON (p.fiscalyear_id = f.id)
-                               WHERE f.id = %s
-                               AND p.special = false
-                               ORDER BY p.date_start ASC, p.special ASC
-                               LIMIT 1) AS period_start
-                UNION ALL
-                SELECT * FROM (SELECT p.id
-                               FROM account_period p
-                               LEFT JOIN account_fiscalyear f ON (p.fiscalyear_id = f.id)
-                               WHERE f.id = %s
-                               AND p.date_start < NOW()
-                               AND p.special = false
-                               ORDER BY p.date_stop DESC
-                               LIMIT 1) AS period_stop''', (fiscalyear_id, fiscalyear_id))
-            periods =  [i[0] for i in cr.fetchall()]
-            if periods and len(periods) > 1:
-                start_period = periods[0]
-                end_period = periods[1]
-        res['value'] = {'period_from': start_period, 'period_to': end_period}
-        return res
-    
-    _defaults = {
-        'fiscalyear_id': _get_fiscalyear,
-    }
     
     def _print_report(self, cr, uid, ids, data, context=None):
         if context is None:
             context = {}
         return self.pool['report'].get_action(cr, uid, [], 'addsol_cnx_asset.report_faradditions', data=data, context=context)
     
-    def check_report(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        data = {}
-        data['ids'] = context.get('active_ids', [])
-        data['model'] = context.get('active_model', 'ir.ui.menu')
-        data['form'] = self.read(cr, uid, ids, ['fiscalyear_id','period_from','period_to'], context=context)[0]
-        for field in ['fiscalyear_id', 'period_from', 'period_to']:
-            if isinstance(data['form'][field], tuple):
-                data['form'][field] = data['form'][field][0]
-        return self._print_report(cr, uid, ids, data, context=context)
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

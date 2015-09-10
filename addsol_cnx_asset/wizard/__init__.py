@@ -18,6 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import wizard_far_report_common
 import wizard_far_additions
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
