@@ -20,5 +20,6 @@
 ##############################################################################
 import wizard_far_report_common
 import wizard_far_additions
+import wizard_far_disposals
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -13,5 +13,16 @@
             auto="False"
         />
 
+        <report 
+            id="action_report_far_disposals" 
+            model="report.far.disposals" 
+            string="FAR Disposals"
+            report_type="qweb-pdf"
+            name="addsol_cnx_asset.report_fardisposals" 
+            file="addsol_cnx_asset.report_fardisposals"
+            menu="False"
+            auto="False"
+        />
+
     </data>
 </openerp>

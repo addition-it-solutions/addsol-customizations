@@ -18,39 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp.osv import osv
 
-{
-    'name': 'Assets for CNX - Addsol',
-    'version': '1.0',
-    'author': 'Addition IT Solutions Pvt. Ltd.',
-    'category': 'Accounting & Finance',
-    'summary': 'Assets Customization for CNX',
-    'website': 'https://www.aitspl.com',
-    'description': """
-Account Assets by Addition IT Solutions
-=======================================
-Contact:
-    * website: www.aitspl.com
-    * email: info@aitspl.com    
-Features:
----------
-    * Depreciation calculation is divided into months according to fiscal year
-    * Monthly journal entries are made for each asset
-
-""",
-    'images': [],
-    'depends': ['account_asset'],
-    'data': ['addsol_cnx_asset_data.xml',
-             'addsol_cnx_asset_report.xml',
-             'wizard/wizard_far_report_common_view.xml',
-             'wizard/wizard_far_additions_view.xml',
-             'views/report_faradditions.xml',
-             'wizard/wizard_far_disposals_view.xml',
-             'views/report_fardisposals.xml',
-             ],
-    'demo': [],
-    'test': [],
-    'installable': True,
-    'auto_install': False,
-}
+class asset_far_disposals_report(osv.osv_memory):
+    _inherit = "asset.far.report.common"
+    _name = "asset.far.disposals.report"
+    _description = "Asset FAR Disposals Report"
+    
+    def _print_report(self, cr, uid, ids, data, context=None):
+        if context is None:
+            context = {}
+        return self.pool['report'].get_action(cr, uid, [], 'addsol_cnx_asset.report_fardisposals', data=data, context=context)
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

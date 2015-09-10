@@ -2,7 +2,7 @@
 <openerp>
 <data>
 
-<template id="report_faradditions">
+<template id="report_fardisposals">
     <t t-call="report.html_container">
         <t t-set="data_report_margin_top" t-value="12"/>
         <t t-set="data_report_header_spacing" t-value="10"/>
@@ -11,7 +11,7 @@
         <t t-foreach="docs" t-as="o">
             <t t-call="report.internal_layout">
                 <div class="page">
-                    <h2><span t-esc="res_company.name"/>: FAR Additions</h2>
+                    <h2><span t-esc="res_company.name"/>: FAR Disposals</h2>
 
                     <div class="row mt32">
                         <div class="col-xs-3">
@@ -37,28 +37,36 @@
                                 <th>Asset Category</th>
                                 <th>Purchase Date</th>
                                 <th>Gross Value</th>
+                                <th>Amount Depreciated</th>
                                 <th>Currency</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style="font-weight: bold;">
-                                <td colspan="4">
-                                </td>
-                                <td class="text-right">
-                                    Total Gross Value: <span t-esc="formatLang(sum_assets(o), digits=get_digits(dp='Account'), currency_obj=res_company.currency_id)"/>
-                                </td>
-                            </tr>
                             <t t-foreach="get_assets(o,data)" t-as="asset">
                                 <tr>
                                     <td><span t-esc="asset['name']"/></td>
                                     <td><span t-esc="asset['category_id']['name']"/></td>
                                     <td><span t-esc="formatLang(asset['purchase_date'], date=True)"/></td>
-                                    <td><span t-esc="asset['purchase_value']"/></td>
+                                    <td class="text-right"><span t-esc="formatLang(asset['purchase_value'],digits=get_digits(dp='Account'))"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="formatLang(get_depreciated_amount(asset), digits=get_digits(dp='Account'))"/>
+                                    </td>
                                     <td><span t-esc="asset['currency_id']['name']"/></td>
                                     <td><span t-esc="asset['state']"/></td>
                                 </tr>
                             </t>
+                            <tr style="font-weight: bold;">
+                                <td colspan="2">
+                                </td>
+                                <td> Total: </td>
+                                <td class="text-right">
+                                    <span t-esc="formatLang(sum_assets(o), digits=get_digits(dp='Account'))"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="formatLang(total_depreciated_amount(o,data), digits=get_digits(dp='Account'))"/>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
