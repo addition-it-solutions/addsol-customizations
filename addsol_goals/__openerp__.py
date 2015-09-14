@@ -19,8 +19,8 @@
 #
 ##############################################################################
 {
-    'name' : 'addsol_goals',
-    'summary': 'Goal Customization',
+    'name' : 'Addsol Goals',
+    'summary': 'Product Sales Goals and Goal Customization',
     'description' : """
 Addition IT Solutions Pvt. Ltd.
 =================================
@@ -30,7 +30,7 @@ Addition IT Solutions Pvt. Ltd.
     
 Features:
 ---------
-    * Define target for sales persons
+    * Define target for sales persons for each person for a start and end date
      
 """,
 
@@ -43,7 +43,7 @@ Features:
     
     'data': [
         'security/ir.model.access.csv',
-        #'templates.xml',
+        'templates.xml',
         'views/addsol_goals_view.xml',
     ],
     'demo': [],
