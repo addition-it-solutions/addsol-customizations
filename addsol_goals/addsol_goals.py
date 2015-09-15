@@ -45,6 +45,15 @@ class addsol_goals(models.Model):
                 raise Warning(_('Can not assign same period to salesperson'))
         return True
     
+    @api.one
+    def copy(self, default=None):
+        # this is used for create copy or duplicate record
+        if default is None:
+            default = {}
+        default['period_id'] = []
+        res = super(addsol_goals,self).copy(default=default)
+        return res
+    
 class addsol_target_products(models.Model):
     _name = 'addsol.target.products'
     
