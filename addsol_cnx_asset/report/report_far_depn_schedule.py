@@ -23,8 +23,8 @@ from openerp.osv import osv
 from openerp.report import report_sxw
 from report_far_common import report_far_common
 
-class report_far_disposals(report_sxw.rml_parse, report_far_common):
-    _name = 'report.far.disposals'
+class report_depreciation_schedule(report_sxw.rml_parse, report_far_common):
+    _name = 'report.depn.schedule'
     
     def set_context(self, objects, data, ids, report_type=None):
         asset_categ_obj = self.pool.get('account.asset.category')
@@ -32,17 +32,17 @@ class report_far_disposals(report_sxw.rml_parse, report_far_common):
         ctx['fiscalyear'] = data['form']['fiscalyear_id']
         ctx['period_from'] = data['form']['period_from']
         ctx['period_to'] = data['form']['period_to']
-        data['form'].update({'state': 'close'})
+        data['form'].update({'state': 'open'})
         self.context.update(ctx)
         if (data['model'] == 'ir.ui.menu'):
             new_ids = asset_categ_obj.search(self.cr, self.uid, [])
             objects = asset_categ_obj.browse(self.cr, self.uid, new_ids)
-        return super(report_far_disposals, self).set_context(objects, data, new_ids, report_type=report_type)
+        return super(report_depreciation_schedule, self).set_context(objects, data, new_ids, report_type=report_type)
     
     def __init__(self, cr, uid, name, context=None):
         if context is None:
             context = {}
-        super(report_far_disposals, self).__init__(cr, uid, name, context=context)
+        super(report_depreciation_schedule, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
             'time': time,
             'get_fiscalyear': self._get_fiscalyear,
@@ -52,7 +52,7 @@ class report_far_disposals(report_sxw.rml_parse, report_far_common):
             'get_depreciations': self._get_depreciations,
             'get_depreciated_amount': self._get_depreciated_amount,
             'sum_assets': self._sum_assets,
-            'total_depreciated_amount': self._total_depreciated_amount,
+            'current_depreciation_amount': self._current_depreciation_amount,
         })
         self.context = context
         
@@ -97,17 +97,18 @@ class report_far_disposals(report_sxw.rml_parse, report_far_common):
                 addition = depn.depreciated_value
         return addition
     
-    def _total_depreciated_amount(self, category, data):
-        total_depn = 0.0
-        assets = self._get_assets(category, data)
-        for asset in assets:
-            total_depn += self._get_depreciated_amount(asset)
-        return total_depn
+    def _current_depreciation_amount(self, asset):
+        current_depn = 0.0
+        depreciations = self._get_depreciations(asset)
+        for depn in depreciations:
+            if depn.sequence == len(depreciations):
+                current_depn = depn.amount
+        return current_depn
 
-class report_fardisposals(osv.AbstractModel):
-    _name = 'report.addsol_cnx_asset.report_fardisposals'
+class report_depn_schedule(osv.AbstractModel):
+    _name = 'report.addsol_cnx_asset.report_depn_schedule'
     _inherit = 'report.abstract_report'
-    _template = 'addsol_cnx_asset.report_fardisposals'
-    _wrapped_report_class = report_far_disposals
+    _template = 'addsol_cnx_asset.report_depn_schedule'
+    _wrapped_report_class = report_depreciation_schedule
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -18,9 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import wizard_far_report_common
-import wizard_far_additions
-import wizard_far_disposals
-import wizard_far_depn_schedule
+from openerp.osv import osv
 
+class asset_depn_schedule_report(osv.osv_memory):
+    _inherit = "asset.far.report.common"
+    _name = "asset.depn.schedule.report"
+    _description = "Asset Depn Schedule Report"
+    
+    def _print_report(self, cr, uid, ids, data, context=None):
+        if context is None:
+            context = {}
+        return self.pool['report'].get_action(cr, uid, [], 'addsol_cnx_asset.report_depn_schedule', data=data, context=context)
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

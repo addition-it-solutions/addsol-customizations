@@ -2,7 +2,7 @@
 <openerp>
 <data>
 
-<template id="report_fardisposals">
+<template id="report_depn_schedule">
     <t t-call="report.html_container">
         <t t-set="data_report_margin_top" t-value="12"/>
         <t t-set="data_report_header_spacing" t-value="10"/>
@@ -34,37 +34,20 @@
                         <thead>
                             <tr class="text-center">
                                 <th>Asset Name</th>
-                                <th>Asset Category</th>
-                                <th>Purchase Date</th>
-                                <th>Gross Value</th>
-                                <th>Amount Depreciated</th>
-                                <th>Currency</th>
-                                <th>Status</th>
+                                <th class="text-right">Current Depreciation</th>
+                                <th class="text-right">Amount Depreciated</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style="font-weight: bold;">
-                                <td colspan="2">
-                                </td>
-                                <td> Total: </td>
-                                <td class="text-right">
-                                    <span t-esc="formatLang(sum_assets(o), digits=get_digits(dp='Account'))"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-esc="formatLang(total_depreciated_amount(o,data), digits=get_digits(dp='Account'))"/>
-                                </td>
-                            </tr>
                             <t t-foreach="get_assets(o,data)" t-as="asset">
                                 <tr>
                                     <td><span t-esc="asset['name']"/></td>
-                                    <td><span t-esc="asset['category_id']['name']"/></td>
-                                    <td><span t-esc="formatLang(asset['purchase_date'], date=True)"/></td>
-                                    <td class="text-right"><span t-esc="formatLang(asset['purchase_value'],digits=get_digits(dp='Account'))"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="formatLang(current_depreciation_amount(asset),digits=get_digits(dp='Account'))"/>
+                                    </td>
                                     <td class="text-right">
                                         <span t-esc="formatLang(get_depreciated_amount(asset), digits=get_digits(dp='Account'))"/>
                                     </td>
-                                    <td><span t-esc="asset['currency_id']['name']"/></td>
-                                    <td><span t-esc="asset['state']"/></td>
                                 </tr>
                             </t>
                         </tbody>

@@ -24,5 +24,16 @@
             auto="False"
         />
 
+        <report 
+            id="action_report_depn_schedule" 
+            model="report.depn.schedule" 
+            string="Depreciation Schedule"
+            report_type="qweb-pdf"
+            name="addsol_cnx_asset.report_depn_schedule" 
+            file="addsol_cnx_asset.report_depn_schedule"
+            menu="False"
+            auto="False"
+        />
+
     </data>
 </openerp>
