@@ -48,10 +48,16 @@ class addsol_goals(models.Model):
     @api.one
     def copy(self, default=None):
         # this is used for create copy or duplicate record
-        if default is None:
-            default = {}
-        default['period_id'] = []
-        res = super(addsol_goals,self).copy(default=default)
+        target_product = []
+        for goal_ids in self.browse(self.ids):
+            if default is None:
+                default = {}
+            for line in goal_ids.product_line_ids:
+                new_line = line.copy()
+                target_product.append(new_line.id)
+            default['user_id'] = 1
+            default['product_line_ids'] = [(6,0,target_product)]
+            res = super(addsol_goals,self).copy(default=default)
         return res
     
 class addsol_target_products(models.Model):
