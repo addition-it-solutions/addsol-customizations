@@ -53,9 +53,11 @@ class report_depreciation_schedule(report_sxw.rml_parse, report_far_common):
             'get_depreciated_amount': self._get_depreciated_amount,
             'sum_assets': self._sum_assets,
             'current_depreciation_amount': self._current_depreciation_amount,
+            'total_depreciated_amount': self._total_depreciated_amount,
+            'total_current_depreciation': self._total_current_depreciation,
         })
         self.context = context
-        
+
     def _sum_assets(self, category):
         addition = 0.0
         data = {'form': self.context}
@@ -104,6 +106,20 @@ class report_depreciation_schedule(report_sxw.rml_parse, report_far_common):
             if depn.sequence == len(depreciations):
                 current_depn = depn.amount
         return current_depn
+    
+    def _total_depreciated_amount(self, category, data):
+        total_depn = 0.0
+        assets = self._get_assets(category, data)
+        for asset in assets:
+            total_depn += self._get_depreciated_amount(asset)
+        return total_depn
+    
+    def _total_current_depreciation(self, category, data):
+        total_depn = 0.0
+        assets = self._get_assets(category, data)
+        for asset in assets:
+            total_depn += self._current_depreciation_amount(asset)
+        return total_depn
 
 class report_depn_schedule(osv.AbstractModel):
     _name = 'report.addsol_cnx_asset.report_depn_schedule'
