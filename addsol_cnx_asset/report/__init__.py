@@ -22,5 +22,6 @@ import report_far_common
 import report_far_additions
 import report_far_disposals
 import report_far_depn_schedule
+import report_standing_data
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

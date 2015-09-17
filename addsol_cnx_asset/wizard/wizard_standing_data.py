@@ -18,10 +18,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import wizard_far_report_common
-import wizard_far_additions
-import wizard_far_disposals
-import wizard_far_depn_schedule
-import wizard_standing_data
+from openerp.osv import osv
 
+class asset_standing_data_report(osv.osv_memory):
+    _name = "asset.standing.data.report"
+    _description = "Standing Data Report"
+    
+    def print_report(self, cr, uid, ids, data, context=None):
+        if context is None:
+            context = {}
+        return self.pool['report'].get_action(cr, uid, [], 'addsol_cnx_asset.report_standingdata', data=data, context=context)
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

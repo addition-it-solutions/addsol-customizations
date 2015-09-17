@@ -14,7 +14,7 @@
         </record>
 
         <record id="action_asset_far_disposals_menu" model="ir.actions.act_window">
-            <field name="name">Disposals Report</field>
+            <field name="name">Disposals</field>
             <field name="res_model">asset.far.disposals.report</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
