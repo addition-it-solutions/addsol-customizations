@@ -76,6 +76,7 @@
                                 <tree string="Product" editable="bottom">
                                     <field name="target_id" invisible="1"/>
                                     <field name="product_id"/>
+                                    <field name="projection_qty"/>
                                     <field name="quantity"/>
                                 </tree>
                             </field>

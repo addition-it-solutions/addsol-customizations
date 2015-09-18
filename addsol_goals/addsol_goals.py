@@ -65,7 +65,8 @@ class addsol_target_products(models.Model):
     
     target_id = fields.Many2one('addsol.goals')
     product_id = fields.Many2one('product.product', "Product", required=True)
-    quantity = fields.Float("Quantity", required=True)
+    projection_qty = fields.Integer("Projection Quantity", required=True)
+    quantity = fields.Integer("Quantity", required=True)
     
 
 class addsol_date_periods(models.Model):
