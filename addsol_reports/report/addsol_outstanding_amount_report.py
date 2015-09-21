@@ -36,7 +36,7 @@ class addsol_outstanding_amount_report(models.Model):
     name = fields.Char("Customer Name")
     days = fields.Integer("Due Days")
     amount = fields.Float("Payment")
-    login = fields.Char("Salesperson")
+    salesperson = fields.Char("Salesperson")
     st_name = fields.Char("SalesTeam")
     amount_total = fields.Float("Invoice Total")
 #    product_id = fields.Many2one('product.product', "Product Id")
@@ -54,16 +54,16 @@ class addsol_outstanding_amount_report(models.Model):
                     part.name as name,
                     (current_date - inv.date_invoice) as days,
                     acnt.amount as amount,
-                    usr.login as login,
+                    res.name as salesperson,
                     COALESCE(st.name, 'Individual') as st_name,
                     inv.amount_total as amount_total
                 FROM account_invoice inv
-                    JOIN res_partner part ON part.id = inv.partner_id
-                    JOIN res_users usr ON usr.id = inv.user_id
+                    JOIN res_partner part ON part.id = inv.partner_id AND part.active = True
+                    JOIN resource_resource res ON res.user_id = inv.user_id
                     LEFT JOIN account_voucher acnt ON acnt.partner_id = inv.partner_id
-                    LEFT JOIN sale_member_rel smr ON smr.member_id = usr.id
+                    LEFT JOIN sale_member_rel smr ON smr.member_id = res.user_id
                     LEFT JOIN crm_case_section st ON st.id = smr.section_id 
                 GROUP BY
-                    inv.id, inv.number, inv.date_invoice, inv.date_due, inv.residual, part.name,acnt.amount, usr.login, st.name, inv.amount_total
+                    inv.id, inv.number, inv.date_invoice, inv.date_due, inv.residual, part.name,acnt.amount, res.name, st.name, inv.amount_total
                 ORDER BY st_name, part.name, inv.date_invoice
         """)

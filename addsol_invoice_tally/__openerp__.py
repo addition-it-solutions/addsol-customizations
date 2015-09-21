@@ -19,8 +19,8 @@
 #
 ##############################################################################
 {
-    'name' : 'AddSol Reports',
-    'summary': 'Reports Customization',
+    'name' : 'Addsol Invoice Tally',
+    'summary': 'Add Tally invoice number',
     'description' : """
 Addition IT Solutions Pvt. Ltd.
 =================================
@@ -30,7 +30,7 @@ Addition IT Solutions Pvt. Ltd.
     
 Features:
 ---------
-    * Additional reports 
+    * This is to create link between Tally invoice & Odoo invoice
      
 """,
 
@@ -39,16 +39,12 @@ Features:
     'category' : 'Addsol mods',
     'version' : '1.0',
     
-    'depends' : ['account','crm'],
+    'depends' : ['account'],
     
     'data': [
+        #'security/ir.model.access.csv',
         #'templates.xml',
-        'security/ir.model.access.csv',
-        'report/addsol_top_product_report_view.xml',
-        'report/addsol_outstanding_amount_report_view.xml',
-        'report/addsol_party_ledger_report_view.xml',
-        'report/addsol_goals_vs_actuals_report_view.xml',
-        'report/addsol_profitability_report_view.xml',
+        'views/addsol_invoice_tally_view.xml',
     ],
     'demo': [],
     'test': [],

@@ -18,42 +18,14 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name' : 'AddSol Reports',
-    'summary': 'Reports Customization',
-    'description' : """
-Addition IT Solutions Pvt. Ltd.
-=================================
-    Contact:
-    * website: www.aitspl.com
-    * email: info@aitspl.com
-    
-Features:
----------
-    * Additional reports 
-     
-""",
 
-    'author' : 'Addition IT Solutions Pvt. Ltd.',
-    
-    'category' : 'Addsol mods',
-    'version' : '1.0',
-    
-    'depends' : ['account','crm'],
-    
-    'data': [
-        #'templates.xml',
-        'security/ir.model.access.csv',
-        'report/addsol_top_product_report_view.xml',
-        'report/addsol_outstanding_amount_report_view.xml',
-        'report/addsol_party_ledger_report_view.xml',
-        'report/addsol_goals_vs_actuals_report_view.xml',
-        'report/addsol_profitability_report_view.xml',
-    ],
-    'demo': [],
-    'test': [],
-    'installable': True,
-    'auto_install': False,
-}
+from openerp import models, fields, api, _
+
+
+class invoice_tally(models.Model):
+    # Inherits user for add it on addsol.goals
+    _inherit = 'account.invoice'
+
+    invoice_tally_no = fields.Char(" Tally Invoice No", help="Tally Invoice Number")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

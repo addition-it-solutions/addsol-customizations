@@ -55,6 +55,6 @@ class party_ledger_report(models.Model):
                         (SELECT sum(acnt.amount) FROM account_voucher acnt 
                             WHERE acnt.partner_id = part.id) as payment_amount
                     FROM res_partner part
-                WHERE customer = True
+                WHERE customer = True AND active = True
                 ) subq
         """)

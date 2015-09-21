@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#
+#    
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2015-2016 Addition IT Solutions Pvt. Ltd. (<http://www.aitspl.com>).
 #
@@ -15,45 +15,36 @@
 #    GNU Affero General Public License for more details.
 #
 #    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.     
 #
 ##############################################################################
-{
-    'name' : 'AddSol Reports',
-    'summary': 'Reports Customization',
-    'description' : """
-Addition IT Solutions Pvt. Ltd.
-=================================
-    Contact:
-    * website: www.aitspl.com
-    * email: info@aitspl.com
-    
-Features:
----------
-    * Additional reports 
-     
-""",
 
-    'author' : 'Addition IT Solutions Pvt. Ltd.',
-    
-    'category' : 'Addsol mods',
-    'version' : '1.0',
-    
-    'depends' : ['account','crm'],
-    
-    'data': [
-        #'templates.xml',
-        'security/ir.model.access.csv',
-        'report/addsol_top_product_report_view.xml',
-        'report/addsol_outstanding_amount_report_view.xml',
-        'report/addsol_party_ledger_report_view.xml',
-        'report/addsol_goals_vs_actuals_report_view.xml',
-        'report/addsol_profitability_report_view.xml',
-    ],
-    'demo': [],
+{
+    'name': 'Addsol Purchase',
+    'version': '1.0',
+    'category': 'Purchase Management',
+    'description': """
+Addition IT Solutions Pvt. Ltd.
+====================================
+Contact :
+    * website : www.aitspl.com
+    * email   : info@aitspl.com
+	
+Purchase order Module:
+----------------------------
+* Add new fields such as excise no. and tin no. of supplier
+* Add tin no of parent company
+* Add detail field for description or specification of product in purchase order line   
+
+    """,
+    'author': 'Addition IT Solutions Pvt. Ltd. ',
+    'website': 'http://www.aitspl.com',
+    'images' : ['images/addsol.png'],
+    'depends': ['purchase'],
+    'data': ['addsol_purchase_view.xml'],
     'test': [],
+    'demo': [],
     'installable': True,
     'auto_install': False,
 }
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
