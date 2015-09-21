@@ -14,7 +14,7 @@
         </record>
 
         <record id="action_asset_far_additions_menu" model="ir.actions.act_window">
-            <field name="name">Additions Report</field>
+            <field name="name">Additions</field>
             <field name="res_model">asset.far.additions.report</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>

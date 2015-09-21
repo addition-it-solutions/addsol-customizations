@@ -66,8 +66,13 @@ class addsol_target_products(models.Model):
     target_id = fields.Many2one('addsol.goals')
     product_id = fields.Many2one('product.product', "Product", required=True)
     projection_qty = fields.Integer("Projection Quantity", required=True)
+<<<<<<< HEAD
     quantity = fields.Integer("Goals Quantity", required=True)
 
+=======
+    quantity = fields.Integer("Quantity", required=True)
+    
+>>>>>>> origin/master
 
 class addsol_date_periods(models.Model):
     _name = 'addsol.date.periods'

@@ -96,7 +96,7 @@ class report_depreciation_schedule(report_sxw.rml_parse, report_far_common):
         depreciations = self._get_depreciations(asset)
         for depn in depreciations:
             if depn.sequence == len(depreciations):
-                addition = depn.depreciated_value
+                addition = depn.depreciated_value + depn.amount
         return addition
     
     def _current_depreciation_amount(self, asset):

@@ -35,5 +35,16 @@
             auto="False"
         />
 
+        <report 
+            id="action_report_standing_data" 
+            model="report.standing.data" 
+            string="Standing Data"
+            report_type="qweb-pdf"
+            name="addsol_cnx_asset.report_standingdata" 
+            file="addsol_cnx_asset.report_standingdata"
+            menu="False"
+            auto="False"
+        />
+
     </data>
 </openerp>

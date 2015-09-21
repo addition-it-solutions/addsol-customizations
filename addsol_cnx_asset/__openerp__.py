@@ -49,6 +49,8 @@ Features:
              'views/report_fardisposals.xml',
              'wizard/wizard_far_depn_schedule.xml',
              'views/report_far_depn_schedule.xml',
+             'wizard/wizard_standing_data_view.xml',
+             'views/report_standing_data.xml',
              ],
     'demo': [],
     'test': [],

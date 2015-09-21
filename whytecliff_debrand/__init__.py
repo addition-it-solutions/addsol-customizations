@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2015-2016 Addition IT Solutions Pvt. Ltd. (<http://www.aitspl.com>).
+#    Copyright (C) 2015-2016 Playerlayer HKG.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,10 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import wizard_far_report_common
-import wizard_far_additions
-import wizard_far_disposals
-import wizard_far_depn_schedule
-import wizard_standing_data
+import whytecliff_debrand
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
