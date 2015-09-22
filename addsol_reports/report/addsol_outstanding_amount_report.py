@@ -30,6 +30,7 @@ class addsol_outstanding_amount_report(models.Model):
     _auto = False
     
     number = fields.Char("Invoice Number")
+    tally_invoice = fields.Char("Tally Invoice Number")
     date_invoice = fields.Date("Invoice Date")
     date_due = fields.Date("Due Date")
     residual = fields.Float("Outstanding Amount")
@@ -48,6 +49,7 @@ class addsol_outstanding_amount_report(models.Model):
                 SELECT 
                     inv.id as id,
                     inv.number as number,
+                    COALESCE(inv.invoice_tally_no, ' ') as tally_invoice,
                     inv.date_invoice as date_invoice,
                     inv.date_due as date_due,
                     inv.residual as residual,

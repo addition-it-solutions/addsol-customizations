@@ -13,7 +13,8 @@
             <field name="model">goals.vs.actuals.report</field>
             <field name="arch" type="xml">
                 <graph string="Goals Vs Actuals" type="pivot">
-                    <field name="salesperson" type="row"/>
+                    <field name="sales_team" type="row"/>
+                    <field name="projection" type="measure"/>
                     <field name="goal" type="measure"/>
                     <field name="actual" type="measure"/>
                 </graph>
@@ -26,12 +27,15 @@
             <field name="arch" type="xml">
                 <search string="Goals Vs Actuals">
                     <field name="salesperson"/>
+                    <field name="sales_team"/>
                     <field name="name"/>
+                    <field name="projection"/>
                     <field name="goal"/>
                     <field name="actual"/>
                     <separator/>
                     <group expand="1" string="Group By">
                         <filter string="ProductName" name="ProductName" context="{'group_by':'name'}"/>
+                        <filter string="SalesTeam" name="SalesTeam" context="{'group_by':'sales_team'}"/>
                         <separator/>
                     </group>
                 </search>

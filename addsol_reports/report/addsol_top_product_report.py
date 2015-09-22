@@ -31,23 +31,31 @@ class top_product_report(models.Model):
     
     name_template = fields.Char("Product Name")
     amount_total = fields.Float("Invoice Total")
+    quantity = fields.Integer("Quantity")
+    categ_name = fields.Char("Category")
+    inv_month = fields.Char("Month")
     #product_id = fields.Many2one('product.product', "Product Id")
 
     def init(self, cr):
         tools.sql.drop_view_if_exists(cr, 'top_product_report')
         cr.execute("""
             CREATE view top_product_report as
-              SELECT 
+                SELECT 
                     product.id as id,
                     sum(invl.price_subtotal) as amount_total, 
-                    product.name as name_template
-              FROM account_invoice_line invl   
-                  JOIN account_invoice inv ON invl.invoice_id = inv.id
-                  JOIN product_template product ON product.id = invl.product_id
-              WHERE inv.type ='out_invoice'
-              GROUP BY 
-                  product.name,product.id 
-              ORDER BY 
-                  amount_total DESC
+                    product.name as name_template,
+                    sum(invl.quantity) as quantity,
+                    categ.name as categ_name,
+                    to_char(inv.date_invoice, 'Month') as inv_month
+                FROM account_invoice_line invl   
+                    JOIN account_invoice inv ON invl.invoice_id = inv.id
+                    JOIN product_template product ON product.id = invl.product_id
+                    JOIN product_category categ ON categ.id = product.categ_id
+                WHERE inv.type ='out_invoice' AND product.type = 'product'
+                GROUP BY 
+                    product.id,product.name,categ.name,
+                    to_char(inv.date_invoice, 'Month') 
+                ORDER BY 
+                    amount_total DESC
         """)
 #invl.product_id as product_id,,invl.product_id
