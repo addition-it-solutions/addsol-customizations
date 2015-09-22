@@ -13,9 +13,9 @@
             <field name="model">addsol.outstanding.amount.report</field>
             <field name="arch" type="xml">
                 <graph string="Outstanding Amount Report" type="pivot">
-                    <field name="number" type="row"/>
-                    <field name="date_invoice" interval="month" type="col"/>
-		    <field name="amount_total" type="measure"/>
+                    <field name="tally_invoice" type="row"/>
+                    <field name="date_invoice" type="col"/>
+                    <field name="amount_total" type="measure"/>
                     <field name="amount" type="measure"/>
                     <field name="residual" type="measure"/>
 					<field name="days" type="measure"/>

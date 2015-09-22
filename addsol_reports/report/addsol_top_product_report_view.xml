@@ -2,6 +2,7 @@
 <openerp>
     <data>
     
+
         <menuitem
             id="menu_sales_marketing"
             name="Sales and Marketing"
@@ -13,8 +14,10 @@
             <field name="model">top.product.report</field>
             <field name="arch" type="xml">
                 <graph string="Top Products" type="pivot">
-                     <field name="name_template" type="row"/>
-                     <field name="amount_total" type="measure"/>
+                    <field name="categ_name" type="row"/>
+                    <field name="inv_month" type="col"/>
+                    <field name="amount_total" type="measure"/>
+                    <field name="quantity" type="measure"/>
                  </graph>
              </field>
         </record>
@@ -26,9 +29,12 @@
                 <search string="Top Products">
                     <field name="name_template"/>
                     <field name="amount_total"/>
+                    <field name="quantity"/>
+                    <field name="categ_name"/>
                     <separator/>
                     <group expand="1" string="Group By">
                         <filter string="ProductName" name="ProductName" context="{'group_by':'name_template'}"/>
+                        <filter string="CategoryName" name="CategoryName" context="{'group_by':'categ_name'}"/>
                         <separator/>
                     </group>
                 </search>
