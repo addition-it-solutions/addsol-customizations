@@ -27,7 +27,7 @@ from openerp import SUPERUSER_ID
 
 import sys
 sys.path.insert(0, 'addons/account/report')
-from common_report_header import common_report_header
+from openerp.addons.account.report.common_report_header import common_report_header
 
 class third_party_ledger(report_sxw.rml_parse, common_report_header):
 

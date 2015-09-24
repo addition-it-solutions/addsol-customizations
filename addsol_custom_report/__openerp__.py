@@ -29,7 +29,8 @@
     'description': """
 Report Customization
 ======================
-
+	This module add Partner in filter list.
+	You can select one or many partners for the report.
     
 Contact:
     * website: www.aitspl.com
