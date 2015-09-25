@@ -49,6 +49,8 @@ Features:
         'report/addsol_party_ledger_report_view.xml',
         'report/addsol_goals_vs_actuals_report_view.xml',
         'report/addsol_profitability_report_view.xml',
+        'report/addsol_MOA_invoice_report_view.xml',
+        'report/addsol_sales_register_report_view.xml',
     ],
     'demo': [],
     'test': [],

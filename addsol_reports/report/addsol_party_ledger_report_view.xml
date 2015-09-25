@@ -12,6 +12,7 @@
                     <field name="refund_amount" type="measure"/>
                     <field name="payment_amount" type="measure"/>
                     <field name="balance_amount" type="measure"/>
+                    <field name="security" type="measure"/>
                 </graph>
              </field>
         </record>
@@ -26,6 +27,7 @@
                     <field name="refund_amount"/>
                     <field name="payment_amount"/>
                     <field name="balance_amount"/>
+                    <field name="security"/>
                     <separator/>
                     <group expand="1" string="Group By">
                         <filter string="PartyName" name="PartyName" context="{'group_by':'party'}"/>

@@ -46,7 +46,7 @@ class top_product_report(models.Model):
                     product.name as name_template,
                     sum(invl.quantity) as quantity,
                     categ.name as categ_name,
-                    to_char(inv.date_invoice, 'Month') as inv_month
+                    (EXTRACT(MONTH FROM (inv.date_invoice))|| '/' || EXTRACT(YEAR FROM (inv.date_invoice)) ) as inv_month
                 FROM account_invoice_line invl   
                     JOIN account_invoice inv ON invl.invoice_id = inv.id
                     JOIN product_template product ON product.id = invl.product_id
@@ -54,7 +54,8 @@ class top_product_report(models.Model):
                 WHERE inv.type ='out_invoice' AND product.type = 'product'
                 GROUP BY 
                     product.id,product.name,categ.name,
-                    to_char(inv.date_invoice, 'Month') 
+                    EXTRACT(MONTH FROM (inv.date_invoice)),
+                    EXTRACT(YEAR FROM (inv.date_invoice))
                 ORDER BY 
                     amount_total DESC
         """)

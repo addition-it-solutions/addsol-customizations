@@ -13,7 +13,7 @@
             <field name="model">profitability.report</field>
             <field name="arch" type="xml">
                 <graph string="Profitability" type="pivot">
-                    <field name="salesperson" type="row"/>
+                    <field name="salesteam" type="row"/>
                     <field name="income" type="measure"/>
                     <field name="expense" type="measure"/>
                     <field name="profit" type="measure"/>
@@ -26,12 +26,14 @@
             <field name="model">profitability.report</field>
             <field name="arch" type="xml">
                 <search string="Profitability">
+                    <field name="salesteam"/>
                     <field name="salesperson"/>
                     <field name="income"/>
                     <field name="expense"/>
                     <field name="profit"/>
                     <separator/>
                     <group expand="1" string="Group By">
+                        <filter string="SalesTeam" name="SalesTeam" context="{'group_by':'salesteam'}"/>
                         <filter string="Salesperson" name="Salesperson" context="{'group_by':'salesperson'}"/>
                         <separator/>
                     </group>

@@ -30,6 +30,7 @@ class profitability_report(models.Model):
     _auto = False
     
     salesperson = fields.Char("Salesperson")
+    salesteam = fields.Char("SalesTeam")
     income = fields.Float("Income")
     expense = fields.Float("Expenses")
     profit = fields.Float("Profit")
@@ -42,25 +43,34 @@ class profitability_report(models.Model):
                 SELECT 
                     res.id as id, 
                     res.name as salesperson, 
+                    Sales_Team as salesteam,
                     sum(Invoice_Total) as income , 
                     sum(expense_amount) as expense , 
                     (sum(Invoice_Total) - sum(expense_amount)) as profit
                 FROM
-                    ( SELECT id as res ,salesperson,Invoice_Total,NULL::float as expense_amount
+                    ( SELECT id as res ,salesperson,Invoice_Total,NULL::float as expense_amount,Sales_Team
                         FROM (
-                            SELECT res.id, res.name as salesperson,sum(inv.amount_total) as Invoice_Total
+                            SELECT res.id, res.name as salesperson,sum(inv.amount_total) as Invoice_Total,
+                                COALESCE(st.name, 'Individual') as Sales_Team
                             FROM resource_resource res 
                                 JOIN account_invoice inv ON inv.user_id = res.user_id
-                            GROUP BY res.id, res.name ) invoice
+                                LEFT JOIN res_users usr ON usr.id = res.user_id
+                                LEFT JOIN sale_member_rel smr ON smr.member_id = usr.id
+                                LEFT JOIN crm_case_section st ON st.id = smr.section_id 
+                            GROUP BY res.id, res.name, Sales_Team) invoice
                      UNION ALL
-                     SELECT id ,salesperson,NULL::float as Invoice_Total , expense_amount
+                     SELECT id ,salesperson,NULL::float as Invoice_Total , expense_amount, Sales_Team
                      FROM (
-                        SELECT res.id, res.name as salesperson, sum(exp.amount) as expense_amount
+                        SELECT res.id, res.name as salesperson, sum(exp.amount) as expense_amount,
+                            COALESCE(st.name, 'Individual') as Sales_Team
                         FROM resource_resource res 
                             JOIN hr_employee empl ON empl.resource_id = res.id 
                             JOIN hr_expense_expense exp ON empl.id = exp.employee_id
-                        GROUP BY res.id,res.name) expense
+                            LEFT JOIN res_users usr ON usr.id = res.user_id
+                            LEFT JOIN sale_member_rel smr ON smr.member_id = usr.id
+                            LEFT JOIN crm_case_section st ON st.id = smr.section_id 
+                        GROUP BY res.id,res.name,Sales_Team) expense
                     ) results
                     JOIN resource_resource res ON res.id = results.res
-                GROUP BY res.name,res.id
+                GROUP BY res.name,res.id,Sales_Team
         """)
