@@ -41,6 +41,8 @@ Contact:
     'depends': ['account'],
     'data': [
         'wizard/account_report_partner_ledger_view.xml',
+        'views/report_partnerledger.xml',
+        'views/report_partnerledgerother.xml',
      ],
     'demo': [],
     'test': [],
