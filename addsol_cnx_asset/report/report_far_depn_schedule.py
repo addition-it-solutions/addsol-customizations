@@ -32,7 +32,6 @@ class report_depreciation_schedule(report_sxw.rml_parse, report_far_common):
         ctx['fiscalyear'] = data['form']['fiscalyear_id']
         ctx['period_from'] = data['form']['period_from']
         ctx['period_to'] = data['form']['period_to']
-        data['form'].update({'state': 'open'})
         self.context.update(ctx)
         if (data['model'] == 'ir.ui.menu'):
             new_ids = asset_categ_obj.search(self.cr, self.uid, [])
