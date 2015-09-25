@@ -24,6 +24,8 @@ import addsol_outstanding_amount_report
 import addsol_party_ledger_report
 import addsol_goals_vs_actuals_report
 import addsol_profitability_report
+import addsol_MOA_invoice_report
+import addsol_sales_register_report
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

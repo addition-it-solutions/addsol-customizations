@@ -34,6 +34,7 @@ class party_ledger_report(models.Model):
     refund_amount = fields.Float("Refund Amount")
     payment_amount = fields.Float("Payment Amount")
     balance_amount = fields.Float("Balance Amount")
+    security = fields.Char("Security")
 
     def init(self, cr):
         tools.sql.drop_view_if_exists(cr, 'party_ledger_report')
@@ -45,9 +46,10 @@ class party_ledger_report(models.Model):
                   (subq.Invoice_Amount) as invoice_amount,
                   (subq.Refund_Amount) as refund_amount, 
                   (subq.Payment_Amount) as payment_amount, 
-                  (COALESCE(subq.Invoice_Amount,0) - COALESCE(subq.Refund_Amount,0) - COALESCE(subq.Payment_Amount,0)) as balance_amount
+                  (COALESCE(subq.Invoice_Amount,0) - COALESCE(subq.Refund_Amount,0) - COALESCE(subq.Payment_Amount,0)) as balance_amount,
+                  subq.security
               FROM (
-                    SELECT part.id as id, part.name as party,
+                    SELECT part.id as id, part.name as party,part.comment as security,
                         (SELECT sum(a.amount_Total)FROM account_invoice a 
                             WHERE a.type = 'out_invoice' AND a.partner_id = part.id GROUP BY a.partner_id) as invoice_amount,
                         (SELECT sum(b.amount_Total)  FROM account_invoice b 
