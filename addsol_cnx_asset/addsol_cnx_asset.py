@@ -23,11 +23,17 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from dateutil import rrule, parser
 
-from openerp.osv import osv
+from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
 class addsol_account_asset(osv.osv):
     _inherit = 'account.asset.asset'
+    
+    _columns = {
+        'serial_number': fields.char('Serial Number'),
+        'manufacturer': fields.char('Assets Manufacturer'),
+        'location': fields.char('Assets Location'),
+    }
     
     def compute_depreciation_board(self, cr, uid, ids, context=None):
         depreciation_lin_obj = self.pool.get('account.asset.depreciation.line')

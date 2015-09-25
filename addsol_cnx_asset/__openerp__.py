@@ -42,6 +42,7 @@ Features:
     'depends': ['account_asset'],
     'data': ['addsol_cnx_asset_data.xml',
              'addsol_cnx_asset_report.xml',
+             'addsol_cnx_asset_view.xml',
              'wizard/wizard_far_report_common_view.xml',
              'wizard/wizard_far_additions_view.xml',
              'views/report_faradditions.xml',
