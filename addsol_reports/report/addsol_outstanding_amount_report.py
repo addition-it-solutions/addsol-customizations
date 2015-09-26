@@ -29,44 +29,66 @@ class addsol_outstanding_amount_report(models.Model):
     _description = ""
     _auto = False
     
-    number = fields.Char("Invoice Number")
+    number = fields.Char("Number")
     tally_invoice = fields.Char("Tally Invoice Number")
-    date_invoice = fields.Date("Invoice Date")
+    doc_date = fields.Date("Document Date")
     date_due = fields.Date("Due Date")
     residual = fields.Float("Outstanding Amount")
     name = fields.Char("Customer Name")
     days = fields.Integer("Due Days")
-    amount = fields.Float("Payment")
+    payment_amount = fields.Float("Payment Amount")
     salesperson = fields.Char("Salesperson")
     st_name = fields.Char("SalesTeam")
-    amount_total = fields.Float("Invoice Total")
+    invoice_amount = fields.Float("Invoice Amount")
 #    product_id = fields.Many2one('product.product', "Product Id")
 
     def init(self, cr):
         tools.sql.drop_view_if_exists(cr, 'addsol_outstanding_amount_report')
         cr.execute("""
             CREATE view addsol_outstanding_amount_report as
-                 SELECT 
-                    inv.id as id,
-                    inv.number as number,
-                    COALESCE(inv.invoice_tally_no, ' ') as tally_invoice,
-                    inv.date_invoice as date_invoice,
-                    inv.date_due as date_due,
-                    inv.residual as residual,
-                    part.name as name,
-                    (current_date - inv.date_invoice) as days,
-                    acnt.amount as amount,
-                    res.name as salesperson,
-                    COALESCE(st.name, 'Individual') as st_name,
-                    inv.amount_total as amount_total
-                FROM account_invoice inv
-                    JOIN res_partner part ON part.id = inv.partner_id AND part.active = True
-                    LEFT JOIN resource_resource res ON res.user_id = inv.user_id
-                    LEFT JOIN account_voucher acnt ON acnt.partner_id = inv.partner_id
-                    LEFT JOIN sale_member_rel smr ON smr.member_id = res.user_id
-                    LEFT JOIN crm_case_section st ON st.id = smr.section_id 
-                WHERE inv.state != 'cancel' 
-                GROUP BY
-                    inv.id, inv.number, inv.date_invoice, inv.date_due, inv.residual, part.name,acnt.amount, res.name, st.name, inv.amount_total
-                ORDER BY salesperson, invoice_tally_no, st_name, part.name, inv.date_invoice
+                 ( SELECT 
+                        inv.id as id,
+                        inv.number as number,
+                        COALESCE(inv.invoice_tally_no, ' ') as tally_invoice,
+                        inv.date_invoice as doc_date,
+                        inv.date_due as date_due,
+                        inv.residual as residual,
+                        part.name as name,
+                        (current_date - inv.date_invoice) as days,
+                        Null as payment_amount,
+                        res.name as salesperson,
+                        COALESCE(st.name, 'Individual') as st_name,
+                        inv.amount_total as invoice_amount
+                    FROM account_invoice inv
+                        JOIN res_partner part ON part.id = inv.partner_id AND part.active = True
+                        LEFT JOIN resource_resource res ON res.user_id = inv.user_id
+                        LEFT JOIN sale_member_rel smr ON smr.member_id = res.user_id
+                        LEFT JOIN crm_case_section st ON st.id = smr.section_id 
+                    WHERE inv.state != 'cancel'
+                    GROUP BY
+                        inv.id, inv.number, inv.date_invoice, inv.date_due, inv.residual, part.name, res.name, st.name, inv.amount_total
+                    ORDER BY salesperson, invoice_tally_no, st_name, part.name, inv.date_invoice)
+                    UNION ALL
+                 ( SELECT 
+                        acnt.id as id,
+                        acnt.number as number,
+                        'Payment'::text as tally_invoice,
+                        acnt.date as doc_date,
+                        Null as date_due,
+                        Null as residual,
+                        part.name as name,
+                        Null as days,
+                        acnt.amount as payment_amount,
+                        res.name as salesperson,
+                        COALESCE(st.name, 'Individual') as st_name,
+                        Null as invoice_amount
+                    FROM account_voucher acnt
+                        JOIN res_partner part ON part.id = acnt.partner_id AND part.active = True
+                        LEFT JOIN resource_resource res ON res.user_id = part.user_id
+                        LEFT JOIN sale_member_rel smr ON smr.member_id = res.user_id
+                        LEFT JOIN crm_case_section st ON st.id = smr.section_id 
+                    WHERE acnt.state != 'cancel'
+                    GROUP BY
+                         acnt.id, part.name, acnt.amount, res.name, st.name
+                    ORDER BY part.name)
         """)

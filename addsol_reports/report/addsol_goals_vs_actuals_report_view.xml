@@ -17,6 +17,7 @@
                     <field name="projection" type="measure"/>
                     <field name="goal" type="measure"/>
                     <field name="actual" type="measure"/>
+                    <field name="mon" type="row"/>
                 </graph>
              </field>
         </record>
