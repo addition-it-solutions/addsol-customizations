@@ -55,16 +55,19 @@ class addsol_outstanding_amount_report(models.Model):
                         inv.residual as residual,
                         part.name as name,
                         (current_date - inv.date_invoice) as days,
-                        Null as payment_amount,
+                        0.0 as payment_amount,
                         res.name as salesperson,
                         COALESCE(st.name, 'Individual') as st_name,
-                        inv.amount_total as invoice_amount
+                        CASE WHEN inv.type='out_refund'
+                            THEN inv.amount_total * -1
+                        ELSE inv.amount_total 
+                        END as invoice_amount
                     FROM account_invoice inv
                         JOIN res_partner part ON part.id = inv.partner_id AND part.active = True
                         LEFT JOIN resource_resource res ON res.user_id = inv.user_id
                         LEFT JOIN sale_member_rel smr ON smr.member_id = res.user_id
                         LEFT JOIN crm_case_section st ON st.id = smr.section_id 
-                    WHERE inv.state != 'cancel'
+                    WHERE inv.state != 'cancel' AND inv.state != 'draft'
                     GROUP BY
                         inv.id, inv.number, inv.date_invoice, inv.date_due, inv.residual, part.name, res.name, st.name, inv.amount_total
                     ORDER BY salesperson, invoice_tally_no, st_name, part.name, inv.date_invoice)
@@ -75,19 +78,19 @@ class addsol_outstanding_amount_report(models.Model):
                         'Payment'::text as tally_invoice,
                         acnt.date as doc_date,
                         Null as date_due,
-                        Null as residual,
+                        0.0 as residual,
                         part.name as name,
-                        Null as days,
+                        0 as days,
                         acnt.amount as payment_amount,
                         res.name as salesperson,
                         COALESCE(st.name, 'Individual') as st_name,
-                        Null as invoice_amount
+                        0.0 as invoice_amount
                     FROM account_voucher acnt
                         JOIN res_partner part ON part.id = acnt.partner_id AND part.active = True
                         LEFT JOIN resource_resource res ON res.user_id = part.user_id
                         LEFT JOIN sale_member_rel smr ON smr.member_id = res.user_id
                         LEFT JOIN crm_case_section st ON st.id = smr.section_id 
-                    WHERE acnt.state != 'cancel'
+                    WHERE acnt.state != 'cancel' AND acnt.state != 'draft'
                     GROUP BY
                          acnt.id, part.name, acnt.amount, res.name, st.name
                     ORDER BY part.name)

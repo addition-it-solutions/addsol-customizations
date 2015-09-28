@@ -8,11 +8,12 @@
             <field name="arch" type="xml">
                 <graph string="Party Ledger Report" type="pivot">
                     <field name="party" type="row"/>
+                    <field name="mon" type="row"/>
+                    <field name="opening_balance" type="measure"/>
                     <field name="invoice_amount" type="measure"/>
-                    <field name="refund_amount" type="measure"/>
                     <field name="payment_amount" type="measure"/>
-                    <field name="balance_amount" type="measure"/>
-                    <field name="security" type="measure"/>
+                    <field name="month_balance" type="measure"/>
+                    <field name="closing_balance" type="measure"/>
                 </graph>
              </field>
         </record>
@@ -23,14 +24,16 @@
             <field name="arch" type="xml">
                 <search string="Party Ledger Report">
                     <field name="party" />
+                    <field name="mon" />
+                    <field name="opening_balance"/>
                     <field name="invoice_amount"/>
-                    <field name="refund_amount"/>
                     <field name="payment_amount"/>
-                    <field name="balance_amount"/>
-                    <field name="security"/>
+                    <field name="month_balance"/>
+                    <field name="closing_balance"/>
                     <separator/>
                     <group expand="1" string="Group By">
                         <filter string="PartyName" name="PartyName" context="{'group_by':'party'}"/>
+                        <filter string="Month" name="Month" context="{'group_by':'mon'}"/>
                         <separator/>
                     </group>
                 </search>

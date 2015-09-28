@@ -30,33 +30,74 @@ class party_ledger_report(models.Model):
     _auto = False
     
     party = fields.Char("Party Name")
+    mon = fields.Integer("Month")
+    opening_balance = fields.Float("Opening Balance")
     invoice_amount = fields.Float("Invoice Amount")
-    refund_amount = fields.Float("Refund Amount")
     payment_amount = fields.Float("Payment Amount")
-    balance_amount = fields.Float("Balance Amount")
-    security = fields.Char("Security")
+    month_balance = fields.Float("Monthly Balance")
+    closing_balance = fields.Float("Closing Balance")
 
     def init(self, cr):
         tools.sql.drop_view_if_exists(cr, 'party_ledger_report')
         cr.execute("""
             CREATE view party_ledger_report as
-              SELECT 
-                  subq.id as id, 
-                  subq.party as party, 
-                  (subq.Invoice_Amount) as invoice_amount,
-                  (subq.Refund_Amount) as refund_amount, 
-                  (subq.Payment_Amount) as payment_amount, 
-                  (COALESCE(subq.Invoice_Amount,0) - COALESCE(subq.Refund_Amount,0) - COALESCE(subq.Payment_Amount,0)) as balance_amount,
-                  subq.security
-              FROM (
-                    SELECT part.id as id, part.name as party,part.comment as security,
-                        (SELECT sum(a.amount_Total)FROM account_invoice a 
-                            WHERE a.type = 'out_invoice' AND a.partner_id = part.id GROUP BY a.partner_id) as invoice_amount,
-                        (SELECT sum(b.amount_Total)  FROM account_invoice b 
-                            WHERE b.type = 'out_refund' AND b.partner_id = part.id GROUP BY b.partner_id) as refund_amount,
-                        (SELECT sum(acnt.amount) FROM account_voucher acnt 
-                            WHERE acnt.partner_id = part.id) as payment_amount
-                    FROM res_partner part
-                WHERE customer = True AND active = True
-                ) subq
+                SELECT part.id, plf.partner_id, part.name as party, plf.mon as mon, plf.invoice_amount, plf.payment_amount, plf.month_balance, plf.closing_balance,
+                    (plf.closing_balance - plf.month_balance) as opening_balance
+                FROM (SELECT  plg.partner_id as partner_id, plg.mon as mon, plg.invoice_amount, plg.payment_amount, plg.month_balance,
+
+                        (COALESCE( (SELECT sum(pli.month_balance) FROM (SELECT  pl.partner_id as partner_id, pl.mon as mon, 
+                            sum(pl.invoice_amount) as invoice_amount, sum(pl.payment_amount) as payment_amount,
+                            sum(pl.invoice_amount - pl.payment_amount) as month_balance
+                        FROM
+                            (SELECT a.id as id, a.partner_id as partner_id, a.date_invoice as doc_date, 
+                                CASE WHEN a.type = 'out_invoice'
+                                    THEN a.amount_total 
+                                     WHEN a.type = 'out_refund'
+                                    THEN a.amount_total * -1
+                                     ELSE 0
+                                END as invoice_amount, 0.0 as payment_amount,
+                                EXTRACT (MONTH FROM a.date_invoice) as mon
+                            FROM account_invoice a
+                            WHERE a.state != 'cancel' AND a.state != 'draft'
+                            UNION ALL
+                            SELECT acnt.id as id, acnt.partner_id as partner_id, acnt.date as doc_date, 0.0 as invoice_amount,
+                                acnt.amount as payment_amount,
+                                EXTRACT (MONTH FROM acnt.date) as mon
+                            FROM account_voucher acnt WHERE acnt.state != 'draft' AND acnt.state != 'cancel') pl 
+                            WHERE pl.partner_id = plg.partner_id AND pl.mon < plg.mon + 1
+                            GROUP BY pl.partner_id, pl.mon
+                            ) pli),
+                            0.0)) as closing_balance
+                    FROM (SELECT  pl.partner_id as partner_id, pl.mon as mon, 
+                            sum(pl.invoice_amount) as invoice_amount, sum(pl.payment_amount) as payment_amount,
+                            sum(pl.invoice_amount - pl.payment_amount) as month_balance
+                        FROM
+                            (SELECT a.id as id, a.partner_id as partner_id, a.date_invoice as doc_date, 
+                                CASE WHEN a.type = 'out_invoice'
+                                    THEN a.amount_total 
+                                     WHEN a.type = 'out_refund'
+                                    THEN a.amount_total * -1
+                                     ELSE 0
+                                END as invoice_amount, 0.0 as payment_amount,
+                                EXTRACT (MONTH FROM a.date_invoice) as mon
+                            FROM account_invoice a
+                            WHERE a.state != 'cancel' AND a.state != 'draft'
+                            UNION ALL
+                            SELECT acnt.id as id, acnt.partner_id as partner_id, acnt.date as doc_date, 0.0 as invoice_amount,
+                                acnt.amount as payment_amount,
+                                EXTRACT (MONTH FROM acnt.date) as mon
+                            FROM account_voucher acnt WHERE acnt.state != 'draft' AND acnt.state != 'cancel'
+                            UNION ALL
+                            SELECT pd.id as id, partn.id as partner_id, pd.date_start as doc_date, 0.0 as invoice_amount,
+                                0.0 as payment_amount,
+                                EXTRACT (MONTH FROM pd.date_start) as mon
+                            FROM res_partner partn
+                                JOIN account_period pd ON pd.special=FALSE
+                            WHERE partn.customer=True AND partn.active=True
+                            ) pl 
+                            GROUP BY pl.partner_id, pl.mon
+                            ) plg
+                    )plf
+                    JOIN res_partner part ON part.id = plf.partner_id
+                ORDER BY plf.partner_id, plf.mon
         """)
