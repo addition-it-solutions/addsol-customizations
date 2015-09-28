@@ -36,6 +36,11 @@ Features:
 ---------
     * Depreciation calculation is divided into months according to fiscal year
     * Monthly journal entries are made for each asset
+    * FAR Reports:
+        * Additions
+        * Disposals
+        * Depreciation Schedule
+        * Standing Data
 
 """,
     'images': [],

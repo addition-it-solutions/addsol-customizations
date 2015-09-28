@@ -38,6 +38,7 @@
                                 <th class="text-right">Gross Value</th>
                                 <th class="text-right">Current Depreciation</th>
                                 <th class="text-right">Amount Depreciated</th>
+                                <th class="text-right">Next Depreciation</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,10 +49,13 @@
                                     <span t-esc="formatLang(sum_assets(o), digits=get_digits(dp='Account'))"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="formatLang(total_current_depreciation(o,data), digits=get_digits(dp='Account'))"/>
+                                    <span t-esc="formatLang(total_amounts(o,data,'current_depreciation'), digits=get_digits(dp='Account'))"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-esc="formatLang(total_depreciated_amount(o,data), digits=get_digits(dp='Account'))"/>
+                                    <span t-esc="formatLang(total_amounts(o,data,'amount_already_depreciated'), digits=get_digits(dp='Account'))"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="formatLang(total_amounts(o,data,'next_period_depreciation'), digits=get_digits(dp='Account'))"/>
                                 </td>
                             </tr>
                             <t t-foreach="get_assets(o,data)" t-as="asset">
@@ -60,10 +64,13 @@
                                     <td><span t-esc="asset['location']"/></td>
                                     <td class="text-right"><span t-esc="formatLang(asset['purchase_value'],digits=get_digits(dp='Account'))"/></td>
                                     <td class="text-right">
-                                        <span t-esc="formatLang(current_depreciation_amount(asset),digits=get_digits(dp='Account'))"/>
+                                        <span t-esc="formatLang(get_amounts(asset, 'current_depreciation'),digits=get_digits(dp='Account'))"/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="formatLang(get_depreciated_amount(asset), digits=get_digits(dp='Account'))"/>
+                                        <span t-esc="formatLang(get_amounts(asset, 'amount_already_depreciated'), digits=get_digits(dp='Account'))"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="formatLang(get_amounts(asset, 'next_period_depreciation'), digits=get_digits(dp='Account'))"/>
                                     </td>
                                 </tr>
                             </t>

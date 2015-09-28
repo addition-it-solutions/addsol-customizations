@@ -18,7 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from datetime import datetime
 import time
+
 from openerp.osv import osv
 from openerp.report import report_sxw
 from report_far_common import report_far_common
@@ -48,14 +50,24 @@ class report_depreciation_schedule(report_sxw.rml_parse, report_far_common):
             'get_start_period': self.get_start_period,
             'get_end_period': self.get_end_period,
             'get_assets': self._get_assets,
-            'get_depreciations': self._get_depreciations,
-            'get_depreciated_amount': self._get_depreciated_amount,
             'sum_assets': self._sum_assets,
-            'current_depreciation_amount': self._current_depreciation_amount,
-            'total_depreciated_amount': self._total_depreciated_amount,
-            'total_current_depreciation': self._total_current_depreciation,
+            'get_depreciations': self._get_depreciations,
+            'get_amounts': self._get_amounts,
+            'total_amounts': self._total_amounts,
         })
         self.context = context
+
+    def _get_assets(self, category, data):
+        asset_obj = self.pool.get('account.asset.asset')
+        cr = self.cr
+        uid = self.uid
+        res = []
+        states = ['open','close']
+        domain = [('category_id','=',category.id),('state','in',states)]
+        asset_ids = asset_obj.search(cr, uid, domain)
+        for asset in asset_obj.browse(cr, uid, asset_ids):
+            res.append(asset)
+        return res
 
     def _sum_assets(self, category):
         addition = 0.0
@@ -80,44 +92,37 @@ class report_depreciation_schedule(report_sxw.rml_parse, report_far_common):
         if period_from and period_to:
             start_date = period_obj.browse(cr, uid, period_from).date_start
             end_date = period_obj.browse(cr, uid, period_to).date_stop
+            dt1 = datetime.strptime(start_date, '%Y-%m-%d')
+            dt2 = datetime.strptime(end_date, '%Y-%m-%d')
+        self.total_months = ((dt2-dt1).days) / 30
         domain = [('depreciation_date','>=',start_date), 
                   ('depreciation_date','<=',end_date),
                   ('asset_id','=',asset.id),
-                  ('parent_state','=','open'),
                   ('move_check','=',True)]
         depn_ids = depn_obj.search(cr, uid, domain)
         for depn in depn_obj.browse(cr, uid, depn_ids):
             res.append(depn)
         return res
-        
-    def _get_depreciated_amount(self, asset):
-        addition = 0.0
+
+    def _get_amounts(self, asset, field=''):
+        amount_value = 0.0
         depreciations = self._get_depreciations(asset)
         for depn in depreciations:
-            if depn.sequence == len(depreciations):
-                addition = depn.depreciated_value + depn.amount
-        return addition
+            if field == 'amount_already_depreciated':
+                if self.total_months == len(depreciations):
+                    amount_value = depn.depreciated_value + depn.amount
+            elif field == 'current_depreciation':
+                amount_value += depn.amount
+            elif field == 'next_period_depreciation':
+                if self.total_months == len(depreciations):
+                    amount_value = depn.remaining_value
+        return amount_value
     
-    def _current_depreciation_amount(self, asset):
-        current_depn = 0.0
-        depreciations = self._get_depreciations(asset)
-        for depn in depreciations:
-            if depn.sequence == len(depreciations):
-                current_depn = depn.amount
-        return current_depn
-    
-    def _total_depreciated_amount(self, category, data):
+    def _total_amounts(self, category, data, field=''):
         total_depn = 0.0
         assets = self._get_assets(category, data)
         for asset in assets:
-            total_depn += self._get_depreciated_amount(asset)
-        return total_depn
-    
-    def _total_current_depreciation(self, category, data):
-        total_depn = 0.0
-        assets = self._get_assets(category, data)
-        for asset in assets:
-            total_depn += self._current_depreciation_amount(asset)
+            total_depn += self._get_amounts(asset, field)
         return total_depn
 
 class report_depn_schedule(osv.AbstractModel):
