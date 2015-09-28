@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="addsol_sales_register_view" model="ir.ui.view">
+            <field name="name">addsol.sales.register.view</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Register">
+                    <field name="partner_id" groups="base.group_user"/>
+                    <field name="date_invoice"/>
+                    <field name="number"/>
+                    <field name="user_id" string="Responsible"/>
+                    <field name="date_due"/>
+                    <field name="amount_total" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="addsol_action_sales_register_tree_view" model="ir.actions.act_window">
+            <field name="name">Sales Register</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('state','not in',['draft','cancel'])]</field>
+        </record>
+        
+
+        <menuitem action="addsol_action_sales_register_tree_view" id="menu_addsol_action_sales_register_tree_view" parent="menu_sales_marketing" sequence="7" groups="base.group_sale_manager"/>
+
+    </data>
+</openerp>

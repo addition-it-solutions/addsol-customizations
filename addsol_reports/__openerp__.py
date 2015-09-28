@@ -50,7 +50,7 @@ Features:
         'report/addsol_goals_vs_actuals_report_view.xml',
         'report/addsol_profitability_report_view.xml',
         'report/addsol_MOA_invoice_report_view.xml',
-        'report/addsol_sales_register_report_view.xml',
+        'addsol_sales_register_report.xml',
     ],
     'demo': [],
     'test': [],
