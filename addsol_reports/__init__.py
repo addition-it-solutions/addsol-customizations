@@ -20,6 +20,7 @@
 ##############################################################################
 #from . import addsol_reports
 from . import report
+import addsol_sales_register
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
