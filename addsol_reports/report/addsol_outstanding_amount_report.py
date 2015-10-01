@@ -52,7 +52,10 @@ class addsol_outstanding_amount_report(models.Model):
                         COALESCE(inv.invoice_tally_no, ' ') as tally_invoice,
                         inv.date_invoice as doc_date,
                         inv.date_due as date_due,
-                        inv.residual as residual,
+                        CASE WHEN inv.type='out_refund'
+                            THEN inv.residual * -1
+                        ELSE inv.residual 
+                        END as residual,
                         part.name as name,
                         (current_date - inv.date_invoice) as days,
                         0.0 as payment_amount,
