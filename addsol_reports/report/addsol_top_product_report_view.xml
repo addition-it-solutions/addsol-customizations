@@ -15,6 +15,8 @@
             <field name="arch" type="xml">
                 <graph string="Top Products" type="pivot">
                     <field name="categ_name" type="row"/>
+                    <field name="salesperson" type="row"/>
+                    <field name="salesteam" type="row"/>
                     <field name="inv_month" type="col"/>
                     <field name="amount_total" type="measure"/>
                     <field name="quantity" type="measure"/>
@@ -35,6 +37,8 @@
                     <group expand="1" string="Group By">
                         <filter string="ProductName" name="ProductName" context="{'group_by':'name_template'}"/>
                         <filter string="CategoryName" name="CategoryName" context="{'group_by':'categ_name'}"/>
+                        <filter string="SalesPerson" name="SalesPerson" context="{'group_by':'salesperson'}"/>
+                        <filter string="SalesTeam" name="SalesTeam" context="{'group_by':'salesteam'}"/>
                         <separator/>
                     </group>
                 </search>
