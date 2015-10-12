@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_addsol_ticket,Employee rised ticket,model_hr_addsol_ticket,base.group_user,1,1,1,1
+access_hr_addsol_ticket_manager,Manager solve ticket,model_hr_addsol_ticket,base.group_hr_manager,1,1,1,1
