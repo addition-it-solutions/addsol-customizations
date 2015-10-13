@@ -20,18 +20,26 @@
 ##############################################################################
 
 from openerp import models, fields, api, _
+from datetime import datetime
 
 class hr_addsol_ticket(models.Model):
     _name = "hr.addsol.ticket"
-    _description = "Employee raised ticket"
+    _description = "Ticket"
+    _rec_name = 'employee_id'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
+    _track = {
+        'state': {
+            #'hr_addsol_ticket.mt_ticket_created': lambda self, cr, uid, obj, ctx=None: obj.state == 'draft',
+            'hr_addsol_ticket.mt_ticket_confirmed': lambda self, cr, uid, obj, ctx=None: obj.state == 'confirm',
+            'hr_addsol_ticket.mt_ticket_resolved': lambda self, cr, uid, obj, ctx=None: obj.state == 'validate',
+        },
+    }
 
-    name = fields.Char("Description")
+    problem_desc = fields.Text("Description")
     employee_id = fields.Many2one('hr.employee', "Employee", required=True)
     ticket_date = fields.Datetime("Date", required=True)
-    state = fields.Selection([('draft', 'To Submit'), ('cancel', 'Cancelled'),('confirm', 'To Approve'), ('validate', 'Approved'), ('refuse', 'Refused')], 'Status', readonly=True)
+    state = fields.Selection([('draft', 'To Submit'), ('cancel', 'Cancelled'),('confirm', 'To Resolve'), ('validate', 'Resolved'), ('refuse', 'Refused')], 'Status', readonly=True)
     resolved_date = fields.Datetime("Resolved Date")
-    attachment = fields.Binary("Attachments")
     
     @api.cr_uid_ids_context
     def _employee_get(self, cr, uid, context=None):
@@ -46,6 +54,7 @@ class hr_addsol_ticket(models.Model):
     _defaults = {
         'employee_id' : _employee_get,
         'state' : 'draft',
+        'ticket_date' : datetime.now(),
      }
     
     @api.one
@@ -55,7 +64,7 @@ class hr_addsol_ticket(models.Model):
     
     @api.one
     def request_approve(self):
-        self.write({'state': 'validate'})
+        self.write({'state': 'validate','resolved_date':datetime.now()})
         return True
     
     @api.one
@@ -67,4 +76,11 @@ class hr_addsol_ticket(models.Model):
     def reset(self):
         self.write({'state': 'cancel'})
         return True
+    
+    @api.model
+    def create(self, vals):
+        #print 'vals----->',vals
+        res = super(hr_addsol_ticket,self).create(vals)
+        #print 'res----->',res
+        return res
 

@@ -20,28 +20,29 @@
 ##############################################################################
 
 {
-    'name': 'HR Employee Ticketing  - Addsol',
+    'name': 'Ticketing System  - Addsol',
     'version': '1.0',
     'author': 'Addition IT Solutions Pvt. Ltd.',
     'category': 'Human Resources',
     'summary': 'Employee Ticketing',
     'website': 'https://www.aitspl.com',
     'description': """
-HR Employee Ticketing by Addition IT Solutions
+Ticketing system by Addition IT Solutions
 ====================================
 Contact:
     * website: www.aitspl.com
     * email: info@aitspl.com    
 
 Functionality:
-*
-
+* Employee raises a ticket to complain regarding his login.
+* Admin handles the tickets and resolves the issues.
     
 """,
     'images': [],
     'depends': ['hr_addsol'],
     'data': [
         'security/ir.model.access.csv',
+        'hr_addsol_ticket_data.xml',
         'hr_addsol_ticket_view.xml',
      ],
     'demo': [],

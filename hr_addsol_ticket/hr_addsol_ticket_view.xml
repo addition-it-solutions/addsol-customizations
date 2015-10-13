@@ -7,10 +7,9 @@
             <field name="model">hr.addsol.ticket</field>
             <field name="arch" type="xml">
                 <tree string="Tickets" >
-                    <field name="name"/>
-                    <field name="employee_id"/>   
-                    <field name="ticket_date"/> 
-                    <field name="resolved_date"/>
+                    <field name="employee_id"/>
+                    <field name="ticket_date"/>
+                    <field name="problem_desc"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -23,20 +22,25 @@
                 <form string="Ticket" >  
                     <header>
                         <button string="Submit" name="request_send" states="draft" type="object" class="oe_highlight" />
-                        <button string="Approve" name="request_approve" states="confirm" type="object" class="oe_highlight" groups="base.group_hr_manager" />
-                        <button string="Reject" name="refuse" states="draft,confirm,validate" type="object"/>
+                        <button string="Resolve" name="request_approve" states="confirm" type="object" class="oe_highlight" groups="base.group_hr_manager" />
+                        <button string="Cancel" name="refuse" states="draft,confirm,validate" type="object"/>
                         <button name="reset" string="Reset to Draft" states="cancel" type="object" groups="base.group_hr_manager"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate"/>
                     </header>
                     <sheet>
                         <group>
-                            <field name="employee_id" />
+                            <group col="4">
+                                <field name="employee_id" />
+                            </group>
+                            <group col="4">
+                                <field name="ticket_date"/>
+                            </group>
                         </group>
-                        
                         <group>
-                            <field name="ticket_date"/>
-                            <field name="name" />
-                            <field name="attachment"/>
+                            <label for="problem_desc" string="Description"/>
+                            <div>
+                                <field name="problem_desc" placeholder="Write some details..." colspan="2" />
+                            </div>
                         </group>
                         <group attrs="{'invisible': ['|',('state','in',['draft','confirm','refused'])]}" groups="base.group_hr_manager">
                             <label for="resolved_date" string="Date Resolved"/>
@@ -46,6 +50,10 @@
                         </group>
                         
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -64,10 +72,9 @@
             <field name="model">hr.addsol.ticket</field>
             <field name="arch" type="xml">
                 <tree string="Ticket to Solve" >
-                    <field name="name"/>
-                    <field name="employee_id"/>   
-                    <field name="ticket_date"/> 
-                    <field name="resolved_date"/>
+                    <field name="employee_id"/>
+                    <field name="ticket_date"/>
+                    <field name="problem_desc"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -78,7 +85,7 @@
             <field name="model">hr.addsol.ticket</field>
             <field name="arch" type="xml">
                 <search string="Search Tickets">
-                    <field name="name"/>
+                    <field name="problem_desc"/>
                     <separator/>
                     <filter domain="[('state','in',('confirm',))]" string="To Approve" name="approve"/>
                 </search>
@@ -98,7 +105,7 @@
         
         
         <!-- Menus -->
-        <menuitem name="Ticket Mangement" parent="hr_addsol.menu_addsol_admin_root" id="menu_open_ticket_management" sequence="15"/>
+        <menuitem name="Ticket Mangement" parent="hr_addsol.menu_addsol_admin_root" id="menu_open_ticket_management" sequence="0"/>
         <menuitem parent="menu_open_ticket_management" id="menu_hr_addsol_ticket" action="open_hr_addsol_ticket" sequence="1"/>
         <menuitem parent="menu_open_ticket_management" id="menu_hr_addsol_ticket_solve" action="hr_addsol_tickets_solve" sequence="2" groups="base.group_hr_manager"/>
 
