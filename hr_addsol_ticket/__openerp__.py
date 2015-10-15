@@ -39,7 +39,7 @@ Functionality:
     
 """,
     'images': [],
-    'depends': ['hr_addsol'],
+    'depends': ['hr_addsol', 'hr_gamification'],
     'data': [
         'security/ir.model.access.csv',
         'hr_addsol_ticket_data.xml',

@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
+    <data noupdate="1">
 
         <!-- Ticket system related subtypes for messaging / Chatter -->
-    <!--
-        <record id="mt_ticket_created" model="mail.message.subtype">
+    
+        <!--record id="mt_ticket_created" model="mail.message.subtype">
             <field name="name">Ticket Created</field>
             <field name="res_model">hr.addsol.ticket</field>
             <field name="default" eval="False"/>
             <field name="hidden" eval="True"/>
-            <field name="description">Ticket</field>
-        </record>
-        -->
+            <field name="description">Ticket Created</field>
+        </record-->
 
         <record id="mt_ticket_confirmed" model="mail.message.subtype">
             <field name="name">To Resolve</field>

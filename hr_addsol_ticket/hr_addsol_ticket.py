@@ -29,15 +29,14 @@ class hr_addsol_ticket(models.Model):
     _inherit = ['mail.thread', 'ir.needaction_mixin']
     _track = {
         'state': {
-            #'hr_addsol_ticket.mt_ticket_created': lambda self, cr, uid, obj, ctx=None: obj.state == 'draft',
             'hr_addsol_ticket.mt_ticket_confirmed': lambda self, cr, uid, obj, ctx=None: obj.state == 'confirm',
             'hr_addsol_ticket.mt_ticket_resolved': lambda self, cr, uid, obj, ctx=None: obj.state == 'validate',
         },
     }
 
     problem_desc = fields.Text("Description")
-    employee_id = fields.Many2one('hr.employee', "Employee", required=True)
-    ticket_date = fields.Datetime("Date", required=True)
+    employee_id = fields.Many2one('hr.employee', "Employee", required=True, track_visibility='always')
+    ticket_date = fields.Datetime("Date", required=True, track_visibility='always')
     state = fields.Selection([('draft', 'To Submit'), ('cancel', 'Cancelled'),('confirm', 'To Resolve'), ('validate', 'Resolved'), ('refuse', 'Refused')], 'Status', readonly=True)
     resolved_date = fields.Datetime("Resolved Date")
     
@@ -77,10 +76,10 @@ class hr_addsol_ticket(models.Model):
         self.write({'state': 'cancel'})
         return True
     
-    @api.model
-    def create(self, vals):
-        #print 'vals----->',vals
-        res = super(hr_addsol_ticket,self).create(vals)
-        #print 'res----->',res
-        return res
+    @api.cr_uid_ids_context
+    def create(self, cr, uid, vals, context=None):
+        ctx = dict(context or {}, mail_create_nolog=True)
+        new_id = super(hr_addsol_ticket,self).create(cr, uid, vals, context=ctx)
+        self.message_post(cr, uid, [new_id], body="Ticket created", context=ctx)
+        return new_id
 
