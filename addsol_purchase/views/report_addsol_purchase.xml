@@ -28,12 +28,12 @@
             </div>
 
             <div class="row mt32 mb32">
-                <div t-if="o.dppl_tin" class="col-xs-5 ">
+                <div t-if="o.dppl_tin" class="col-xs-7">
                     <strong>DPPL TIN No :</strong>
                     <p t-field="o.dppl_tin"/>
                 </div>
                 
-                <div t-if="o.tin_no" class="col-xs-4 text-right">
+                <div t-if="o.tin_no" class="col-xs-3">
                     <strong>Supplier TIN No :</strong>
                     <p t-field="o.tin_no"/>
                 </div>
