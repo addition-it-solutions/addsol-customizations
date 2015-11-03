@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<template id="report_pendingpo">
+    <t t-call="report.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="10"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+
+        <t t-foreach="docs" t-as="o">
+            <t t-call="report.internal_layout">
+                <div class="page">
+                    <h2>Pending PO Quantities</h2>
+
+                    <table class="table table-condensed text-center">
+                        <thead>
+                            <tr>
+                                <th>PR No.</th>
+                                <th>PR Date</th>
+                                <th>PR State</th>
+                                <th>Product Name</th>
+                                <th>PR Qty</th>
+                                <th>Remaining Qty</th>
+                                <th>Supplier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="get_lines(o)" t-as="req">
+                                <tr>
+                                    <td><span t-esc="req['prno']"/></td>
+                                    <td><span t-esc="formatLang(req['prdate'], date=True)"/></td>
+                                    <td><span t-esc="req['prstate']"/></td>
+                                    <td><span t-esc="req['product']"/></td>
+                                    <td><span t-esc="req['prqty']"/></td>
+                                    <td><span t-esc="req['remaining_qty']"/></td>
+                                    <td><span t-esc="req['supplier']"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</data>
+</openerp>

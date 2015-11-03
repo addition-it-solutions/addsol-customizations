@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            id="action_report_pendingpo" 
+            model="purchase.requisition" 
+            string="Pending PO"
+            report_type="qweb-pdf"
+            name="addsol_rajdeep_requisition.report_pendingpo" 
+            file="addsol_rajdeep_requisition.report_pendingpo"
+        />
+    </data>
+</openerp>
