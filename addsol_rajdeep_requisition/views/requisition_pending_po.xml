@@ -8,11 +8,10 @@
         <t t-set="data_report_header_spacing" t-value="10"/>
         <t t-set="data_report_dpi" t-value="110"/>
 
-        <t t-foreach="docs" t-as="o">
+        
             <t t-call="report.internal_layout">
                 <div class="page">
                     <h2>Pending PO Quantities</h2>
-
                     <table class="table table-condensed text-center">
                         <thead>
                             <tr>
@@ -26,21 +25,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-foreach="get_lines(o)" t-as="req">
-                                <tr>
-                                    <td><span t-esc="req['prno']"/></td>
-                                    <td><span t-esc="formatLang(req['prdate'], date=True)"/></td>
-                                    <td><span t-esc="req['prstate']"/></td>
-                                    <td><span t-esc="req['product']"/></td>
-                                    <td><span t-esc="req['prqty']"/></td>
-                                    <td><span t-esc="req['remaining_qty']"/></td>
-                                    <td><span t-esc="req['supplier']"/></td>
-                                </tr>
+                            <t t-foreach="docs" t-as="o">
+                                <t t-foreach="get_lines(o)" t-as="req">
+                                    <tr>
+                                        <td><span t-esc="req['prno']"/></td>
+                                        <td><span t-esc="formatLang(req['prdate'], date=True)"/></td>
+                                        <td><span t-esc="req['prstate']"/></td>
+                                        <td><span t-esc="req['product']"/></td>
+                                        <td><span t-esc="req['prqty']"/></td>
+                                        <td><span t-esc="req['remaining_qty']"/></td>
+                                        <td><span t-esc="req['supplier']"/></td>
+                                    </tr>
+                                </t>
                             </t>
                         </tbody>
                     </table>
                 </div>
-            </t>
+            
         </t>
     </t>
 </template>

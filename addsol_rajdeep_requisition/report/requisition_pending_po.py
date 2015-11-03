@@ -26,7 +26,7 @@ class requisition_pending_po(report_sxw.rml_parse):
     
     def set_context(self, objects, data, ids, report_type=None):
         req_obj = self.pool.get('purchase.requisition')
-        new_ids = req_obj.search(self.cr, self.uid, [('state','!=','draft'),('purchase_ids','!=',[])])
+        new_ids = req_obj.search(self.cr, self.uid, [('state','!=','cancel'),('purchase_ids','!=',[])])
         objects = req_obj.browse(self.cr, self.uid, new_ids)
         return super(requisition_pending_po, self).set_context(objects, data, new_ids, report_type=report_type)
 
@@ -58,6 +58,11 @@ class requisition_pending_po(report_sxw.rml_parse):
                                 'prqty': line.product_qty})
                     if val['po_state'] == 'approved':
                         val.update({'remaining_qty': line.product_qty - val.get('poqty')})
+        res = []
+        for val in result:
+            if val.get('remaining_qty') <= 0.0 and val['po_state'] == 'approved':
+                res.append(val)
+        result = [val for val in result if val not in res]
         return result
 
 class report_requisition_pending_po(osv.AbstractModel):
