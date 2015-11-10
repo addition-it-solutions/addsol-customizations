@@ -2,7 +2,7 @@
 <openerp>
     <data>
 
-        <menuitem id="menu_open_view_addsol_target" name="Sales Persons" parent="addsol_dr.menu_pharma_root" groups="base.group_sale_manager" sequence="7" />
+        <menuitem id="menu_open_view_addsol_target" name="Sales Persons" parent="base.menu_sales" groups="base.group_sale_manager" sequence="7" />
 
         <record model="ir.ui.view" id="addsol_date_periods_view_tree">
             <field name="name">addsol.date.periods.view.tree</field>
